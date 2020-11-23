@@ -1,0 +1,20 @@
+@import "../_main/fonts";
+@import "./dark-config";
+@import "../_main/style";
+
+.cl-widget-ms-wrapper .cl-widget-ms-information-close-wrapper {
+  border-left: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label::before {
+  background-image: url(../../images/info-icon.svg);
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-growth-up {
+  background-image: url(../../images/growth-arrow-icon.svg);
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-progression-bar {
+  height: 13px;
+}
