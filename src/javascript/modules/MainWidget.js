@@ -1152,10 +1152,11 @@ export const MainWidget = function (options) {
     return (this.settings.lbWidget.settings.competition.activeContest.description.length > 0) ? this.settings.lbWidget.settings.competition.activeContest.description : this.settings.lbWidget.settings.competition.activeCompetition.description;
   };
 
-  this.extractImage = function (body, imageContainer) {
+  this.extractImage = function (body, imageContainer, isBodyVirtualOpt) {
     const _this = this;
     const activeImageContainer = closest(body, '.cl-main-section-image-banner-active');
     var imageFound = false;
+    const isBodyVirtual = (typeof isBodyVirtualOpt === 'boolean') ? isBodyVirtualOpt : false;
 
     if (_this.settings.lbWidget.settings.competition.extractImageHeader) {
       objectIterator(query(body, 'img'), function (img, key, count) {
@@ -1172,7 +1173,7 @@ export const MainWidget = function (options) {
 
     if (!imageFound && activeImageContainer !== null) {
       removeClass(activeImageContainer, 'cl-main-section-image-banner-active');
-    } else if (imageFound && activeImageContainer === null && _this.settings.lbWidget.settings.leaderboard.layoutSettings.imageBanner) {
+    } else if (imageFound && activeImageContainer === null && _this.settings.lbWidget.settings.leaderboard.layoutSettings.imageBanner && !isBodyVirtual) {
       addClass(closest(body, '.cl-main-section-item'), 'cl-main-section-image-banner-active');
     }
   };
@@ -1194,9 +1195,11 @@ export const MainWidget = function (options) {
       if (body === null) {
         body = document.createElement('div');
         body.innerHTML = _this.getActiveCompetitionDescription();
-      }
 
-      _this.extractImage(body, image);
+        _this.extractImage(body, image, true);
+      } else {
+        _this.extractImage(body, image, false);
+      }
     }
 
     mainLabel.innerHTML = (_this.settings.lbWidget.settings.competition.activeContest !== null) ? _this.settings.lbWidget.settings.competition.activeContest.label : _this.settings.lbWidget.settings.translation.tournaments.noAvailableCompetitions;
