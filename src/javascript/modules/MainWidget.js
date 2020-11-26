@@ -30,6 +30,7 @@ export const MainWidget = function (options) {
     detailsContainer: null,
     tournamentListContainer: null,
     headerDate: null,
+    labelDate: null,
     preLoader: {
       preLoaderActive: false,
       preLoaderlastAttempt: null,
@@ -53,6 +54,7 @@ export const MainWidget = function (options) {
       topResultSize: 3,
       header: null,
       container: null,
+      resultContainer: null,
       list: null,
       topResults: null,
       timerInterval: null
@@ -308,7 +310,8 @@ export const MainWidget = function (options) {
     var sectionLBDetailsImageContainer = document.createElement('div');
     var sectionLBDetailsContentContainer = document.createElement('div');
     var sectionLBDetailsContentContainerLabel = document.createElement('div');
-    var sectionLBDetailsContentContainerDate = document.createElement('div');
+    var sectionLBDetailsContentContainerLabelText = document.createElement('span');
+    var sectionLBDetailsContentContainerDate = document.createElement('span');
     var sectionLBDetailsDescriptionContainer = document.createElement('div');
     var sectionLBDetailsDescription = document.createElement('div');
     var sectionLBDetailsDescriptionClose = document.createElement('span');
@@ -316,6 +319,7 @@ export const MainWidget = function (options) {
     var sectionLBLeaderboard = document.createElement('div');
     var sectionLBLeaderboardHeader = document.createElement('div');
     var sectionLBLeaderboardHeaderLabels = document.createElement('div');
+    var sectionLBLeaderboardResultsContainer = document.createElement('div');
     var sectionLBLeaderboardHeaderTopResults = document.createElement('div');
     var sectionLBLeaderboardBody = document.createElement('div');
     var sectionLBLeaderboardBodyResults = document.createElement('div');
@@ -358,6 +362,7 @@ export const MainWidget = function (options) {
     sectionLBDetailsImageContainer.setAttribute('class', 'cl-main-widget-lb-details-image-container');
     sectionLBDetailsContentContainer.setAttribute('class', 'cl-main-widget-lb-details-content');
     sectionLBDetailsContentContainerLabel.setAttribute('class', 'cl-main-widget-lb-details-content-label');
+    sectionLBDetailsContentContainerLabelText.setAttribute('class', 'cl-main-widget-lb-details-content-label-text');
     sectionLBDetailsContentContainerDate.setAttribute('class', 'cl-main-widget-lb-details-content-date');
     sectionLBDetailsDescriptionContainer.setAttribute('class', 'cl-main-widget-lb-details-description-container');
     sectionLBDetailsDescription.setAttribute('class', 'cl-main-widget-lb-details-description');
@@ -367,6 +372,7 @@ export const MainWidget = function (options) {
     sectionLBLeaderboard.setAttribute('class', 'cl-main-widget-lb-leaderboard');
     sectionLBLeaderboardHeader.setAttribute('class', 'cl-main-widget-lb-leaderboard-header');
     sectionLBLeaderboardHeaderLabels.setAttribute('class', 'cl-main-widget-lb-leaderboard-header-labels');
+    sectionLBLeaderboardResultsContainer.setAttribute('class', 'cl-main-widget-lb-leaderboard-res-container');
     sectionLBLeaderboardHeaderTopResults.setAttribute('class', 'cl-main-widget-lb-leaderboard-header-top-res');
     sectionLBLeaderboardBody.setAttribute('class', 'cl-main-widget-lb-leaderboard-body');
     sectionLBLeaderboardBodyResults.setAttribute('class', 'cl-main-widget-lb-leaderboard-body-res');
@@ -411,8 +417,9 @@ export const MainWidget = function (options) {
     sectionLBHeader.appendChild(sectionLBHeaderClose);
 
     sectionLBDetailsInfo.appendChild(sectionLBDetailsInfoIcon);
+    sectionLBDetailsContentContainerLabel.appendChild(sectionLBDetailsContentContainerLabelText);
+    sectionLBDetailsContentContainerLabel.appendChild(sectionLBDetailsContentContainerDate);
     sectionLBDetailsContentContainer.appendChild(sectionLBDetailsContentContainerLabel);
-    sectionLBDetailsContentContainer.appendChild(sectionLBDetailsContentContainerDate);
     sectionLBDetails.appendChild(sectionLBDetailsInfo);
 
     if (_this.settings.lbWidget.settings.leaderboard.layoutSettings.imageBanner) {
@@ -429,9 +436,14 @@ export const MainWidget = function (options) {
 
     sectionLBLeaderboardHeader.appendChild(sectionLBLeaderboardHeaderLabels);
     sectionLBLeaderboard.appendChild(sectionLBLeaderboardHeader);
-    sectionLBLeaderboard.appendChild(sectionLBLeaderboardHeaderTopResults);
+    // sectionLBLeaderboard.appendChild(sectionLBLeaderboardHeaderTopResults);
+    // sectionLBLeaderboardBody.appendChild(sectionLBLeaderboardBodyResults);
+    // sectionLBLeaderboard.appendChild(sectionLBLeaderboardBody);
+
+    sectionLBLeaderboardResultsContainer.appendChild(sectionLBLeaderboardHeaderTopResults);
     sectionLBLeaderboardBody.appendChild(sectionLBLeaderboardBodyResults);
-    sectionLBLeaderboard.appendChild(sectionLBLeaderboardBody);
+    sectionLBLeaderboardResultsContainer.appendChild(sectionLBLeaderboardBody);
+    sectionLBLeaderboard.appendChild(sectionLBLeaderboardResultsContainer);
 
     sectionLBFooter.appendChild(sectionLBFooterContent);
 
@@ -1117,6 +1129,7 @@ export const MainWidget = function (options) {
     var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
     if (member !== null) {
       _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
+      _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
     }
   };
 
@@ -1141,6 +1154,7 @@ export const MainWidget = function (options) {
     }
 
     _this.settings.headerDate.innerHTML = date;
+    _this.settings.labelDate.innerHTML = date;
     _this.settings.detailsContainerDate.innerHTML = date;
 
     _this.settings.leaderboard.timerInterval = setTimeout(function () {
@@ -1180,7 +1194,7 @@ export const MainWidget = function (options) {
 
   this.leaderboardDetailsUpdate = function () {
     var _this = this;
-    var mainLabel = query(_this.settings.section, '.cl-main-widget-lb-details-content-label');
+    var mainLabel = query(_this.settings.section, '.cl-main-widget-lb-details-content-label-text');
     var body = null;
 
     if (!_this.settings.lbWidget.settings.leaderboard.layoutSettings.titleLinkToDetailsPage) {
@@ -1206,7 +1220,11 @@ export const MainWidget = function (options) {
   };
 
   this.showEmbeddedCompetitionDetailsContent = function (callback) {
-    addClass(this.settings.section, 'cl-main-active-embedded-description');
+    if (hasClass(this.settings.section, 'cl-main-active-embedded-description')) {
+      removeClass(this.settings.section, 'cl-main-active-embedded-description');
+    } else {
+      addClass(this.settings.section, 'cl-main-active-embedded-description');
+    }
     if (typeof callback === 'function') callback();
   };
 
@@ -1288,12 +1306,14 @@ export const MainWidget = function (options) {
       _this.settings.section = query(_this.settings.container, '.cl-main-widget-section-container');
       _this.settings.leaderboard.container = query(_this.settings.section, '.cl-main-widget-lb-leaderboard');
       _this.settings.leaderboard.header = query(_this.settings.leaderboard.container, '.cl-main-widget-lb-leaderboard-header-labels');
+      _this.settings.leaderboard.resultContainer = query(_this.settings.leaderboard.container, '.cl-main-widget-lb-leaderboard-res-container');
       _this.settings.leaderboard.list = query(_this.settings.leaderboard.container, '.cl-main-widget-lb-leaderboard-body-res');
       _this.settings.leaderboard.topResults = query(_this.settings.leaderboard.container, '.cl-main-widget-lb-leaderboard-header-top-res');
       _this.settings.detailsContainer = query(_this.settings.container, '.cl-main-widget-lb-details-container');
       _this.settings.tournamentListContainer = query(_this.settings.container, '.cl-main-widget-tournaments-list');
       _this.settings.detailsContainerDate = query(_this.settings.container, '.cl-main-widget-lb-details-header-date');
       _this.settings.headerDate = query(_this.settings.container, '.cl-main-widget-lb-header-date');
+      _this.settings.labelDate = query(_this.settings.container, '.cl-main-widget-lb-details-content-date');
       _this.settings.achievement.container = query(_this.settings.container, '.' + _this.settings.lbWidget.settings.navigation.achievements.containerClass);
       _this.settings.achievement.detailsContainer = query(_this.settings.container, '.cl-main-widget-ach-details-container');
       _this.settings.reward.container = query(_this.settings.container, '.' + _this.settings.lbWidget.settings.navigation.rewards.containerClass);
@@ -1389,6 +1409,16 @@ export const MainWidget = function (options) {
   this.eventListeners = function () {
     var _this = this;
 
+    // unique solution to support horizontal mobile orientation
+    _this.settings.leaderboard.resultContainer.onscroll = function (evt) {
+      evt.preventDefault();
+      var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
+
+      if (member !== null) {
+        _this.missingMember(_this.isElementVisibleInView(member, evt.target));
+      }
+    };
+
     _this.settings.leaderboard.list.parentNode.onscroll = function (evt) {
       evt.preventDefault();
       var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
@@ -1403,6 +1433,7 @@ export const MainWidget = function (options) {
 
       if (member !== null) {
         _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
+        _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
       }
     };
   };
@@ -2118,6 +2149,7 @@ export const MainWidget = function (options) {
       var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
       if (member !== null) {
         _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
+        _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
       }
 
       _this.resetNavigation(callback);

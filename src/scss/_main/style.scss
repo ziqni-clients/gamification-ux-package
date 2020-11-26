@@ -1271,6 +1271,8 @@
   color: var(--lb3-tournament-header-date-color);
   font-size: 12px;
   min-width: 125px;
+  display:none;
+  visibility:hidden;
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-close {
@@ -1304,7 +1306,7 @@
   float: left;
   width: 100%;
   text-align: center;
-  padding: 10px 0 0 0;
+  padding: 10px 0 5px 0;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-details-content {
   background-color: var(--main-widget-image-banner-active-details-content-background);
@@ -1426,7 +1428,7 @@
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label {
   text-align: center;
-  padding: 0 40px;
+  padding: 0 0 0 40px;
   line-height: 32px;
   color: var(--lb3-tournament-details-label-color);
   text-transform: uppercase;
@@ -1436,7 +1438,22 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  max-width: 98%;
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label-text {
+  display: block;
+  line-height: 20px;
   max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-date {
+  float: left;
+  clear: both;
+  font-size: 12px;
+  line-height: 14px;
+  width: 100%;
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label::before {
@@ -1594,6 +1611,11 @@
   width: 12%;
 }
 
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-res-container {
+  float: left;
+  width: 100%;
+  height: calc(100% - 17px);
+}
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header-top-res {
   float: left;
   width: 100%;
