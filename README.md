@@ -28,14 +28,12 @@ Or if you're using [yarn](https://classic.yarnpkg.com/en/docs/install/):
 yarn add @competitionlabs/gamification-ux-package
 ```
 
-## Contributing
+## Build
 
 #### Prerequisites
 
 - NodeJS >= 10.10
 - NPM >= 6.x
-
-#### Build
 
 Install the dependencies.
 
@@ -49,10 +47,11 @@ Run `npm run build` to generate production files inside `build`.
 npm run build
 ```
 
-You can include css file into the bundle by running `npm run build:inline-css`
+You can include css file into the bundle by running one of the commands (images will also be compiled into base64 format):
 
 ```sh
-npm run build:inline-css
+npm run dev -- --inlineCss=true
+npm run build -- --inlineCss=true
 ```
 
 Or run `npm run dev` to build widget in development mode.
@@ -90,14 +89,6 @@ npm run test:coverage
 ```
 
 Please ensure that the tests are passing when submitting a pull request.
-
-#### Example
-
-Run `npm run example` to open the example page.
-
-```sh
-npm run example
-```
 
 #### Documentation
 
@@ -144,8 +135,55 @@ Build black theme:
 ```shell script
 npm run dev:black-theme
 ```
+Grey refresh theme:
+```shell script
+npm run dev:grey-theme-refresh
+```
+
+## Layouts
+Layouts is a new development helper view that has examples of all the different variations of the widget in a static format.
+This features is really helpful in creating new theme designs and testing different theme configuration structures.
+```shell script
+npm run dev:layouts -- --theme=grey-theme-refresh
+```
+
+#### Command parameters:
+<table>
+    <tr>
+        <th align="left">Parameters</th>
+        <th align="left">Value</th>
+        <th align="left">Description</th>
+        <th align="left">Example</th>
+    </tr>
+    <tr>
+        <td>inlineCss</td>
+        <td>yes/no</td>
+        <td>Forces css to be compiled into the bundle</td>
+        <td>--inlineCss=true</td>
+    </tr>
+    <tr>
+        <td>theme</td>
+        <td>[theme name]</td>
+        <td>Tells the rendered what theme to package and render</td>
+        <td>--theme=grey-theme-refresh</td>
+    </tr>
+</table>
+
+#### Themes:
+* default-theme
+* grey-theme-refresh
+* dark-theme
+* blue-theme
+* green-theme
+* grey-theme
+* red-theme
+* orange-theme
+* black-theme
 
 ## Examples
+Running the project in dev mode will initialise with an example page.
+
+
 * [Live Default Theme laoding examples](https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/default-theme.html)
 * [Live Dark Theme laoding examples](https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/dark-theme.html)
 * [Live loader script examples](https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/loader.html)
@@ -164,6 +202,7 @@ npm run dev:black-theme
         </td>
     </tr>
 </table>
+
 
 ## Adding widget to your website
 ```html

@@ -23,7 +23,6 @@
     "build:black-theme": "rimraf build && cross-env --env.LANG=en --env.production=prod --env.THEME=black-theme webpack --config ./webpack/webpack.config.js --progress",
     "build:grey-theme-refresh": "rimraf build && cross-env --env.LANG=en --env.production=prod --env.THEME=grey-theme-refresh webpack --config ./webpack/webpack.config.js --progress",
     "lint": "eslint ./src",
-    "example:inline-css": "cross-env --env.LANG=en --env.production=dev --inlineCss=true --env.THEME=default-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:coverage": "webpack-dev-server --open --port 9002 --contentBase ./coverage/lcov-report",

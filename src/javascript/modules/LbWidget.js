@@ -107,7 +107,7 @@ export const LbWidget = function (options) {
       loadLeaderboardHistory: {},
       layoutSettings: {
         // tournamentList: true,
-        imageBanner: false,
+        imageBanner: true,
         // title: true,
         titleLinkToDetailsPage: false // if set to false will make the description available under title
       }
@@ -175,7 +175,7 @@ export const LbWidget = function (options) {
       translationPath: '' // ../i18n/translation_:language.json
     },
     loadTranslations: true,
-    showCopyright: false,
+    showCopyright: true,
     translation: translation,
     resources: [],
     styles: {},
