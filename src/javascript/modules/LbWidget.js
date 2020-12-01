@@ -4,6 +4,7 @@ import jsSHA from 'jssha';
 import cssVars from 'css-vars-ponyfill';
 
 import mergeObjects from '../utils/mergeObjects';
+import mapObject from '../utils/mapObject';
 import formatNumberLeadingZeros from '../utils/formatNumberLeadingZeros';
 import stringContains from '../utils/stringContains';
 import objectIterator from '../utils/objectIterator';
@@ -288,7 +289,7 @@ export const LbWidget = function (options) {
           _this.settings.tournaments.readyCompetitions = [];
           _this.settings.tournaments.activeCompetitions = [];
 
-          window.mapObject(json.data, function (comp) {
+          mapObject(json.data, function (comp) {
             if (comp.statusCode === 3) {
               _this.settings.tournaments.readyCompetitions.push(comp);
             } else if (comp.statusCode === 5) {
@@ -349,7 +350,7 @@ export const LbWidget = function (options) {
 
           _this.settings.tournaments.finishedCompetitions = [];
 
-          window.mapObject(json.data, function (comp) {
+          mapObject(json.data, function (comp) {
             if (comp.statusCode === 7) {
               _this.settings.tournaments.finishedCompetitions.push(comp);
             }
@@ -371,17 +372,17 @@ export const LbWidget = function (options) {
     var activeCompetitionId = null;
 
     if (_this.settings.tournaments.activeCompetitionId !== null) {
-      window.mapObject(_this.settings.tournaments.activeCompetitions, function (comp) {
+      mapObject(_this.settings.tournaments.activeCompetitions, function (comp) {
         if (comp.id === _this.settings.tournaments.activeCompetitionId) {
           activeCompetition = comp;
         }
       });
-      window.mapObject(_this.settings.tournaments.readyCompetitions, function (comp) {
+      mapObject(_this.settings.tournaments.readyCompetitions, function (comp) {
         if (comp.id === _this.settings.tournaments.activeCompetitionId) {
           activeCompetition = comp;
         }
       });
-      window.mapObject(_this.settings.tournaments.finishedCompetitions, function (comp) {
+      mapObject(_this.settings.tournaments.finishedCompetitions, function (comp) {
         if (comp.id === _this.settings.tournaments.activeCompetitionId) {
           activeCompetition = comp;
         }
@@ -464,7 +465,7 @@ export const LbWidget = function (options) {
     _this.settings.competition.activeContestId = null;
 
     if (typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
-      window.mapObject(json.data.contests, function (contest) {
+      mapObject(json.data.contests, function (contest) {
         if (contest.statusCode < 7 && _this.settings.competition.activeContest === null) {
           _this.settings.competition.activeContest = contest;
           _this.settings.competition.activeContestId = contest.id;
@@ -474,12 +475,12 @@ export const LbWidget = function (options) {
           }
 
           var rewards = [];
-          window.mapObject(_this.settings.competition.activeContest.rewards, function (reward) {
+          mapObject(_this.settings.competition.activeContest.rewards, function (reward) {
             if (typeof reward.rewardRank === 'string') {
               var rankParts = reward.rewardRank.split(',');
               var rewardRank = [];
 
-              window.mapObject(rankParts, function (part) {
+              mapObject(rankParts, function (part) {
                 if (stringContains(part, '-')) {
                   var rankRange = part.split('-');
                   var rageStart = parseInt(rankRange[0]);
@@ -591,7 +592,7 @@ export const LbWidget = function (options) {
 
           _this.settings.achievements.list = [];
 
-          window.mapObject(jsonForAll.data, function (ach) {
+          mapObject(jsonForAll.data, function (ach) {
             _this.settings.achievements.list.push(ach);
           });
 
@@ -606,7 +607,7 @@ export const LbWidget = function (options) {
                 if (xhr.status === 200) {
                   var json = JSON.parse(response);
 
-                  window.mapObject(json.data, function (ach) {
+                  mapObject(json.data, function (ach) {
                     _this.settings.achievements.list.push(ach);
                   });
 
@@ -767,7 +768,7 @@ export const LbWidget = function (options) {
           var idList = [];
 
           if (typeof json.aggregations !== 'undefined' && json.aggregations.length > 0) {
-            window.mapObject(json.aggregations[0].items, function (item) {
+            mapObject(json.aggregations[0].items, function (item) {
               idList.push(item.value);
             });
           }
@@ -823,7 +824,7 @@ export const LbWidget = function (options) {
           _this.settings.rewards.availableRewards = [];
           _this.settings.rewards.expiredRewards = [];
 
-          window.mapObject(jsonForAll.data, function (message) {
+          mapObject(jsonForAll.data, function (message) {
             var expired = (typeof message.expiry === 'undefined') ? false : (moment(message.expiry).diff(moment()) < 0);
 
             if (!expired) {
@@ -842,7 +843,7 @@ export const LbWidget = function (options) {
               if (xhr.status === 200) {
                 var jsonForAll = JSON.parse(response);
 
-                window.mapObject(jsonForAll.data, function (message) {
+                mapObject(jsonForAll.data, function (message) {
                   var expired = (typeof message.expiry === 'undefined') ? false : (moment(message.expiry).diff(moment()) < 0);
 
                   if (!expired) {
@@ -863,7 +864,7 @@ export const LbWidget = function (options) {
                     if (xhr.status === 200) {
                       var jsonForAll = JSON.parse(response);
 
-                      window.mapObject(jsonForAll.data, function (message) {
+                      mapObject(jsonForAll.data, function (message) {
                         _this.settings.rewards.expiredRewards.push(message);
                       });
 
@@ -907,7 +908,7 @@ export const LbWidget = function (options) {
 
           _this.settings.messages.messages = [];
 
-          window.mapObject(jsonForAll.data, function (message) {
+          mapObject(jsonForAll.data, function (message) {
             _this.settings.messages.messages.push(message);
           });
 
@@ -1156,6 +1157,7 @@ export const LbWidget = function (options) {
 
       if (_this.settings.enableNotifications) {
         _this.settings.notifications.init();
+        _this.settings.canvasAnimation.init();
       }
 
       _this.cleanup();
@@ -1188,10 +1190,10 @@ export const LbWidget = function (options) {
       }
     });
 
-    window.mapObject(_this.settings.resources, function (resource, key, count) {
+    mapObject(_this.settings.resources, function (resource, key, count) {
       var exists = false;
 
-      window.mapObject(availableLinks, function (link) {
+      mapObject(availableLinks, function (link) {
         if (link === resource) {
           exists = true;
         }
@@ -1584,7 +1586,9 @@ export const LbWidget = function (options) {
         this.loadWidgetTranslations(() => {
           if (this.settings.miniScoreBoard === null) {
             this.settings.canvasAnimation = new CanvasAnimation();
-            this.settings.notifications = new Notifications();
+            this.settings.notifications = new Notifications({
+              canvasInstance: this.settings.canvasAnimation
+            });
             this.settings.miniScoreBoard = new MiniScoreBoard({
               active: true
             });

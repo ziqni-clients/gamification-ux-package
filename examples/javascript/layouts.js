@@ -3,6 +3,39 @@
 		return (str.indexOf(partial) > -1);
 	};
 
+	function _hasClass (element, className) {
+		className = className.replace('.', '');
+
+		try {
+			if (element.classList) {
+				return element.classList.contains(className);
+			} else {
+				return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
+			}
+		} catch (e) {
+			if (typeof e.stack !== 'undefined') {
+				console.log(e.stack);
+			}
+			console.log(e, element, className);
+
+			return false;
+		}
+	}
+
+	const hasClass = function (element, className) {
+		if (typeof className === 'string') {
+			return _hasClass(element, className);
+		} else if (className instanceof Array) {
+			var hasClass = false;
+			for (var i in className) {
+				if (typeof className[i] === 'string' && _hasClass(element, className[i])) {
+					hasClass = true;
+				}
+			}
+			return hasClass;
+		}
+	};
+
 	var theme = "default-theme";
 	const urlParams = window.location.search.split("?");
 	var queryMap = {};
@@ -22,7 +55,7 @@
 		autoStart: false,
 		uri: {}
 	};
-	options.enableNotifications = false; // requires a working/valid SSE channel
+	options.enableNotifications = true; // requires a working/valid SSE channel
 	options.memberId = "jon-doe-Asd3-_J_CgpY-bw2S2Sy";
 	options.uri.gatewayDomain = "";
 	options.apiKey = "";
@@ -51,6 +84,23 @@
 
 	var widgetInstance = new window._clLeaderBoardV3SelfInit( options );
 	widgetInstance.init();
+
+	document.querySelector(".external-action-buttons").addEventListener("click", function(event){
+		var el = event.target;
+
+		console.log(el, hasClass(el, "trigger-achievement"));
+		if (hasClass(el, "trigger-achievement")) {
+			widgetInstance.settings.uri.achievement = "data/achievements-data-sample.json";
+			widgetInstance.settings.notifications.settings.eventStream.push({
+				achievementId: "1"
+			})
+		} else if (hasClass(el, "trigger-achievement2")) {
+			widgetInstance.settings.uri.achievement = "data/achievements-data-sample_id:id.json";
+			widgetInstance.settings.notifications.settings.eventStream.push({
+				achievementId: "2"
+			})
+		}
+	});
 
 	// const miniScoreboard = new widgetInstance.MiniScoreBoard();
 	// miniScoreboard.settings.active = true;

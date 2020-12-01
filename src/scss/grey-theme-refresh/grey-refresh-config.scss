@@ -34,8 +34,8 @@
   --lb3-miniscoreboard-close-btn-font-size: 18px;
 
   --lb3-miniscoreboard-opt-btn-border: 1px solid var(--primary-font-color);
-  --lb3-miniscoreboard-opt-btn-back: var(--primary-background-color);
-  --lb3-miniscoreboard-opt-btn-back-hover: var(--primary-background-color-hover);
+  --lb3-miniscoreboard-opt-btn-back: #33c334;
+  --lb3-miniscoreboard-opt-btn-back-hover: #28A02A;
   --lb3-miniscoreboard-opt-btn-color: var(--primary-font-color);
   --lb3-miniscoreboard-opt-line-height: 22px;
   --lb3-miniscoreboard-opt-font-size: 14px;
@@ -112,10 +112,10 @@
 
   --lb3-tournament-details-opt-in-back: var(--primary-background-color);
   --lb3-tournament-details-opt-in-back-border-top: 1px solid var(--light-grey);
-  --lb3-tournament-details-opt-in-btn-back: var(--primary-background-color);
-  --lb3-tournament-details-opt-in-btn-back-hover: var(--primary-background-color-hover);
+  --lb3-tournament-details-opt-in-btn-back: #33c334;
+  --lb3-tournament-details-opt-in-btn-back-hover: #28A02A;
   --lb3-tournament-details-opt-in-btn-color-hover: #FFF;
-  --lb3-tournament-details-opt-in-btn-border-hover: var(--primary-color);
+  --lb3-tournament-details-opt-in-btn-border-hover: 1px solid #28A02A;
   --lb3-tournament-details-opt-in-color: var(--primary-font-color);
   --lb3-tournament-details-opt-in-border: 1px solid var(--primary-font-color);
 
@@ -133,10 +133,11 @@
   --lb3-tournament-lb-active-member-row-color: var(--primary-color);
 
   --lb3-tournament-lb-opt-in-back: var(--primary-background-color);
-  --lb3-tournament-lb-opt-in-btn-back: var(--primary-background-color);
+  --lb3-tournament-lb-opt-in-btn-back: #33c334;
   --lb3-tournament-lb-opt-in-btn-color: var(--primary-font-color);
-  --lb3-tournament-lb-opt-in-btn-back-hover: var(--primary-background-color-hover);
+  --lb3-tournament-lb-opt-in-btn-back-hover: #28A02A;
   --lb3-tournament-lb-opt-in-border: 1px solid var(--primary-font-color);
+  --lb3-tournament-lb-opt-in-btn-border-hover: 1px solid #28A02A;
 
   // ACHIEVEMENTS
   --lb3-achievements-icon: url(../../images/big-challenge-icon.svg);

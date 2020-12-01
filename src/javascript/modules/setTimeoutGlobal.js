@@ -1,11 +1,12 @@
 // global timeout handling
+import mapObject from '../utils/mapObject';
 
 try {
   if (typeof setTimeoutGlobal !== 'function') {
     window._setTimeoutGlobalRepository = [];
     window.setTimeoutGlobal = function (id, func, timer) {
       var exists = false;
-      window.mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
+      mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
         if (id === instance.id) {
           exists = true;
         }
@@ -13,7 +14,7 @@ try {
 
       if (!exists) {
         var interval = setTimeout(function () {
-          window.mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
+          mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
             if (id === instance.id) {
               window._setTimeoutGlobalRepository.splice(key, 1);
             }
@@ -39,7 +40,7 @@ try {
 
     var closeTimeout = function () {
       if (window._setTimeoutGlobalRepository.length > 0) {
-        window.mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
+        mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
           if (instance.interval) {
             clearInterval(instance.interval);
             instance.interval = null;
@@ -51,12 +52,12 @@ try {
     var reEnableTimeouts = function () {
       if (window._setTimeoutGlobalRepository.length > 0) {
         var tmp = [];
-        window.mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
+        mapObject(window._setTimeoutGlobalRepository, function (instance, key, count) {
           tmp.push(instance);
         });
 
         window._setTimeoutGlobalRepository = [];
-        window.mapObject(tmp, function (instance, key, count) {
+        mapObject(tmp, function (instance, key, count) {
           window.setTimeoutGlobal(instance.id, instance.func, instance.timer);
         });
       }

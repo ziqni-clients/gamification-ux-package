@@ -36,20 +36,6 @@ try {
 
 //
 try {
-  typeof mapObject !== 'function' && (window.mapObject = function (e, t) {
-    if (e !== null) {
-      var n = 0;
-      for (var r in e) e.hasOwnProperty(r) && (t(e[r], r, n), n++);
-      return !0;
-    }
-    return console.log('returned object is null', typeof e), !1;
-  });
-} catch (err) {
-  console.log(err);
-}
-
-//
-try {
   if (!Element.prototype.addEventListener) {
     var eventListeners = []; var addEventListener = function (e, t) {
       var n; var r = this;

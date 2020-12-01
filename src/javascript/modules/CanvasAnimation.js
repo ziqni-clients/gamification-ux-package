@@ -565,8 +565,6 @@ export const CanvasAnimation = function (options) {
         } else if (_this.settings.gifInstance.lastFrame !== null) { // Shows frames as they load
           _this.settings.ctx.drawImage(_this.settings.gifInstance.lastFrame.image, (_this.settings.canvasWidthHalf - (_this.settings.gifInstance.width / 2)), (_this.settings.canvasHeightHalf - (_this.settings.gifInstance.height / 2)));
         }
-      } else {
-        // _this.settings.ctx.fillText("Waiting for GIF image ",10,20);
       }
 
       requestAnimationFrame(update);

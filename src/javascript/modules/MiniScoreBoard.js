@@ -1,5 +1,6 @@
 import moment from 'moment';
 import query from '../utils/query';
+import mapObject from '../utils/mapObject';
 import addClass from '../utils/addClass';
 import hasClass from '../utils/hasClass';
 import removeClass from '../utils/removeClass';
@@ -250,7 +251,7 @@ export const MiniScoreBoard = function (options) {
       query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = date;
     }
 
-    window.mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
+    mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
       if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId) && typeof lbEntry.rankings !== 'undefined') {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-default-results-list');
         scoreArea.innerHTML = '';
@@ -259,7 +260,7 @@ export const MiniScoreBoard = function (options) {
         query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = dateObj;
         addClass(query(_this.settings.container, '.cl-widget-ms-default-date-wrapper'), 'cl-widget-ms-default-date-only');
 
-        window.mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        mapObject(lbEntry.rankings, function (lbRankingEntry) {
           var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbRankingEntry.memberId);
           var lbWrapper = _this.layoutDefaultOrEmptyEntry();
           var img = query(lbWrapper, '.cl-widget-ms-default-mem-img');
@@ -387,7 +388,7 @@ export const MiniScoreBoard = function (options) {
       query(_this.settings.container, '.cl-widget-ms-first-to-date').innerHTML = date;
     }
 
-    window.mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
+    mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
       if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId) && typeof lbEntry.rankings !== 'undefined') {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-first-to-results-list');
         scoreArea.innerHTML = '';
@@ -396,7 +397,7 @@ export const MiniScoreBoard = function (options) {
         query(_this.settings.container, '.cl-widget-ms-first-to-date').innerHTML = dateObj;
         addClass(query(_this.settings.container, '.cl-widget-ms-first-to-date-wrapper'), 'cl-widget-ms-first-to-date-only');
 
-        window.mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        mapObject(lbEntry.rankings, function (lbRankingEntry) {
           var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbRankingEntry.memberId);
           var lbWrapper = _this.layoutFirstToOrEmptyEntry();
           var img = query(lbWrapper, '.cl-widget-ms-first-to-mem-img');
@@ -510,7 +511,7 @@ export const MiniScoreBoard = function (options) {
       query(_this.settings.container, '.cl-widget-ms-sum-best-date').innerHTML = date;
     }
 
-    window.mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
+    mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
       if (lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId) {
         var lastScore = query(_this.settings.container, '.cl-widget-ms-sum-best-last-score').innerHTML;
         var highScore = query(_this.settings.container, '.cl-widget-ms-sum-best-high-score').innerHTML;

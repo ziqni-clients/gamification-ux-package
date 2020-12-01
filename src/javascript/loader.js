@@ -12,6 +12,7 @@
 */
 
 import sizeof from './utils/sizeof';
+import mapObject from './utils/mapObject';
 
 (function () {
   'use strict';
@@ -19,10 +20,6 @@ import sizeof from './utils/sizeof';
   // var classSelector = /^\.([\w-]+)$/; // class string expression check
   // var idSelector = /^#[\w\d\-\_\&\!\@\*]+$/; // ID string expression check
   // var tagSelector = /^[\w-]+$/; // TAG string expression check
-
-  /* eslint no-unused-expressions: "off", no-sequences: "off" */
-  try { typeof mapObject !== 'function' && (window.mapObject = function (e, t) { if (e !== null) { var n = 0; for (var r in e)e.hasOwnProperty(r) && (t(e[r], r, n), n++); return !0; } return console.log('returned object is null', typeof e), !1; }); } catch (err) { console.log(err); }
-  // var query = function (doc, selector) { var result; var tmpDoc = doc; var tmpSelector = selector; /* used for debug only */if (typeof doc === 'string' && selector === undefined) { selector = doc; doc = document; } try { if (doc !== null) { selector = trim(selector); /**/if (selector.match(classSelector)) { result = doc.getElementsByClassName(selector.replace('.', '')); } else if (selector.match(idSelector)) { result = document.getElementById(selector.replace('#', '')); } else if (selector.match(tagSelector)) { result = doc.getElementsByTagName(selector); } else { result = doc.querySelectorAll(selector); } } if (result !== null && result !== undefined && result.nodeType) { return result; } else if (result !== null && result !== undefined && result.length === 1) { return result[0]; } else if (result !== null && result !== undefined && result.length > 0) { return Array.prototype.slice.call(result); } else { return null; } } catch (e) { console.log(e); console.log(tmpSelector); console.log(tmpDoc); console.log(doc, selector); console.trace();/* console.warn(_stackTrace()); */ } };
 
   /**
    * Ajax method
@@ -163,7 +160,7 @@ import sizeof from './utils/sizeof';
 
       if (typeof window._CLLBV3Opt !== 'undefined' && typeof window._CLLBV3Opt.gameId === 'string') {
         var found = false;
-        window.mapObject(_this.settings.products, function (product, key) {
+        mapObject(_this.settings.products, function (product, key) {
           if (key === window._CLLBV3Opt.gameId && !found) {
             found = true;
             _this.initialiseWidget(product);

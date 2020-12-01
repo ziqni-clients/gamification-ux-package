@@ -1,4 +1,5 @@
 import moment from 'moment';
+import mapObject from '../utils/mapObject';
 import hasClass from '../utils/hasClass';
 import removeClass from '../utils/removeClass';
 import objectIterator from '../utils/objectIterator';
@@ -125,7 +126,7 @@ export const MainWidget = function (options) {
 
     accordionWrapper.setAttribute('class', 'cl-main-accordion-container');
 
-    window.mapObject(data, function (entry) {
+    mapObject(data, function (entry) {
       var accordionSection = document.createElement('div');
       var accordionLabel = document.createElement('div');
       var topShownEntry = document.createElement('div');
@@ -190,7 +191,7 @@ export const MainWidget = function (options) {
   this.navigationItems = function (container, navigationList) {
     var _this = this;
 
-    window.mapObject(navigationList, function (val, key) {
+    mapObject(navigationList, function (val, key) {
       var navigationItem = document.createElement('div');
       var navigationItemIcon = document.createElement('div');
 
@@ -232,7 +233,7 @@ export const MainWidget = function (options) {
     var sectionInbox = _this.inboxAreaLayout();
 
     var navigationItemList = [];
-    window.mapObject(_this.settings.lbWidget.settings.navigation, function (val, key) {
+    mapObject(_this.settings.lbWidget.settings.navigation, function (val, key) {
       navigationItemList.push({
         key: key,
         order: parseInt(val.order)
@@ -971,7 +972,7 @@ export const MainWidget = function (options) {
     var cleanupRankCheck = [];
 
     // cleanup
-    window.mapObject(topResults, function (lb) {
+    mapObject(topResults, function (lb) {
       cleanupRankCheck.push(lb.rank);
       objectIterator(query(_this.settings.leaderboard.topResults, '.cl-lb-rank-' + lb.rank + '.cl-shared-rank'), function (obj) {
         remove(obj);
@@ -985,7 +986,7 @@ export const MainWidget = function (options) {
       }
     });
 
-    window.mapObject(topResults, function (lb) {
+    mapObject(topResults, function (lb) {
       var count = 0;
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
       var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
@@ -1034,7 +1035,7 @@ export const MainWidget = function (options) {
     var rewardResponse = [];
 
     if (typeof _this.settings.lbWidget.settings.competition.activeContest !== 'undefined' && _this.settings.lbWidget.settings.competition.activeContest !== null) {
-      window.mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
+      mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
         if (reward.rewardRank instanceof Array && reward.rewardRank.indexOf(rank) !== -1) {
           rewardResponse.push(_this.settings.lbWidget.settings.rewards.rewardFormatter(reward));
         }
@@ -1050,7 +1051,7 @@ export const MainWidget = function (options) {
     var cleanupRankCheck = [];
 
     // cleanup
-    window.mapObject(remainingResults, function (lb) {
+    mapObject(remainingResults, function (lb) {
       cleanupRankCheck.push(lb.rank);
       objectIterator(query(_this.settings.leaderboard.list, '.cl-lb-rank-' + lb.rank + '.cl-shared-rank'), function (obj) {
         remove(obj);
@@ -1064,7 +1065,7 @@ export const MainWidget = function (options) {
       }
     });
 
-    window.mapObject(remainingResults, function (lb) {
+    mapObject(remainingResults, function (lb) {
       var count = 0;
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
       var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
@@ -1115,7 +1116,7 @@ export const MainWidget = function (options) {
 
     _this.populateLeaderboardResultsWithDefaultEntries();
 
-    window.mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lb) {
+    mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lb) {
       if (lb.rank <= _this.settings.leaderboard.topResultSize) {
         topResults.push(lb);
       } else {
@@ -1507,7 +1508,7 @@ export const MainWidget = function (options) {
             if (tournamentData.length === 0) {
               accordionSection.style.display = 'none';
             }
-            window.mapObject(tournamentData, function (tournament, key, count) {
+            mapObject(tournamentData, function (tournament, key, count) {
               if ((count + 1) <= layout.showTopResults && query(topEntryContainer, '.cl-tournament-' + tournament.id) === null) {
                 var topEntryContaineRlistItem = _this.tournamentItem(tournament);
                 topEntryContainer.appendChild(topEntryContaineRlistItem);
@@ -1634,7 +1635,7 @@ export const MainWidget = function (options) {
     var _this = this;
     var achList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.achievements.containerClass + ' .cl-main-widget-ach-list-body-res');
 
-    window.mapObject(achievementData, function (ach) {
+    mapObject(achievementData, function (ach) {
       if (query(achList, '.cl-ach-' + ach.id) === null) {
         var listItem = _this.achievementItem(ach);
 
@@ -1788,7 +1789,7 @@ export const MainWidget = function (options) {
       var issuedStatus = (issued.indexOf(id) !== -1);
 
       var perc = 0;
-      window.mapObject(progression, function (pr) {
+      mapObject(progression, function (pr) {
         if (pr.achievementId === id) {
           perc = (parseFloat(pr.goalPercentageComplete) * 100).toFixed(1);
         }
@@ -1815,7 +1816,7 @@ export const MainWidget = function (options) {
       _this.achievementListLayout(achievementData);
 
       var idList = [];
-      window.mapObject(_this.settings.lbWidget.settings.achievements.list, function (ach) {
+      mapObject(_this.settings.lbWidget.settings.achievements.list, function (ach) {
         idList.push(ach.id);
       });
 
@@ -1933,7 +1934,7 @@ export const MainWidget = function (options) {
         if (rewardData.length === 0) {
           accordionSection.style.display = 'none';
         }
-        window.mapObject(rewardData, function (rew, key, count) {
+        mapObject(rewardData, function (rew, key, count) {
           if ((count + 1) <= layout.showTopResults && query(topEntryContainer, '.cl-reward-' + rew.id) === null) {
             var topEntryContaineRlistItem = _this.rewardItem(rew);
             topEntryContainer.appendChild(topEntryContaineRlistItem);
@@ -1965,7 +1966,7 @@ export const MainWidget = function (options) {
 
     messageList.innerHTML = '';
 
-    window.mapObject(_this.settings.lbWidget.settings.messages.messages, function (inboxItem, key, count) {
+    mapObject(_this.settings.lbWidget.settings.messages.messages, function (inboxItem, key, count) {
       var listItem = _this.messageItem(inboxItem);
       messageList.appendChild(listItem);
     });

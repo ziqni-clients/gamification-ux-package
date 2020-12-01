@@ -15,6 +15,12 @@
 .cl-widget-ms-wrapper .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action:hover{
   border: 1px solid var(--lb3-miniscoreboard-opt-btn-back-hover);
 }
+.cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action {
+  background:#33c334;
+}
+.cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action:hover {
+  background:#28A02A;
+}
 
 .cl-widget-ms-wrapper .cl-widget-ms-information-wrapper{
   box-shadow: 0 1px 5px #424242;
