@@ -62,7 +62,7 @@
         <article><p align="center">
     <img width="600" src="https://www.competitionlabs.com/wp-content/uploads/2020/01/Logo-v4.svg"><br/>
 </p>
-<h1 id="leaderboard-widgets-v3">Leaderboard Widgets V3</h1>
+<h1 id="gamification-ux-package">Gamification UX package</h1>
 <p>HTML/CSS and Vanilla JavaScript Competition Labs Leaderboard / Achievements / Inbox-Messaging widget</p>
 <p align="center">
     <img width="300" src="https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/mini-scoreboard-animation.gif"><br/>
@@ -76,21 +76,21 @@
 <p>Or if you're using <a href="https://classic.yarnpkg.com/en/docs/install/">yarn</a>:</p>
 <pre class="prettyprint source lang-sh"><code>yarn add @competitionlabs/gamification-ux-package
 </code></pre>
-<h2 id="contributing">Contributing</h2>
+<h2 id="build">Build</h2>
 <h4 id="prerequisites">Prerequisites</h4>
 <ul>
 <li>NodeJS &gt;= 10.10</li>
 <li>NPM &gt;= 6.x</li>
 </ul>
-<h4 id="build">Build</h4>
 <p>Install the dependencies.</p>
 <pre class="prettyprint source lang-sh"><code>npm install
 </code></pre>
 <p>Run <code>npm run build</code> to generate production files inside <code>build</code>.</p>
 <pre class="prettyprint source lang-sh"><code>npm run build
 </code></pre>
-<p>You can include css file into the bundle by running <code>npm run build:inline-css</code></p>
-<pre class="prettyprint source lang-sh"><code>npm run build:inline-css
+<p>You can include css file into the bundle by running one of the commands (images will also be compiled into base64 format):</p>
+<pre class="prettyprint source lang-sh"><code>npm run dev -- --inlineCss=true
+npm run build -- --inlineCss=true
 </code></pre>
 <p>Or run <code>npm run dev</code> to build widget in development mode.</p>
 <pre class="prettyprint source lang-sh"><code>npm run dev
@@ -110,10 +110,6 @@
 <pre class="prettyprint source lang-sh"><code>npm run test:coverage
 </code></pre>
 <p>Please ensure that the tests are passing when submitting a pull request.</p>
-<h4 id="example">Example</h4>
-<p>Run <code>npm run example</code> to open the example page.</p>
-<pre class="prettyprint source lang-sh"><code>npm run example
-</code></pre>
 <h4 id="documentation">Documentation</h4>
 <p>You can generate documentation by running:</p>
 <pre class="prettyprint source lang-sh"><code>npm run jsdoc
@@ -144,7 +140,49 @@
 <p>Build black theme:</p>
 <pre class="prettyprint source lang-shell"><code>npm run dev:black-theme
 </code></pre>
+<p>Grey refresh theme:</p>
+<pre class="prettyprint source lang-shell"><code>npm run dev:grey-theme-refresh
+</code></pre>
+<h2 id="layouts">Layouts</h2>
+<p>Layouts is a new development helper view that has examples of all the different variations of the widget in a static format.<br>
+This features is really helpful in creating new theme designs and testing different theme configuration structures.</p>
+<pre class="prettyprint source lang-shell"><code>npm run dev:layouts -- --theme=grey-theme-refresh
+</code></pre>
+<h4 id="command-parameters%3A">Command parameters:</h4>
+<table>
+    <tr>
+        <th align="left">Parameters</th>
+        <th align="left">Value</th>
+        <th align="left">Description</th>
+        <th align="left">Example</th>
+    </tr>
+    <tr>
+        <td>inlineCss</td>
+        <td>yes/no</td>
+        <td>Forces css to be compiled into the bundle</td>
+        <td>--inlineCss=true</td>
+    </tr>
+    <tr>
+        <td>theme</td>
+        <td>[theme name]</td>
+        <td>Tells the rendered what theme to package and render</td>
+        <td>--theme=grey-theme-refresh</td>
+    </tr>
+</table>
+<h4 id="themes%3A">Themes:</h4>
+<ul>
+<li>default-theme</li>
+<li>grey-theme-refresh</li>
+<li>dark-theme</li>
+<li>blue-theme</li>
+<li>green-theme</li>
+<li>grey-theme</li>
+<li>red-theme</li>
+<li>orange-theme</li>
+<li>black-theme</li>
+</ul>
 <h2 id="examples">Examples</h2>
+<p>Running the project in dev mode will initialise with an example page.</p>
 <ul>
 <li><a href="https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/default-theme.html">Live Default Theme laoding examples</a></li>
 <li><a href="https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/dark-theme.html">Live Dark Theme laoding examples</a></li>
@@ -173,7 +211,7 @@
     			memberId: '&lt;member_reference_id>',
     			language: &quot;en&quot;,
     			uri: {
-    				gatewayDomain: &quot;https://gateway-staging.competitionlabs.com&quot;,
+    				gatewayDomain: &quot;https://gateway.competitionlabs.com&quot;,
     				translationPath: &quot;https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/build/i18n/translation_:language.json&quot;
     			},
     			resources: [

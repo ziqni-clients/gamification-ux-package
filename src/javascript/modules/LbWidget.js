@@ -1123,9 +1123,11 @@ export const LbWidget = function (options) {
     var _this = this;
 
     if (typeof _this.settings.uri.translationPath === 'string' && _this.settings.uri.translationPath.length > 0 && _this.settings.loadTranslations) {
+      var url = (stringContains(_this.settings.uri.translationPath, 'http')) ? _this.settings.uri.translationPath.replace(':language', _this.settings.language) : _this.settings.uri.gatewayDomain + _this.settings.uri.translationPath.replace(':language', _this.settings.language);
+
       _this.settings.globalAjax.abort().getData({
         type: 'GET',
-        url: _this.settings.uri.gatewayDomain + _this.settings.uri.translationPath.replace(':language', _this.settings.language),
+        url: url,
         headers: {
           'X-API-KEY': _this.settings.apiKey
         },
