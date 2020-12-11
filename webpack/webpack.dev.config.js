@@ -6,6 +6,23 @@ const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const argv = yargs(hideBin(process.argv)).argv
 
+const ie11BabeLoader = {
+  loader: 'babel-loader',
+  options: {
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          modules: 'false',
+          targets: {
+            browsers: '> 1%, IE 11, not dead',
+          },
+        }
+      ]
+    ]
+  }
+};
+
 const scssLoader = INLINE_CSS
     ? [
       {
@@ -61,7 +78,7 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules|jsSHA\.js)/,
         loader: 'eslint-loader'
       },
       {

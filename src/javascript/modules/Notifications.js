@@ -177,7 +177,6 @@ export const Notifications = function (options) {
 
     _this.settings.dataExtractionForCanvas(data, function (canvasData) {
       if (canvasData.imageSrc.length > 0) {
-        console.log(_this.settings.canvasInstance);
         _this.settings.canvasInstance.settings.imageSrc = canvasData.imageSrc;
         _this.settings.canvasInstance.init();
       }

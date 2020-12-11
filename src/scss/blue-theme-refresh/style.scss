@@ -1,5 +1,5 @@
 @import "../_main/fonts";
-@import "./grey-refresh-config";
+@import "./blue-refresh-config";
 @import "../_main/style";
 
 .cl-main-widget-wrapper .cl-main-widget-navigation-container {
@@ -41,6 +41,7 @@
   border-radius: 3px;
   float:unset;
   padding:0;
+  box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.3);
 }
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb {
   margin: 5px 0px;
@@ -54,7 +55,13 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb-icon {
   background-size: contain;
   opacity: 1;
+  background-image: url(http://localhost:9000/build/images/big-tournament-icon-dark.svg);
 }
+.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb.cl-active-nav .cl-main-widget-navigation-lb-icon {
+  background-image: url(http://localhost:9000/build/images/big-tournament-icon.svg);
+}
+
+
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach {
   margin: 5px 0px;
   width: var(--lb3-widget-navigation-icon-width);
@@ -67,6 +74,10 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach-icon {
   background-size: contain;
   opacity: 1;
+  background-image: url(http://localhost:9000/build/images/big-challenge-icon-dark.svg);
+}
+.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach.cl-active-nav .cl-main-widget-navigation-ach-icon {
+  background-image: url(http://localhost:9000/build/images/big-challenge-icon.svg);
 }
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards {
   margin: 5px 0px;
@@ -80,6 +91,10 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards-icon {
   background-size: contain;
   opacity: 1;
+  background-image: url(http://localhost:9000/build/images/big-reward-icon-dark.svg);
+}
+.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards.cl-active-nav .cl-main-widget-navigation-rewards-icon {
+  background-image: url(http://localhost:9000/build/images/big-reward-icon.svg);
 }
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox {
   margin: 5px 0px;
@@ -93,6 +108,10 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox-icon {
   background-size: contain;
   opacity: 1;
+  background-image: url(http://localhost:9000/build/images/big-message-icon-dark.svg);
+}
+.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox.cl-active-nav .cl-main-widget-navigation-inbox-icon {
+  background-image: url(http://localhost:9000/build/images/big-message-icon.svg);
 }
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb.cl-active-nav, .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb.cl-active-nav:hover {
   opacity: 1;
@@ -183,7 +202,7 @@
 	object-position: center center;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label::before {
-  background-image: url(../../images/info-icon.svg);
+  background-image: var(--lb3-widget-info-icon-bg-img);
   background-size: 100%;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard{
@@ -224,6 +243,7 @@
   border-radius: 0;
   width: calc(100% - 20px);
   padding: 0;
+  bottom: 23px;
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-missing-member::before {
@@ -262,6 +282,9 @@
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-tournaments-list {
   height: calc(100% - 40px);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-footer {
+  border-radius: 0;
 }
 
 /**
@@ -364,7 +387,8 @@
   padding-top: 40px;
 }
 .cl-main-widget-wrapper .cl-main-widget-inbox-details-container {
-	top: 40px;
+  top: 40px;
+  height: calc(100% - 62px);
 }
 .cl-main-widget-wrapper .cl-main-widget-inbox-details-container .cl-main-widget-inbox-details-header-label {
   font-weight: 600;
@@ -374,6 +398,7 @@
 }
 .cl-main-widget-wrapper .cl-main-widget-ach-details-container{
   top: 40px;
+  height: calc(100% - 62px);
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-list-body{
   height: 568px;
@@ -381,6 +406,9 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header-top-res{
   border-radius: 5px;
   padding: 0 10px;
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header-top-res .cl-rank-col-value {
+  color: var(--darkest-color);
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header{
   padding: 0 10px;
@@ -469,7 +497,7 @@
   height:100%;
   max-height:100%;
   overflow: auto;
-  color: var(--light-grey);
+  color: var(--lb3-tournament-container-description-color);
   font-size: 12px;
   padding:10px 10px 50px 10px;
 }
@@ -551,6 +579,27 @@
   background-size: contain;
   background-position: center;
 }
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-main-accordion-container .cl-accordion-label {
+  background: var(--lb3-tournament-list-accordion-label-back);
+  color: var(--lb3-tournament-list-accordion-label-color);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-main-accordion-container .cl-accordion-label:hover {
+  background: var(--lb3-tournament-list-accordion-label-back-hover);
+  color: var(--lb3-tournament-list-accordion-label-color-hover);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-main-accordion-container .cl-shown .cl-accordion-label {
+  background: var(--lb3-tournament-list-accordion-label-back-show);
+  color: var(--lb3-tournament-list-accordion-label-color-show);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-accordion-container .cl-accordion-label::after {
+  color: var(--lb3-tournament-list-accordion-label-icon);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-accordion-container .cl-accordion-label:hover::after {
+  color: var(--lb3-tournament-list-accordion-label-icon-hover);
+}
+
+
 /* Tab heights */
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-label,
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-label,

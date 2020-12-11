@@ -228,6 +228,14 @@ export const LbWidget = function (options) {
       var shaObj = new jsSHA('SHA-512', 'TEXT');
       shaObj.update(str);
       var hash = shaObj.getHash('HEX', 1);
+
+      /**
+       * for IE 11 comment out the lines above and use this code with the jsSHA library inside utils
+       * import jsSHA from '../utils/jsSHA';
+      var shaObj = new jsSHA(str, 'TEXT');
+      var hash = shaObj.getHash('SHA-512', 'HEX', 1);
+      */
+
       var data = new Identicon(hash, {
         background: [255, 255, 255, 255], // rgba white
         margin: 0.1, // 20% margin
@@ -1620,4 +1628,8 @@ export const LbWidget = function (options) {
   if (this.settings.autoStart) {
     this.init();
   }
+
+  setInterval(function () {
+    console.log(window.innerWidth);
+  }, 2000);
 };

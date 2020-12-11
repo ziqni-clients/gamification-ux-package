@@ -78,6 +78,7 @@
 	options.uri.memberReward = "data/messages-reward-data-sample.json";
 	options.uri.messageById = "data/messages-data-sample.json";
 	options.uri.assets = "images/:attachmentId.png";
+	options.showCopyright = false;
 	options.resources = [
 		("/build/css/theme/" + theme + ".css?t=" + ( new Date().getTime() ))
 	];

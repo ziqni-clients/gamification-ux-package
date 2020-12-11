@@ -1292,7 +1292,6 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details {
   float: left;
   width: 100%;
-  height: 42px;
   background: var(--lb3-tournament-details-bg-color);
   position: relative;
   z-index: 2;
@@ -1351,23 +1350,30 @@
   display:none;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
-  top: 200px;
-  height: calc(100% - 200px);
+  top: 210px;
+  height: calc(100% - 207px);
+  border-radius: 0;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
-  height: calc(100% - 189px);
+  height: calc(100% - 208px);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
+  height: calc(100% - 191px);
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description-container {
   display: block;
   position: relative;
-  height: calc(100% - 70px);
+  height: calc(100% - 77px);
   overflow: hidden;
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description.cl-hidden-copyright .cl-main-widget-lb-details-description-container {
+  height: calc(100% - 58px);
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description {
   float:left;
   width:100%;
   height:100%;
-  max-height:100%;
+  max-height: calc(100% - 24px);
   overflow: auto;
   font-size: 12px;
 }
@@ -1520,7 +1526,7 @@
   padding: 0 30px;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-lb-missing-member {
-  bottom: 5px;
+  bottom: 3px;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-missing-member .cl-col{
   color: var(--lb3-tournament-lb-active-member-row-color);
@@ -1542,7 +1548,7 @@
   width: 100%;
   height: 100%;
   z-index: 1;
-  padding: 72px 0 22px 0;
+  padding: 80px 0 22px 0;
   background: var(--lb3-tournament-container-bg-color);
   border-radius: 5px;
 }
@@ -1636,7 +1642,10 @@
   width: 100%;
   z-index: 1;
   overflow: auto;
-  height: calc(100% - 110px);
+  height: calc(100% - 92px);
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-lb-leaderboard-body {
+  height: calc(100% - 86px);
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body-res {
@@ -1644,6 +1653,9 @@
   width: 100%;
   padding: 0 15px 0 30px;
   overflow: hidden;
+}
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body-res:last-child {
+  margin-bottom:30px;
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body.cl-element-scrollable .cl-main-widget-lb-leaderboard-body-res {
@@ -2033,9 +2045,9 @@
  */
 .cl-main-widget-tournaments-list {
   position: absolute;
-  height: calc(100% - 63px);
+  height: calc(100% - 54px);
   background: var(--lb3-tournament-list-bg-color);
-  top: 40px;
+  top: 30px;
   left: -200px;
   width: 100%;
   z-index: 10;
@@ -2355,7 +2367,7 @@
   transition: all 0.3s ease;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-ach-details-container {
-  height: calc(100% - 45px);
+  height: calc(100% - 30px);
 }
 
 .cl-main-widget-wrapper .cl-main-widget-ach-details-container.cl-show {
@@ -2938,7 +2950,7 @@
   transition: all 0.3s ease;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-reward-details-container {
-  height: calc(100% - 45px);
+  height: calc(100% - 30px);
 }
 
 .cl-main-widget-wrapper .cl-main-widget-reward-details-container.cl-show {
@@ -3263,7 +3275,7 @@
   transition: all 0.3s ease;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-inbox-details-container {
-  height: calc(100% - 45px);
+  height: calc(100% - 30px);
 }
 
 .cl-main-widget-wrapper .cl-main-widget-inbox-details-container.cl-show {
@@ -3589,11 +3601,35 @@
   .cl-main-widget-wrapper .cl-main-widget-section-container .cl-points-col {
     max-width: 220px;
   }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
+    top: 213px;
+    height: calc(100% - 210px);
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
+    height: calc(100% - 200px);
+    top: 212px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
+    height: calc(100% - 190px);
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-tournaments-list {
+    height: calc(100% - 30px);
+  }
 }
 
 @media (max-width: 812px) {
   .cl-main-widget-wrapper {
     padding: 5px 12px 10px 12px;
+  }
+  .cl-main-widget-tournaments-list {
+    height: calc(100% - 62px);
+    top: 40px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-close {
+    width: 40px;
+    height: 40px;
+    right: 0px;
+    top: 0px;
   }
   .cl-main-widget-wrapper .cl-main-widget-navigation-container {
     width: 91%;
@@ -3680,17 +3716,100 @@
   .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-label {
     line-height: 42px;
     font-size: 16px;
-    display: none;
   }
   .cl-widget-ms-wrapper .cl-main-widget-lb-header-date .time-ind {
     font-size: 7px;
   }
   .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard {
-    padding: 84px 0 22px 0;
+    padding: 92px 0 22px 0;
   }
   .cl-main-widget-wrapper .cl-main-widget-lb-details-container {
     height: calc(100% - 64px);
     top: 42px;
+  }
+
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
+    top: 220px;
+    height: calc(100% - 216px);
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
+    height: calc(100% - 204px);
+    top: 220px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
+    height: calc(100% - 218px);
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
+    height: calc(100% - 200px);
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description-container {
+    height: calc(100% - 89px);
+  }
+
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header {
+    height:42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-close {
+    width: 40px;
+    height: 40px;
+    right: 0px;
+    top: 0px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-list {
+      padding-top: 42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-ach-details-container {
+    height: calc(100% - 42px);
+    top: 42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-label {
+    line-height: 42px;
+    font-size: 16px;
+  }
+
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header {
+    height:42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-close {
+    width: 40px;
+    height: 40px;
+    right: 0px;
+    top: 0px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-list {
+    padding-top: 42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-reward-details-container {
+    height: calc(100% - 42px);
+    top: 42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-label {
+    line-height: 42px;
+    font-size: 16px;
+  }
+
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header {
+    height:42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-close {
+    width: 40px;
+    height: 40px;
+    right: 0px;
+    top: 0px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-list {
+    padding-top: 42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-inbox-details-container {
+    height: calc(100% - 42px);
+    top: 42px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-label {
+    line-height: 42px;
+    font-size: 16px;
+  }
+  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-list-body {
+    height: 100%;
   }
 }
 
