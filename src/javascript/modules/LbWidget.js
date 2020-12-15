@@ -1201,7 +1201,7 @@ export const LbWidget = function (options) {
 
     objectIterator(query('link'), function (link) {
       if (link !== null) {
-        availableLinks.push(link.href);
+        availableLinks.push(new URL(link.href, document.baseURI).href);
       }
     });
 
@@ -1209,7 +1209,7 @@ export const LbWidget = function (options) {
       var exists = false;
 
       mapObject(availableLinks, function (link) {
-        if (link === resource) {
+        if (link === new URL(resource, document.baseURI).href) {
           exists = true;
         }
       });
