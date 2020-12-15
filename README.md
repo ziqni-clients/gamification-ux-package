@@ -338,7 +338,7 @@ Here are some of the basic benefits of why we are using SASS:
 * still supports the basic CSS syntax as SCSS syntax is CSS compatible
 
 ### IE11 support
-Internet explorer 11 support is limited, at the moment styling and one of the libraries will will need to be adjusted for full IE11 support which will require to review and update the code where necessary.
+Internet explorer 11 support is limited, at the moment styling and one of the libraries will need to be adjusted for full IE11 support which will require a review and update on the code where necessary.
 To get the code to compile we recommend to:
 1) inside the `src/javascript/modules/LbWidget.js` to remove/change the `import jsSHA from 'jssha'` import to the local library `import jsSHA from '../utils/jsSHA'`
 2) inside the method `populateIdenticonBase64Image` update the jsSHA implementation from:

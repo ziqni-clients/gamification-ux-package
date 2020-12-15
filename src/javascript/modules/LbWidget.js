@@ -1078,6 +1078,11 @@ export const LbWidget = function (options) {
       clearInterval(_this.settings.leaderboard.refreshInterval);
     }
 
+    if (_this.settings.competition.refreshInterval) {
+      clearTimeout(_this.settings.competition.refreshInterval);
+      clearInterval(_this.settings.competition.refreshInterval);
+    }
+
     if (_this.settings.leaderboard.refreshLbDataInterval) {
       clearTimeout(_this.settings.leaderboard.refreshLbDataInterval);
       clearInterval(_this.settings.leaderboard.refreshLbDataInterval);
@@ -1548,9 +1553,6 @@ export const LbWidget = function (options) {
 
     _this.deactivateCompetitionsAndLeaderboards(function () {
       _this.settings.leaderboard.leaderboardData = [];
-      _this.settings.mainWidget.initLayout(function () {
-        _this.activeCompetitionDataRefresh();
-      });
       setTimeout(function () {
         _this.settings.miniScoreBoard.settings.container.style.display = 'none';
       }, 200);
@@ -1628,8 +1630,4 @@ export const LbWidget = function (options) {
   if (this.settings.autoStart) {
     this.init();
   }
-
-  setInterval(function () {
-    console.log(window.innerWidth);
-  }, 2000);
 };
