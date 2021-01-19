@@ -194,10 +194,13 @@ export const MainWidget = function (options) {
     mapObject(navigationList, function (val, key) {
       var navigationItem = document.createElement('div');
       var navigationItemIcon = document.createElement('div');
+      var navigationItemCount = document.createElement('div');
 
       navigationItem.setAttribute('class', _this.settings.lbWidget.settings.navigation[val.key].navigationClass + ' cl-main-widget-navigation-item' + (_this.settings.lbWidget.settings.navigation[val.key].enable ? '' : ' cl-hidden-navigation-item'));
       navigationItemIcon.setAttribute('class', _this.settings.lbWidget.settings.navigation[val.key].navigationClassIcon + ' cl-main-navigation-item');
+      navigationItemCount.setAttribute('class', 'cl-main-navigation-item-count');
 
+      navigationItemIcon.appendChild(navigationItemCount);
       navigationItem.appendChild(navigationItemIcon);
       container.appendChild(navigationItem);
     });
@@ -1164,7 +1167,7 @@ export const MainWidget = function (options) {
   };
 
   this.getActiveCompetitionDescription = function () {
-    return (this.settings.lbWidget.settings.competition.activeContest.description.length > 0) ? this.settings.lbWidget.settings.competition.activeContest.description : this.settings.lbWidget.settings.competition.activeCompetition.description;
+    return (this.settings.lbWidget.settings.competition.activeContest !== null && this.settings.lbWidget.settings.competition.activeContest.description.length > 0) ? this.settings.lbWidget.settings.competition.activeContest.description : ((this.settings.lbWidget.settings.competition.activeCompetition !== null) ? this.settings.lbWidget.settings.competition.activeCompetition.description : '');
   };
 
   this.extractImage = function (body, imageContainer, isBodyVirtualOpt) {
@@ -1813,6 +1816,7 @@ export const MainWidget = function (options) {
     var _this = this;
 
     _this.settings.lbWidget.checkForAvailableAchievements(function (achievementData) {
+      _this.settings.lbWidget.updateAchievementNavigationCounts();
       _this.achievementListLayout(achievementData);
 
       var idList = [];
@@ -1976,6 +1980,7 @@ export const MainWidget = function (options) {
     var _this = this;
 
     _this.settings.lbWidget.checkForAvailableRewards(function (rewards, availableRewards, expiredRewards) {
+      _this.settings.lbWidget.updateRewardsNavigationCounts();
       _this.rewardsListLayout(rewards, availableRewards, expiredRewards);
 
       if (typeof callback === 'function') {

@@ -1,0 +1,50 @@
+{
+    "time": {
+        "days": "z",
+        "hours": "h",
+        "minutesShortHand": "min",
+        "minutes": "m",
+        "seconds": "s"
+    },
+    "achievements": {
+        "label": "2 Premii",
+        "more": "Mai mult",
+        "complete": "finalizează 100%"
+    },
+    "tournaments": {
+        "label": "2 Concursuri",
+        "enter": "Participă la concurs",
+        "readyCompetitions": "Concursuri viitoare",
+        "activeCompetitions": "Concursuri active",
+        "finishedCompetitions": "Concursuri finalizate",
+        "finishing": "Finalizare",
+        "finished": "Finalizat",
+        "registered": "Înregistrat"
+    },
+    "leaderboard": {
+        "rank": "Poziție",
+        "name": "Nume",
+        "points": "Puncte",
+        "prize": "Premiu"
+    },
+    "miniLeaderboard": {
+        "highScore": "Cel mai mare scor",
+        "lastScore": "Ultimul scor",
+        "rank": "Poziție",
+        "startsIn": "Începe în",
+        "starting": "începere",
+        "finishing": "finalizare",
+        "finished": "finalizat"
+    },
+    "rewards": {
+        "label": "Recompense",
+        "claim": "Revendică acum",
+        "claimed": "Revendicate",
+        "availableRewards": "Recompense disponibile",
+        "rewards": "Recompense revendicate",
+        "expiredRewards": "Recompense expirate"
+    },
+    "global": {
+        "copy": "Elaborat de Competitionlabs"
+    }
+}

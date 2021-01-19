@@ -70,6 +70,8 @@ export const LbWidget = function (options) {
       extractImageHeader: true // will extract the first found image inside the body tag and move it on top
     },
     achievements: {
+      limit: 100,
+      totalCount: 0,
       list: [],
       availableRewards: [],
       rewards: [],
@@ -568,13 +570,56 @@ export const LbWidget = function (options) {
     }
   };
 
+  this.updateLeaderboardNavigationCounts = function () {
+    var _this = this;
+
+    console.log('LB', _this.settings.tournaments.readyCompetitions.length, _this.settings.tournaments.activeCompetitions.length);
+    if (_this.settings.mainWidget.settings.navigation !== null) {
+      var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.tournaments.navigationClass + ' .cl-main-navigation-item-count');
+      menuItemCount.innerHTML = _this.settings.tournaments.activeCompetitions.length;
+    }
+  };
+
+  this.updateAchievementNavigationCounts = function () {
+    var _this = this;
+
+    console.log('ACH', _this.settings.achievements.totalCount);
+    if (_this.settings.mainWidget.settings.navigation !== null) {
+      var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.achievements.navigationClass + ' .cl-main-navigation-item-count');
+      menuItemCount.innerHTML = _this.settings.achievements.totalCount;
+    }
+  };
+
+  this.updateRewardsNavigationCounts = function () {
+    var _this = this;
+
+    console.log('Rew', _this.settings.rewards.availableRewards.length);
+    if (_this.settings.mainWidget.settings.navigation !== null) {
+      var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.rewards.navigationClass + ' .cl-main-navigation-item-count');
+      menuItemCount.innerHTML = _this.settings.rewards.availableRewards.length;
+    }
+  };
+
+  this.updateMessagesNavigationCounts = function () {
+    var _this = this;
+
+    console.log('Mes', _this.settings.messages.messages.length);
+    if (_this.settings.mainWidget.settings.navigation !== null) {
+      var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.inbox.navigationClass + ' .cl-main-navigation-item-count');
+      menuItemCount.innerHTML = _this.settings.messages.messages.length;
+    }
+  };
+
   var checkAchievementsAjax = new cLabs.Ajax();
   this.checkForAvailableAchievements = function (callback) {
     var _this = this;
     var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
+    var date = new Date();
+    var createdDateFilter = date.toISOString();
     var filters = [
-      '_limit=100',
+      '_limit=' + _this.settings.achievements.limit,
       '_include=rewards',
+      'scheduledEnd>==' + createdDateFilter,
       ('_lang=' + _this.settings.language)
     ];
     var withGroups = false;
@@ -590,7 +635,7 @@ export const LbWidget = function (options) {
 
     checkAchievementsAjax.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?_lang=' + _this.settings.language + '&_uomKey=' + _this.settings.currency,
+      url: _this.settings.uri.gatewayDomain + url + '?_lang=' + _this.settings.language + '&scheduledEnd>==' + createdDateFilter + '&_uomKey=' + _this.settings.currency,
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -598,6 +643,7 @@ export const LbWidget = function (options) {
         if (xhr.status === 200) {
           var jsonForAll = JSON.parse(response);
 
+          _this.settings.achievements.totalCount = parseInt(jsonForAll.meta.totalRecordsFound);
           _this.settings.achievements.list = [];
 
           mapObject(jsonForAll.data, function (ach) {
@@ -614,6 +660,8 @@ export const LbWidget = function (options) {
               success: function (response, dataObj, xhr) {
                 if (xhr.status === 200) {
                   var json = JSON.parse(response);
+
+                  _this.settings.achievements.totalCount = _this.settings.achievements.totalCount + parseInt(json.meta.totalRecordsFound);
 
                   mapObject(json.data, function (ach) {
                     _this.settings.achievements.list.push(ach);
@@ -993,7 +1041,7 @@ export const LbWidget = function (options) {
     }, _this.settings.leaderboard.refreshIntervalMillis);
   };
 
-  this.activeCompetitionDataRefresh = function (callback) {
+  this.activeDataRefresh = function (callback) {
     var _this = this;
 
     if (_this.settings.competition.refreshInterval) {
@@ -1001,6 +1049,8 @@ export const LbWidget = function (options) {
     }
 
     _this.checkForAvailableCompetitions(function () {
+      _this.updateLeaderboardNavigationCounts();
+
       _this.prepareActiveCompetition(function () {
         var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
 
@@ -1051,7 +1101,7 @@ export const LbWidget = function (options) {
     });
 
     _this.settings.competition.refreshInterval = setTimeout(function () {
-      _this.activeCompetitionDataRefresh();
+      _this.activeDataRefresh();
     }, _this.settings.competition.refreshIntervalMillis);
   };
 
@@ -1101,7 +1151,7 @@ export const LbWidget = function (options) {
   this.restartActivity = function (callback) {
     var _this = this;
 
-    _this.activeCompetitionDataRefresh();
+    _this.activeDataRefresh();
     _this.settings.miniScoreBoard.updateScoreBoard();
 
     if (typeof callback === 'function') {
@@ -1168,7 +1218,7 @@ export const LbWidget = function (options) {
 
     _this.settings.miniScoreBoard.initLayout(function () {
       _this.settings.miniScoreBoard.settings.active = true;
-      _this.activeCompetitionDataRefresh();
+      _this.activeDataRefresh();
 
       if (_this.settings.enableNotifications) {
         _this.settings.notifications.init();
@@ -1252,7 +1302,31 @@ export const LbWidget = function (options) {
       _this.deactivateCompetitionsAndLeaderboards(function () {
         _this.settings.leaderboard.leaderboardData = [];
         _this.settings.mainWidget.initLayout(function () {
-          _this.activeCompetitionDataRefresh();
+          // load tournaments data
+          if (_this.settings.navigation.tournaments.enable) {
+            _this.activeDataRefresh();
+          }
+
+          // load achievement data
+          if (_this.settings.navigation.achievements.enable) {
+            _this.checkForAvailableAchievements(function (achievementData) {
+              _this.updateAchievementNavigationCounts();
+            });
+          }
+
+          // load initial available reward data
+          if (_this.settings.navigation.rewards.enable) {
+            _this.checkForAvailableRewards(function () {
+              _this.updateRewardsNavigationCounts();
+            });
+          }
+
+          // load initial available messages data
+          if (_this.settings.navigation.inbox.enable) {
+            _this.checkForAvailableMessages(function () {
+              _this.updateMessagesNavigationCounts();
+            });
+          }
         });
         setTimeout(function () {
           _this.settings.miniScoreBoard.settings.container.style.display = 'none';
@@ -1273,7 +1347,7 @@ export const LbWidget = function (options) {
     if (_this.settings.mainWidget.settings.active) {
       var loadTab = query(_this.settings.mainWidget.settings.container, tab);
       _this.settings.mainWidget.navigationSwitch(loadTab, function () {
-        _this.activeCompetitionDataRefresh();
+        _this.activeDataRefresh();
 
         if (typeof actionCallback === 'function') {
           actionCallback();
@@ -1287,7 +1361,7 @@ export const LbWidget = function (options) {
       _this.deactivateCompetitionsAndLeaderboards(function () {
         _this.settings.mainWidget.initLayout(function () {
           _this.settings.mainWidget.navigationSwitch(query(_this.settings.mainWidget.settings.container, tab), function () {
-            _this.activeCompetitionDataRefresh();
+            _this.activeDataRefresh();
 
             if (typeof actionCallback === 'function') {
               actionCallback();
@@ -1321,7 +1395,7 @@ export const LbWidget = function (options) {
           _this.deactivateCompetitionsAndLeaderboards(function () {
             _this.settings.leaderboard.leaderboardData = [];
             _this.settings.mainWidget.initLayout(function () {
-              _this.activeCompetitionDataRefresh();
+              _this.activeDataRefresh();
 
               _this.settings.mainWidget.loadCompetitionDetails(function () {
 
@@ -1379,7 +1453,7 @@ export const LbWidget = function (options) {
         _this.settings.miniScoreBoard.settings.active = true;
         _this.settings.miniScoreBoard.settings.container.style.display = 'block';
 
-        _this.activeCompetitionDataRefresh();
+        _this.activeDataRefresh();
       });
 
       // load embedded competition details
@@ -1475,7 +1549,7 @@ export const LbWidget = function (options) {
         clearTimeout(_this.settings.leaderboard.refreshInterval);
       }
       _this.settings.mainWidget.loadCompetitionList(function () {
-        _this.activeCompetitionDataRefresh();
+        _this.activeDataRefresh();
       }, loadCompetitionListAjax);
 
       // load competition
@@ -1486,7 +1560,7 @@ export const LbWidget = function (options) {
       preLoader.show(function () {
         _this.settings.mainWidget.settings.active = true;
         _this.settings.tournaments.activeCompetitionId = tournamentId;
-        _this.activeCompetitionDataRefresh(function () {
+        _this.activeDataRefresh(function () {
           _this.settings.mainWidget.hideCompetitionList(function () {
             if (!_this.settings.leaderboard.layoutSettings.titleLinkToDetailsPage) {
               _this.settings.mainWidget.showEmbeddedCompetitionDetailsContent(function () {});
@@ -1524,7 +1598,7 @@ export const LbWidget = function (options) {
               _this.settings.miniScoreBoard.settings.active = true;
               _this.settings.miniScoreBoard.settings.container.style.display = 'block';
 
-              _this.activeCompetitionDataRefresh();
+              _this.activeDataRefresh();
             });
           }
           break;
@@ -1560,6 +1634,20 @@ export const LbWidget = function (options) {
 
     _this.settings.mainWidget.hide();
     _this.settings.mainWidget.settings.preLoader.preLoaderActive = false;
+  };
+
+  this.restart = function () {
+    var _this = this;
+
+    _this.settings.mainWidget.hide(() => {
+      _this.deactivateCompetitionsAndLeaderboards(() => {
+        _this.stopActivity(() => {
+          _this.settings.miniScoreBoard.settings.active = true;
+          _this.settings.miniScoreBoard.settings.container.style.display = 'block';
+          _this.startup();
+        });
+      });
+    });
   };
 
   this.isMobile = function () {

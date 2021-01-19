@@ -1,0 +1,50 @@
+{
+    "time": {
+        "days": "д",
+        "hours": "ч",
+        "minutesShortHand": "мин",
+        "minutes": "м",
+        "seconds": "с"
+    },
+    "achievements": {
+        "label": "Достижения 2",
+        "more": "Больше",
+        "complete": "завершенные 100%"
+    },
+    "tournaments": {
+        "label": "Турниры 2",
+        "enter": "Введите турнир",
+        "readyCompetitions": "Предстоящие турниры",
+        "activeCompetitions": "Активные турниры",
+        "finishedCompetitions": "Завершенные турниры",
+        "finishing": "Заканчивается",
+        "finished": "Завершенные",
+        "registered": "Зарегистрированные"
+    },
+    "leaderboard": {
+        "rank": "Ранг",
+        "name": "Название",
+        "points": "Очки",
+        "prize": "Приз"
+    },
+    "miniLeaderboard": {
+        "highScore": "Рекорд",
+        "lastScore": "Последний результат",
+        "rank": "Ранг",
+        "startsIn": "Начинается через",
+        "starting": "начинается",
+        "finishing": "заканчивается",
+        "finished": "завершенные"
+    },
+    "rewards": {
+        "label": "Награды",
+        "claim": "Запросить сейчас",
+        "claimed": "Запрошенные",
+        "availableRewards": "Доступные награды",
+        "rewards": "Запрошенные награды",
+        "expiredRewards": "Просроченные награды"
+    },
+    "global": {
+        "copy": "При поддержке CompetitionLabs"
+    }
+}

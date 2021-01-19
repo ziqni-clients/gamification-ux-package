@@ -23,6 +23,7 @@
     "build:orange-theme": "rimraf build && cross-env --env.LANG=en --env.production=prod --env.THEME=orange-theme webpack --config ./webpack/webpack.config.js --progress",
     "build:black-theme": "rimraf build && cross-env --env.LANG=en --env.production=prod --env.THEME=black-theme webpack --config ./webpack/webpack.config.js --progress",
     "build:grey-theme-refresh": "rimraf build && cross-env --env.LANG=en --env.production=prod --env.THEME=grey-theme-refresh webpack --config ./webpack/webpack.config.js --progress",
+    "build:blue-theme-refresh": "rimraf build && cross-env --env.LANG=en --env.production=prod --env.THEME=blue-theme-refresh webpack --config ./webpack/webpack.config.js --progress",
     "lint": "eslint ./src",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",

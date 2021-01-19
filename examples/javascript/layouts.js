@@ -103,6 +103,8 @@
 		}
 	});
 
+	window._clLayoutsInstance = widgetInstance;
+
 	// const miniScoreboard = new widgetInstance.MiniScoreBoard();
 	// miniScoreboard.settings.active = true;
 	// miniScoreboard.settings.lbWidget = widgetInstance;

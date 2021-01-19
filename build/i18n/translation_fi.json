@@ -1,0 +1,50 @@
+{
+    "time": {
+        "days": "p",
+        "hours": "t",
+        "minutesShortHand": "min",
+        "minutes": "m",
+        "seconds": "s"
+    },
+    "achievements": {
+        "label": "Saavutukset 2",
+        "more": "Lisää",
+        "complete": "valmis 100 %"
+    },
+    "tournaments": {
+        "label": "Turnaukset 2",
+        "enter": "Osallistu turnaukseen",
+        "readyCompetitions": "Tulevat turnaukset",
+        "activeCompetitions": "Aktiiviset turnaukset",
+        "finishedCompetitions": "Päättyneet turnaukset",
+        "finishing": "Viimeistellään",
+        "finished": "Päättynyt",
+        "registered": "Rekisteröity"
+    },
+    "leaderboard": {
+        "rank": "Sijoitus",
+        "name": "Nimi",
+        "points": "Pisteet",
+        "prize": "Palkinto"
+    },
+    "miniLeaderboard": {
+        "highScore": "Korkeat pisteet",
+        "lastScore": "Viimeiset pisteet",
+        "rank": "Sijoitus",
+        "startsIn": "Alkaa",
+        "starting": "aloitetaan",
+        "finishing": "viimeistellään",
+        "finished": "valmis"
+    },
+    "rewards": {
+        "label": "Palkinnot",
+        "claim": "Lunasta nyt",
+        "claimed": "Lunastettu",
+        "availableRewards": "Käytettävissä olevat palkinnot",
+        "rewards": "Lunastetut palkinnot",
+        "expiredRewards": "Vanhentuneet palkinnot"
+    },
+    "global": {
+        "copy": "Toimitti CompetitionLabs"
+    }
+}

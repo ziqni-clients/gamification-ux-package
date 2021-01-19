@@ -1,0 +1,50 @@
+{
+    "time": {
+        "days": "днів",
+        "hours": "год",
+        "minutesShortHand": "хв",
+        "minutes": "хв",
+        "seconds": "с"
+    },
+    "achievements": {
+        "label": "Досягнення 2",
+        "more": "Більше",
+        "complete": "завершено 100%"
+    },
+    "tournaments": {
+        "label": "Турніри 2",
+        "enter": "Увійти в турнір",
+        "readyCompetitions": "Майбутні турніри",
+        "activeCompetitions": "Активні турніри",
+        "finishedCompetitions": "Закінчені турніри",
+        "finishing": "Закінчуються",
+        "finished": "Закінчені",
+        "registered": "Зареєстровані"
+    },
+    "leaderboard": {
+        "rank": "Місце",
+        "name": "Ім'я",
+        "points": "Очки",
+        "prize": "Приз"
+    },
+    "miniLeaderboard": {
+        "highScore": "Високий результат",
+        "lastScore": "Останній результат",
+        "rank": "Місце",
+        "startsIn": "Починаються в",
+        "starting": "починаються",
+        "finishing": "закінчуються",
+        "finished": "закінчені"
+    },
+    "rewards": {
+        "label": "Винагороди",
+        "claim": "Запитати зараз",
+        "claimed": "Запитані",
+        "availableRewards": "Доступні винагороди",
+        "rewards": "Запитані винагороди",
+        "expiredRewards": "Прострочені винагороди"
+    },
+    "global": {
+        "copy": "На платформі CompetitionLabs"
+    }
+}

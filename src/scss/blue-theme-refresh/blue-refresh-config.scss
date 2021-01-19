@@ -85,18 +85,25 @@
   --lb3-tournament-container-description-color: var(--light-color);
 
   --lb3-tournament-top-results-text-color: var(--primary-font-color);
+  --lb3-tournament-lb-top-results-place-box-shadow: unset;
 
-  --lb3-tournament-lb-first-place-back: none;
-  --lb3-tournament-lb-first-place-color: #ffe500;
-  --lb3-tournament-lb-first-place-border: 1px solid #e2d45f;
+  --lb3-tournament-lb-place-font-color: var(--primary-font-color);
+  --lb3-tournament-lb-top-res-back: url(../../images/medals-v3.png);
 
-  --lb3-tournament-lb-second-place-back: none;
-  --lb3-tournament-lb-second-place-color: #d4d4d4;
-  --lb3-tournament-lb-second-place-border: 1px solid #c8c8c8;
+  --lb3-tournament-lb-first-place-back-position: 0 0;
+  --lb3-tournament-lb-first-place-back-size: 100%;
+  --lb3-tournament-lb-first-place-color: unset;
+  --lb3-tournament-lb-first-place-border: none;
 
-  --lb3-tournament-lb-third-place-back: none;
-  --lb3-tournament-lb-third-place-color: #ffa800;
-  --lb3-tournament-lb-third-place-border: 1px solid #e2b662;
+  --lb3-tournament-lb-second-place-back-position: 0px -25px;
+  --lb3-tournament-lb-second-place-back-size: 100%;
+  --lb3-tournament-lb-second-place-color: unset;
+  --lb3-tournament-lb-second-place-border: none;
+
+  --lb3-tournament-lb-third-place-back-position: 0 -50px;
+  --lb3-tournament-lb-third-place-back-size: 100%;
+  --lb3-tournament-lb-third-place-color: unset;
+  --lb3-tournament-lb-third-place-border: none;
 
   --lb3-tournament-header-text-color: #4f4f4f;
   --lb3-tournament-header-text-size: 13px;
@@ -230,6 +237,6 @@
   --lb3-notification-back-image: url(../../images/big-blue-btn-icon2.png);
 
   //ASSETS
-  --prev-btn-icon-bg: url(../../images/prev-btn-icon.svg);
+  --prev-btn-icon-bg: url(../../images/prev-btn-icon-grey.svg);
 
 }

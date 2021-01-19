@@ -1,0 +1,50 @@
+{
+    "time": {
+        "days": "d",
+        "hours": "h",
+        "minutesShortHand": "min",
+        "minutes": "m",
+        "seconds": "s"
+    },
+    "achievements": {
+        "label": "Osiągnięcia 2",
+        "more": "Więcej",
+        "complete": "Ukończono w 100%"
+    },
+    "tournaments": {
+        "label": "Turnieje 2",
+        "enter": "Weź udział w turnieju",
+        "readyCompetitions": "Nadchodzące turnieje",
+        "activeCompetitions": "Trwające trunieje",
+        "finishedCompetitions": "Zakończone turnieje",
+        "finishing": "Kończy się",
+        "finished": "Zakończone",
+        "registered": "Zarejestrowano"
+    },
+    "leaderboard": {
+        "rank": "Ocena",
+        "name": "Nazwa",
+        "points": "Pkt.",
+        "prize": "Nagroda"
+    },
+    "miniLeaderboard": {
+        "highScore": "Najlepszy wynik",
+        "lastScore": "Ostatni wynik",
+        "rank": "Oceń",
+        "startsIn": "Rozpocznie się za",
+        "starting": "rozpoczęte",
+        "finishing": "kończy się",
+        "finished": "zakończone"
+    },
+    "rewards": {
+        "label": "Nagrody",
+        "claim": "Odbierz teraz",
+        "claimed": "Odebrane",
+        "availableRewards": "Dostępne nagrody",
+        "rewards": "Odebrane nagrody",
+        "expiredRewards": "Wygasłe nagrody"
+    },
+    "global": {
+        "copy": "Obsługiwane przez CompetitionLabs"
+    }
+}
