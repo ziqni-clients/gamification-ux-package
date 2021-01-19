@@ -110,7 +110,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.PRODUCTION': JSON.stringify(PRODUCTION),
-      'process.env.LANG': JSON.stringify(process.env.LANG),
+      'process.env.LANG': JSON.stringify(LANG),
       'process.env.INLINE_CSS': INLINE_CSS,
       'process.env.THEME': JSON.stringify(_THEME)
     }),

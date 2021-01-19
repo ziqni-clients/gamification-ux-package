@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "成就2",
+        "label": "成就",
         "more": "更多",
         "complete": "完成100％"
     },
     "tournaments": {
-        "label": "锦标赛 2",
+        "label": "锦标赛",
         "enter": "参加锦标赛",
         "readyCompetitions": "即将举行的锦标赛",
         "activeCompetitions": "进行中锦标赛",

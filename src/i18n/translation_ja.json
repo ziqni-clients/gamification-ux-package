@@ -7,12 +7,12 @@
         "seconds": "秒"
     },
     "achievements": {
-        "label": "実績2",
+        "label": "実績",
         "more": "その他",
         "complete": "100％完了"
     },
     "tournaments": {
-        "label": "トーナメント2",
+        "label": "トーナメント",
         "enter": "トーナメントに参加",
         "readyCompetitions": "今後のトーナメント",
         "activeCompetitions": "有効なトーナメント",

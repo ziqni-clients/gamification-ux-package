@@ -7,12 +7,12 @@
         "seconds": "sek"
     },
     "achievements": {
-        "label": "Sasniegumi 2",
+        "label": "Sasniegumi",
         "more": "Vairāk",
         "complete": "100% pabeigts"
     },
     "tournaments": {
-        "label": "Turnīri 2",
+        "label": "Turnīri",
         "enter": "Pievienoties turnīram",
         "readyCompetitions": "Gaidāmie turnīri",
         "activeCompetitions": "Aktīvie turnīri",

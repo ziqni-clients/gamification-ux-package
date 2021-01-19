@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Prestasjoner 2",
+        "label": "Prestasjoner",
         "more": "Mer",
         "complete": "fullført 100%"
     },
     "tournaments": {
-        "label": "Turneringer 2",
+        "label": "Turneringer",
         "enter": "Delta i turnering",
         "readyCompetitions": "Kommende turneringer",
         "activeCompetitions": "Aktive turneringer",

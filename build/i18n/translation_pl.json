@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Osiągnięcia 2",
+        "label": "Osiągnięcia",
         "more": "Więcej",
         "complete": "Ukończono w 100%"
     },
     "tournaments": {
-        "label": "Turnieje 2",
+        "label": "Turnieje",
         "enter": "Weź udział w turnieju",
         "readyCompetitions": "Nadchodzące turnieje",
         "activeCompetitions": "Trwające trunieje",

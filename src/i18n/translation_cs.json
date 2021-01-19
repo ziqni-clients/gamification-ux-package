@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Úspěchy 2",
+        "label": "Úspěchy",
         "more": "Více",
         "complete": "dokončeno 100 %"
     },
     "tournaments": {
-        "label": "Turnaje 2",
+        "label": "Turnaje",
         "enter": "Účastnit se turnaje",
         "readyCompetitions": "Nadcházející turnaje",
         "activeCompetitions": "Aktivní turnaje",

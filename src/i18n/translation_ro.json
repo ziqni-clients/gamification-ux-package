@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "2 Premii",
+        "label": "Premii",
         "more": "Mai mult",
         "complete": "finalizează 100%"
     },
     "tournaments": {
-        "label": "2 Concursuri",
+        "label": "Concursuri",
         "enter": "Participă la concurs",
         "readyCompetitions": "Concursuri viitoare",
         "activeCompetitions": "Concursuri active",

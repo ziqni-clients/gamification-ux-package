@@ -7,12 +7,12 @@
         "seconds": "с"
     },
     "achievements": {
-        "label": "Достижения 2",
+        "label": "Достижения",
         "more": "Больше",
         "complete": "завершенные 100%"
     },
     "tournaments": {
-        "label": "Турниры 2",
+        "label": "Турниры",
         "enter": "Введите турнир",
         "readyCompetitions": "Предстоящие турниры",
         "activeCompetitions": "Активные турниры",

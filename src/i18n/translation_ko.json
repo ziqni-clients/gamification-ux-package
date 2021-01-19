@@ -7,12 +7,12 @@
         "seconds": "초"
     },
     "achievements": {
-        "label": "업적 2",
+        "label": "업적",
         "more": "더 보기",
         "complete": "100% 완료"
     },
     "tournaments": {
-        "label": "토너먼트 2",
+        "label": "토너먼트",
         "enter": "토너먼트 참가",
         "readyCompetitions": "예정된 토너먼트",
         "activeCompetitions": "현재 토너먼트",
