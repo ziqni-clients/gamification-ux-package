@@ -583,7 +583,6 @@ export const LbWidget = function (options) {
   this.updateAchievementNavigationCounts = function () {
     var _this = this;
 
-    console.log('ACH', _this.settings.achievements.totalCount);
     if (_this.settings.mainWidget.settings.navigation !== null) {
       var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.achievements.navigationClass + ' .cl-main-navigation-item-count');
       menuItemCount.innerHTML = _this.settings.achievements.totalCount;
@@ -593,7 +592,6 @@ export const LbWidget = function (options) {
   this.updateRewardsNavigationCounts = function () {
     var _this = this;
 
-    console.log('Rew', _this.settings.rewards.availableRewards.length);
     if (_this.settings.mainWidget.settings.navigation !== null) {
       var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.rewards.navigationClass + ' .cl-main-navigation-item-count');
       menuItemCount.innerHTML = _this.settings.rewards.availableRewards.length;
@@ -603,7 +601,6 @@ export const LbWidget = function (options) {
   this.updateMessagesNavigationCounts = function () {
     var _this = this;
 
-    console.log('Mes', _this.settings.messages.messages.length);
     if (_this.settings.mainWidget.settings.navigation !== null) {
       var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.inbox.navigationClass + ' .cl-main-navigation-item-count');
       menuItemCount.innerHTML = _this.settings.messages.messages.length;
