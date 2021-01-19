@@ -910,7 +910,7 @@ export const LbWidget = function (options) {
                 // expired rewards
                 var date = new Date();
                 var utcDate = date.getUTCFullYear() + '-' + formatNumberLeadingZeros((date.getUTCMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getUTCDate(), 2) + 'T' + formatNumberLeadingZeros(date.getUTCHours(), 2) + ':' + formatNumberLeadingZeros(date.getUTCMinutes(), 2) + ':00';
-                _this.settings.globalAjax.abort().getData({
+                checkForAvailableRewardsAjax.abort().getData({
                   type: 'GET',
                   url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&_limit=100&messageType=Reward&_hasValuesFor=expiry&expiry<==' + utcDate,
                   headers: {

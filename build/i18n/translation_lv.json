@@ -19,13 +19,15 @@
         "finishedCompetitions": "Pabeigtie turnīri",
         "finishing": "Beidzas",
         "finished": "Pabeigti",
-        "registered": "Reģistrēti"
+        "registered": "Reģistrēti",
+        "noAvailableCompetitions": "Nav pieejama konkurence"
     },
     "leaderboard": {
         "rank": "Pozīcija",
         "name": "Vārds",
         "points": "Punkti",
-        "prize": "Balva"
+        "prize": "Balva",
+        "you": "Jūs"
     },
     "miniLeaderboard": {
         "highScore": "Labākais rezultāts",
@@ -43,6 +45,9 @@
         "availableRewards": "Pieejamās atlīdzības",
         "rewards": "Pieprasītās atlīdzības",
         "expiredRewards": "Nesaņemtās atlīdzības"
+    },
+    "messages": {
+        "label": "Ziņojumi"
     },
     "global": {
         "copy": "Darbojas ar CompetitionLabs atbalstu"

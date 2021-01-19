@@ -20,14 +20,14 @@
         "finishing": "Abschließen",
         "finished": "Abgeschlossen",
         "registered": "Registriert",
-        "noAvailableCompetitions": "No available competition"
+        "noAvailableCompetitions": "Keine verfügbare Konkurrenz"
     },
     "leaderboard": {
         "rank": "Rang",
         "name": "Name",
         "points": "Punkte",
         "prize": "Preis",
-        "you": "You"
+        "you": "Sie"
     },
     "miniLeaderboard": {
         "highScore": "Bestenliste",
@@ -47,7 +47,7 @@
         "expiredRewards": "Abgelaufene Prämien"
     },
     "messages": {
-        "label": "Messages"
+        "label": "Mitteilungen"
     },
     "global": {
         "copy": "Unterstützt von CompetitionLabs"

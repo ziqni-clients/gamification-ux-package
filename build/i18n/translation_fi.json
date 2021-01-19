@@ -19,13 +19,15 @@
         "finishedCompetitions": "Päättyneet turnaukset",
         "finishing": "Viimeistellään",
         "finished": "Päättynyt",
-        "registered": "Rekisteröity"
+        "registered": "Rekisteröity",
+        "noAvailableCompetitions": "Ei saatavilla olevaa kilpailua"
     },
     "leaderboard": {
         "rank": "Sijoitus",
         "name": "Nimi",
         "points": "Pisteet",
-        "prize": "Palkinto"
+        "prize": "Palkinto",
+        "you": "Sinä"
     },
     "miniLeaderboard": {
         "highScore": "Korkeat pisteet",
@@ -43,6 +45,9 @@
         "availableRewards": "Käytettävissä olevat palkinnot",
         "rewards": "Lunastetut palkinnot",
         "expiredRewards": "Vanhentuneet palkinnot"
+    },
+    "messages": {
+        "label": "Viestit"
     },
     "global": {
         "copy": "Toimitti CompetitionLabs"

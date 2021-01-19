@@ -19,13 +19,15 @@
         "finishedCompetitions": "Završeni turniri",
         "finishing": "Završava",
         "finished": "Završeno",
-        "registered": "Registrirano"
+        "registered": "Registrirano",
+        "noAvailableCompetitions": "Nema dostupnog natjecanja"
     },
     "leaderboard": {
         "rank": "Rang",
         "name": "Ime",
         "points": "Bodovi",
-        "prize": "Nagrada"
+        "prize": "Nagrada",
+        "you": "Vas"
     },
     "miniLeaderboard": {
         "highScore": "Najbolji rezultat",
@@ -43,6 +45,9 @@
         "availableRewards": "Dostupne nagrade",
         "rewards": "Preuzete nagrade",
         "expiredRewards": "Istekle nagrade"
+    },
+    "messages": {
+        "label": "Poruke"
     },
     "global": {
         "copy": "Pokreće CompetitionLabs"

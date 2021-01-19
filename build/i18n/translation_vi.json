@@ -19,13 +19,15 @@
         "finishedCompetitions": "Các giải đấu đã hoàn thành",
         "finishing": "Đang hoàn thành",
         "finished": "Đã hoàn thành",
-        "registered": "Đã đăng ký"
+        "registered": "Đã đăng ký",
+        "noAvailableCompetitions": "Không có cạnh tranh"
     },
     "leaderboard": {
         "rank": "Xếp hạng",
         "name": "Tên",
         "points": "Điểm",
-        "prize": "Giải thưởng"
+        "prize": "Giải thưởng",
+        "you": "Bạn"
     },
     "miniLeaderboard": {
         "highScore": "Điểm cao",
@@ -43,6 +45,9 @@
         "availableRewards": "Phần thưởng có sẵn",
         "rewards": "Phần thưởng đã được nhận",
         "expiredRewards": "Phần thưởng đã hết hạn"
+    },
+    "messages": {
+        "label": "Tin nhắn"
     },
     "global": {
         "copy": "Được cung cấp bởi CompetitionLabs"

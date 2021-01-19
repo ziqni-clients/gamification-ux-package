@@ -19,13 +19,15 @@
         "finishedCompetitions": "완료된 토너먼트",
         "finishing": "마무리 중",
         "finished": "완료",
-        "registered": "등록 완료"
+        "registered": "등록 완료",
+        "noAvailableCompetitions": "사용 가능한 경쟁이 없습니다."
     },
     "leaderboard": {
         "rank": "순위",
         "name": "이름",
         "points": "포인트",
-        "prize": "상"
+        "prize": "상",
+        "you": "당신"
     },
     "miniLeaderboard": {
         "highScore": "최고 점수",
@@ -43,6 +45,9 @@
         "availableRewards": "받을 수 있는 보상",
         "rewards": "받은 보상",
         "expiredRewards": "만료된 보상"
+    },
+    "messages": {
+        "label": "메시지"
     },
     "global": {
         "copy": "CompetitionLabs 운영"

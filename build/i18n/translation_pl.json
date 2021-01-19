@@ -19,13 +19,15 @@
         "finishedCompetitions": "Zakończone turnieje",
         "finishing": "Kończy się",
         "finished": "Zakończone",
-        "registered": "Zarejestrowano"
+        "registered": "Zarejestrowano",
+        "noAvailableCompetitions": "Brak dostępnej konkurencji"
     },
     "leaderboard": {
         "rank": "Ocena",
         "name": "Nazwa",
         "points": "Pkt.",
-        "prize": "Nagroda"
+        "prize": "Nagroda",
+        "you": "Ty"
     },
     "miniLeaderboard": {
         "highScore": "Najlepszy wynik",
@@ -43,6 +45,9 @@
         "availableRewards": "Dostępne nagrody",
         "rewards": "Odebrane nagrody",
         "expiredRewards": "Wygasłe nagrody"
+    },
+    "messages": {
+        "label": "Wiadomości"
     },
     "global": {
         "copy": "Obsługiwane przez CompetitionLabs"

@@ -19,13 +19,15 @@
         "finishedCompetitions": "Завершенные турниры",
         "finishing": "Заканчивается",
         "finished": "Завершенные",
-        "registered": "Зарегистрированные"
+        "registered": "Зарегистрированные",
+        "noAvailableCompetitions": "Нет доступных соревнований"
     },
     "leaderboard": {
         "rank": "Ранг",
         "name": "Название",
         "points": "Очки",
-        "prize": "Приз"
+        "prize": "Приз",
+        "you": "Вы"
     },
     "miniLeaderboard": {
         "highScore": "Рекорд",
@@ -43,6 +45,9 @@
         "availableRewards": "Доступные награды",
         "rewards": "Запрошенные награды",
         "expiredRewards": "Просроченные награды"
+    },
+    "messages": {
+        "label": "Сообщения"
     },
     "global": {
         "copy": "При поддержке CompetitionLabs"

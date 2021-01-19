@@ -19,13 +19,15 @@
         "finishedCompetitions": "Concursuri finalizate",
         "finishing": "Finalizare",
         "finished": "Finalizat",
-        "registered": "Înregistrat"
+        "registered": "Înregistrat",
+        "noAvailableCompetitions": "Nu există concurs disponibil"
     },
     "leaderboard": {
         "rank": "Poziție",
         "name": "Nume",
         "points": "Puncte",
-        "prize": "Premiu"
+        "prize": "Premiu",
+        "you": "Tu"
     },
     "miniLeaderboard": {
         "highScore": "Cel mai mare scor",
@@ -43,6 +45,9 @@
         "availableRewards": "Recompense disponibile",
         "rewards": "Recompense revendicate",
         "expiredRewards": "Recompense expirate"
+    },
+    "messages": {
+        "label": "Mesaje"
     },
     "global": {
         "copy": "Elaborat de Competitionlabs"

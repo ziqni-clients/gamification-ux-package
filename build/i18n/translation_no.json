@@ -19,13 +19,15 @@
         "finishedCompetitions": "Ferdige turneringer",
         "finishing": "Avslutter",
         "finished": "Ferdig",
-        "registered": "Registrert"
+        "registered": "Registrert",
+        "noAvailableCompetitions": "Ingen tilgjengelig konkurranse"
     },
     "leaderboard": {
         "rank": "Rang",
         "name": "Navn",
         "points": "Poeng",
-        "prize": "Premie"
+        "prize": "Premie",
+        "you": "Du"
     },
     "miniLeaderboard": {
         "highScore": "Høy poengsum",
@@ -43,6 +45,9 @@
         "availableRewards": "Tilgjengelige bonuser",
         "rewards": "Krevde bonuser",
         "expiredRewards": "Utløpte bonuser"
+    },
+    "messages": {
+        "label": "Meldinger"
     },
     "global": {
         "copy": "Drevet av CompetitionLabs"

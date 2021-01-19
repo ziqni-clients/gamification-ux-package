@@ -19,13 +19,15 @@
         "finishedCompetitions": "已完成的錦標賽",
         "finishing": "正在完成",
         "finished": "已完成",
-        "registered": "已註冊"
+        "registered": "已註冊",
+        "noAvailableCompetitions": "沒有可用的競爭"
     },
     "leaderboard": {
         "rank": "排名",
         "name": "名稱",
         "points": "積點",
-        "prize": "獎品"
+        "prize": "獎品",
+        "you": "您"
     },
     "miniLeaderboard": {
         "highScore": "高分",
@@ -43,6 +45,9 @@
         "availableRewards": "可用的獎勵",
         "rewards": "已領取的獎勵",
         "expiredRewards": "已過期的獎勵"
+    },
+    "messages": {
+        "label": "留言內容"
     },
     "global": {
         "copy": "由 CompetitionLabs 支援"

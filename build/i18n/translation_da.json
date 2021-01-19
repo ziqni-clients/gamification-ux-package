@@ -19,13 +19,15 @@
         "finishedCompetitions": "Afsluttede turneringer",
         "finishing": "Afslutter",
         "finished": "Afsluttet",
-        "registered": "Registreret"
+        "registered": "Registreret",
+        "noAvailableCompetitions": "Ingen tilgængelig konkurrence"
     },
     "leaderboard": {
         "rank": "Rang",
         "name": "Navn",
         "points": "Point",
-        "prize": "Præmie"
+        "prize": "Præmie",
+        "you": "Du"
     },
     "miniLeaderboard": {
         "highScore": "Højeste score",
@@ -43,6 +45,9 @@
         "availableRewards": "Tilgængelige belønninger",
         "rewards": "Krævede belønninger",
         "expiredRewards": "Udløbne belønninger"
+    },
+    "messages": {
+        "label": "Beskeder"
     },
     "global": {
         "copy": "Drives af CompetitionLabs"

@@ -19,13 +19,15 @@
         "finishedCompetitions": "Закінчені турніри",
         "finishing": "Закінчуються",
         "finished": "Закінчені",
-        "registered": "Зареєстровані"
+        "registered": "Зареєстровані",
+        "noAvailableCompetitions": "Відсутні конкуренції"
     },
     "leaderboard": {
         "rank": "Місце",
         "name": "Ім'я",
         "points": "Очки",
-        "prize": "Приз"
+        "prize": "Приз",
+        "you": "Ви"
     },
     "miniLeaderboard": {
         "highScore": "Високий результат",
@@ -43,6 +45,9 @@
         "availableRewards": "Доступні винагороди",
         "rewards": "Запитані винагороди",
         "expiredRewards": "Прострочені винагороди"
+    },
+    "messages": {
+        "label": "Повідомлення"
     },
     "global": {
         "copy": "На платформі CompetitionLabs"

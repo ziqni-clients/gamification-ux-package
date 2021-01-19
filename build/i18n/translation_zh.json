@@ -19,13 +19,15 @@
         "finishedCompetitions": "已结束锦标赛",
         "finishing": "即将完成",
         "finished": "已完成",
-        "registered": "已注册"
+        "registered": "已注册",
+        "noAvailableCompetitions": "没有可用的竞争"
     },
     "leaderboard": {
         "rank": "排名",
         "name": "名字",
         "points": "分数",
-        "prize": "奖"
+        "prize": "奖",
+        "you": "您"
     },
     "miniLeaderboard": {
         "highScore": "高分",
@@ -43,6 +45,9 @@
         "availableRewards": "可用奖励",
         "rewards": "已领取奖励",
         "expiredRewards": "过期奖励"
+    },
+    "messages": {
+        "label": "留言内容"
     },
     "global": {
         "copy": "由CompetitionLabs提供支持"

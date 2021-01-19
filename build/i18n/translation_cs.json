@@ -19,13 +19,15 @@
         "finishedCompetitions": "Dokončené turnaje",
         "finishing": "Dokončování",
         "finished": "Dokončeno",
-        "registered": "Registrace"
+        "registered": "Registrace",
+        "noAvailableCompetitions": "Žádná dostupná konkurence"
     },
     "leaderboard": {
         "rank": "Pořadí",
         "name": "Jméno",
         "points": "Body",
-        "prize": "Cena"
+        "prize": "Cena",
+        "you": "Vy"
     },
     "miniLeaderboard": {
         "highScore": "Nejvyšší skóre",
@@ -43,6 +45,9 @@
         "availableRewards": "Dostupné odměny",
         "rewards": "Získané odměny",
         "expiredRewards": "Prošlé odměny"
+    },
+    "messages": {
+        "label": "Zprávy"
     },
     "global": {
         "copy": "Běží na CompetitionLabs"
