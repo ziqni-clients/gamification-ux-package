@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Logros 2",
+        "label": "Logros",
         "more": "Más",
         "complete": "completar 100%"
     },
     "tournaments": {
-        "label": "Torneos 2",
+        "label": "Torneos",
         "enter": "Entrar en el torneo",
         "readyCompetitions": "Próximos torneos",
         "activeCompetitions": "Torneos activos",

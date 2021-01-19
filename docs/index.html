@@ -171,6 +171,7 @@ This features is really helpful in creating new theme designs and testing differ
 </table>
 <h4 id="themes%3A">Themes:</h4>
 <ul>
+<li>blue-theme-refresh</li>
 <li>default-theme</li>
 <li>grey-theme-refresh</li>
 <li>dark-theme</li>
@@ -322,7 +323,22 @@ https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamificatio
 <li>provides mixin functionality: Mixins are like functions in other programming languages. They return a value or set of values and can take parameters including default values.</li>
 <li>allows you to break apart your big complex CSS files into smaller chunks, this improves the ability to work on the same stylesheets for multiple teams</li>
 <li>still supports the basic CSS syntax as SCSS syntax is CSS compatible</li>
-</ul></article>
+</ul>
+<h3 id="ie11-support">IE11 support</h3>
+<p>Internet explorer 11 support is limited, at the moment styling and one of the libraries will need to be adjusted for full IE11 support which will require a review and update on the code where necessary.<br>
+To get the code to compile we recommend to:</p>
+<ol>
+<li>inside the <code>src/javascript/modules/LbWidget.js</code> to remove/change the <code>import jsSHA from 'jssha'</code> import to the local library <code>import jsSHA from '../utils/jsSHA'</code></li>
+<li>inside the method <code>populateIdenticonBase64Image</code> update the jsSHA implementation from:</li>
+</ol>
+<pre class="prettyprint source lang-javascript"><code>var shaObj = new jsSHA('SHA-512', 'TEXT');
+shaObj.update(str);
+var hash = shaObj.getHash('HEX', 1);
+</code></pre>
+<p>to:</p>
+<pre class="prettyprint source lang-javascript"><code>var shaObj = new jsSHA(str, 'TEXT');
+var hash = shaObj.getHash('SHA-512', 'HEX', 1);
+</code></pre></article>
     </section>
 
 

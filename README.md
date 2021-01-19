@@ -170,6 +170,7 @@ npm run dev:layouts -- --theme=grey-theme-refresh
 </table>
 
 #### Themes:
+* blue-theme-refresh
 * default-theme
 * grey-theme-refresh
 * dark-theme

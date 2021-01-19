@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Resultater 2",
+        "label": "Resultater",
         "more": "Mere",
         "complete": "færdiggør 100%"
     },
     "tournaments": {
-        "label": "Turneringer 2",
+        "label": "Turneringer",
         "enter": "Gå ind i turnering",
         "readyCompetitions": "Kommende turneringer",
         "activeCompetitions": "Aktive turneringer",

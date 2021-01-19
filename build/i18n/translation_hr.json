@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Postignuća 2",
+        "label": "Postignuća",
         "more": "Više",
         "complete": "dovršeno 100%"
     },
     "tournaments": {
-        "label": "Turniri 2",
+        "label": "Turniri",
         "enter": "Uđite na turnir",
         "readyCompetitions": "Budući turniri",
         "activeCompetitions": "Aktivni turniri",

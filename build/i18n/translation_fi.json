@@ -7,12 +7,12 @@
         "seconds": "s"
     },
     "achievements": {
-        "label": "Saavutukset 2",
+        "label": "Saavutukset",
         "more": "Lisää",
         "complete": "valmis 100 %"
     },
     "tournaments": {
-        "label": "Turnaukset 2",
+        "label": "Turnaukset",
         "enter": "Osallistu turnaukseen",
         "readyCompetitions": "Tulevat turnaukset",
         "activeCompetitions": "Aktiiviset turnaukset",
