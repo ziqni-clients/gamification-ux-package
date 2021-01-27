@@ -36,7 +36,7 @@
 		}
 	};
 
-	var theme = "default-theme";
+	var theme = "cl-style-2-default-theme";
 	const urlParams = window.location.search.split("?");
 	var queryMap = {};
 	for(var k = 0; k < urlParams.length; k++){
@@ -53,7 +53,12 @@
 
 	const options = {
 		autoStart: false,
-		uri: {}
+		uri: {},
+		layout: {
+			miniScoreBoardPosition: {
+				left: "30px"
+			}
+		}
 	};
 	options.enableNotifications = true; // requires a working/valid SSE channel
 	options.memberId = "jon-doe-Asd3-_J_CgpY-bw2S2Sy";

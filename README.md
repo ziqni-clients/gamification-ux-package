@@ -170,24 +170,25 @@ npm run dev:layouts -- --theme=grey-theme-refresh
 </table>
 
 #### Themes:
-* blue-theme-refresh
-* default-theme
-* grey-theme-refresh
-* dark-theme
-* blue-theme
-* green-theme
-* grey-theme
-* red-theme
-* orange-theme
-* black-theme
+Style 1"
+* cl-style-1-light-theme
+* cl-style-1-dark-theme
+
+Style 2:
+* cl-style-2-default-theme
+* cl-style-2-dark-theme
+* cl-style-2-blue-theme
+* cl-style-2-green-theme
+* cl-style-2-grey-theme
+* cl-style-2-red-theme
+* cl-style-2-orange-theme
+* cl-style-2-black-theme
 
 ## Examples
 Running the project in dev mode will initialise with an example page.
 
 
-* [Live Default Theme laoding examples](https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/default-theme.html)
-* [Live Dark Theme laoding examples](https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/dark-theme.html)
-* [Live loader script examples](https://s3-eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/examples/loader.html)
+* [Live Light theme laoding examples](https://www.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/cl-style-1/basic-layout/index.html)
 
 
 <table style="border:none;">

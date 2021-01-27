@@ -28,7 +28,8 @@ export const MiniScoreBoard = function (options) {
     updateIntervalTime: 1000,
     active: false,
     enableDragging: true,
-    dragging: false
+    dragging: false,
+    verticalClass: 'cl-vertical-mini'
   };
 
   if (typeof options !== 'undefined') {
@@ -60,6 +61,8 @@ export const MiniScoreBoard = function (options) {
     informationClose.href = 'javascript:void(0);';
     informationClose.innerHTML = 'x';
 
+    this.initialLayoutPosition(wrapper);
+
     informationWrapperClose.appendChild(informationClose);
     informationWrapper.appendChild(informationWrapperClose);
     informationTopWrapper.appendChild(informationWrapper);
@@ -68,6 +71,28 @@ export const MiniScoreBoard = function (options) {
     wrapper.appendChild(informationTopWrapper);
 
     return wrapper;
+  };
+
+  this.initialLayoutPosition = function (wrapper) {
+    const _this = this;
+
+    mapObject(_this.settings.lbWidget.settings.layout.miniScoreBoardPosition, function (position, positionKey) {
+      if (position !== null) {
+        wrapper.style[positionKey] = position;
+      }
+    });
+
+    if (typeof _this.settings.lbWidget.settings.layout.miniScoreBoardOrientation === 'string') {
+      switch (_this.settings.lbWidget.settings.layout.miniScoreBoardOrientation) {
+        case 'horizontal':
+          break;
+        case 'vertical':
+          addClass(wrapper, _this.settings.verticalClass);
+          break;
+        default:
+          // default behaviour
+      }
+    }
   };
 
   this.overlayLayout = function () {
@@ -274,7 +299,7 @@ export const MiniScoreBoard = function (options) {
             addClass(lbWrapper, 'cl-widget-ms-default-mem-self');
           }
 
-          query(lbWrapper, '.cl-widget-ms-default-mem-label').innerHTML = selfMember ? 'YOU' : '';
+          query(lbWrapper, '.cl-widget-ms-default-mem-label').innerHTML = selfMember ? _this.settings.lbWidget.settings.translation.leaderboard.you : '';
           query(lbWrapper, '.cl-widget-ms-default-mem-rank').innerHTML = "<span class='cl-mem-rank-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.rank + "</span><span class='cl-mem-rank'>" + lbRankingEntry.rank + '</span>';
           query(lbWrapper, '.cl-widget-ms-default-mem-points').innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>" + lbRankingEntry.points + '</span>';
 
@@ -645,6 +670,7 @@ export const MiniScoreBoard = function (options) {
     _this.settings.active = false;
   };
 
+  var removeInfoAreaInterval;
   this.removeInfoArea = function () {
     var _this = this;
     var wrapperDomObj = query(_this.settings.container, '.cl-show');
@@ -653,9 +679,12 @@ export const MiniScoreBoard = function (options) {
     if (wrapperDomObj !== null) removeClass(wrapperDomObj, 'cl-show');
 
     if (layout !== null) {
-      setTimeout(function () {
+      if (removeInfoAreaInterval) {
+        clearTimeout(removeInfoAreaInterval);
+      }
+      removeInfoAreaInterval = setTimeout(function () {
         remove(layout);
-      }, 300);
+      }, 200);
     }
   };
 
@@ -700,23 +729,27 @@ export const MiniScoreBoard = function (options) {
   this.eventListeners = function () {
     var _this = this;
 
-    dragElement(_this.settings.container, query(_this.settings.container, '.cl-widget-ms-icon'), _this.settings.overlayContainer, _this.settings.lbWidget.settings.bindContainer, function (newTop, newLeft) {
-      _this.settings.lbWidget.stopActivity();
-      if (newTop <= 5) {
-        addClass(_this.settings.container, 'cl-vertical-mini');
-      } else if (newLeft <= 5) {
-        removeClass(_this.settings.container, 'cl-vertical-mini');
-      }
+    if (_this.settings.lbWidget.settings.layout.enableMiniScoreBoardDragging) {
+      dragElement(_this.settings.container, query(_this.settings.container, '.cl-widget-ms-icon'), _this.settings.overlayContainer, _this.settings.lbWidget.settings.bindContainer, function (newTop, newLeft) {
+        _this.settings.lbWidget.stopActivity();
 
-      _this.settings.dragging = true;
-    }, function () {
-      _this.settings.lbWidget.restartActivity();
-      setTimeout(function () {
-        _this.settings.dragging = false;
-      }, 200);
-    }, function () {
-      _this.settings.lbWidget.clickedMiniScoreBoard();
-    });
+        if (_this.settings.lbWidget.settings.layout.allowOrientationChange) {
+          if (newTop <= 5) {
+            addClass(_this.settings.container, _this.settings.verticalClass);
+          } else if (newLeft <= 5) {
+            removeClass(_this.settings.container, _this.settings.verticalClass);
+          }
+        }
+        _this.settings.dragging = true;
+      }, function () {
+        _this.settings.lbWidget.restartActivity();
+        setTimeout(function () {
+          _this.settings.dragging = false;
+        }, 200);
+      }, function () {
+        _this.settings.lbWidget.clickedMiniScoreBoard();
+      });
+    }
   };
 
   this.initLayout = function (callback) {
