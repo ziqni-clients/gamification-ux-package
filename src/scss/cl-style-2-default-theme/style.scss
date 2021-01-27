@@ -18,3 +18,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-progression-bar {
   height: 13px;
 }
+
+.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-navigation-item .cl-main-navigation-item-count {
+  background: var(--lb3-widget-navigation-notification-count);
+}
