@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const fs = require('fs');
 
 const scssLoader = INLINE_CSS
     ? [
@@ -91,6 +92,21 @@ module.exports = {
         { from: 'src/images', to: '../images' },
         { from: 'src/cl-black-theme/images', to: '../cl-black-theme/images' }
       ]
-    })
+    }),
+    {
+      apply: (compiler) => {
+        const buildPath = compiler.options.output.path;
+
+        // hook name
+        compiler.hooks.assetEmitted.tap('assetEmittedPlugin', (file, { content, source, outputPath, compilation, targetPath }) => {
+          if (file.indexOf(".css") > -1) {
+            const fileParts = file.split('/');
+            const fileName = fileParts[fileParts.length -1];
+
+            fs.copyFile(buildPath + '/' + file, __dirname + "/../gamification-ux-package-examples/themes/css/theme/" + fileName, function (){});
+          }
+        });
+      }
+    }
   ]
 };
