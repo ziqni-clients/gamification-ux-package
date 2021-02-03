@@ -106,6 +106,17 @@ export const LbWidget = function (options) {
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
     apiKey: '',
     member: null,
+    layout: {
+      enableMiniScoreBoardDragging: true, // enable/disable dragging with mouse/touch
+      miniScoreBoardPosition: { // default position of mini scoreboard left/right/bottom/top (Example: top: '20px')
+        left: null,
+        right: null,
+        top: null,
+        bottom: null
+      },
+      allowOrientationChange: true, // allows the switch between horizontal/vertical orientation
+      miniScoreBoardOrientation: 'horizontal' // vertical/horizontal => default is horizontal
+    },
     competition: {
       activeCompetitionId: null,
       activeContestId: null,
@@ -228,7 +239,7 @@ export const LbWidget = function (options) {
     translation: translation,
     resources: [],
     styles: {},
-    layoutBuildCallback: function (layout, instance) {
+    startupCallback: function (instance) {
     }
   };
 
@@ -619,7 +630,6 @@ export const LbWidget = function (options) {
   this.updateLeaderboardNavigationCounts = function () {
     var _this = this;
 
-    console.log('LB', _this.settings.tournaments.readyCompetitions.length, _this.settings.tournaments.activeCompetitions.length);
     if (_this.settings.mainWidget.settings.navigation !== null) {
       var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.tournaments.navigationClass + ' .cl-main-navigation-item-count');
       menuItemCount.innerHTML = _this.settings.tournaments.activeCompetitions.length;
@@ -1261,7 +1271,9 @@ export const LbWidget = function (options) {
 
     _this.settings.miniScoreBoard.initLayout(function () {
       _this.settings.miniScoreBoard.settings.active = true;
-      _this.activeDataRefresh();
+      _this.activeDataRefresh(function () {
+        _this.settings.startupCallback(_this);
+      });
 
       if (_this.settings.enableNotifications) {
         _this.settings.notifications.init();
@@ -1679,15 +1691,27 @@ export const LbWidget = function (options) {
     _this.settings.mainWidget.settings.preLoader.preLoaderActive = false;
   };
 
+  var restartReloadInterval;
   this.restart = function () {
     var _this = this;
 
     _this.settings.mainWidget.hide(() => {
       _this.deactivateCompetitionsAndLeaderboards(() => {
         _this.stopActivity(() => {
-          _this.settings.miniScoreBoard.settings.active = true;
-          _this.settings.miniScoreBoard.settings.container.style.display = 'block';
-          _this.startup();
+          _this.loadMember((member) => {
+            _this.loadWidgetTranslations(() => {
+              if (restartReloadInterval) {
+                clearTimeout(restartReloadInterval);
+              }
+              _this.settings.mainWidget.destroyLayout();
+
+              restartReloadInterval = setTimeout(function () {
+                _this.settings.miniScoreBoard.settings.active = true;
+                _this.settings.miniScoreBoard.settings.container.style.display = 'block';
+                _this.startup();
+              }, 300);
+            });
+          });
         });
       });
     });

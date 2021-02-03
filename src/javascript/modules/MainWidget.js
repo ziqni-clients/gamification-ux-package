@@ -1043,7 +1043,7 @@ export const MainWidget = function (options) {
     if (typeof _this.settings.lbWidget.settings.competition.activeContest !== 'undefined' && _this.settings.lbWidget.settings.competition.activeContest !== null) {
       mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
         if (reward.rewardRank instanceof Array && reward.rewardRank.indexOf(rank) !== -1) {
-          rewardResponse.push(_this.settings.lbWidget.settings.rewards.rewardFormatter(reward));
+          rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
         }
       });
     }
@@ -1724,7 +1724,7 @@ export const MainWidget = function (options) {
 
     label.innerHTML = data.data.reward.rewardName;
     body.innerHTML = data.data.reward.description;
-    value.innerHTML = _this.settings.lbWidget.settings.rewards.rewardFormatter(data.data.reward);
+    value.innerHTML = _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(data.data.reward);
     claimBtn.dataset.id = data.data.id;
 
     if (data.data.claimed) {
@@ -1744,7 +1744,7 @@ export const MainWidget = function (options) {
       _image.setAttribute('class', 'cl-reward-list-item-img');
 
       _image.src = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.assets.replace(':attachmentId', data.data.reward.icon);
-      _image.alt = _this.settings.lbWidget.settings.rewards.rewardFormatter(data.data.reward);
+      _image.alt = _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(data.data.reward);
 
       icon.appendChild(_image);
     } else {
@@ -1882,7 +1882,7 @@ export const MainWidget = function (options) {
 
     if (typeof rew.prize !== 'undefined') {
       listItem.dataset.rewardId = rew.prize.id;
-      labelText = stripHtml(rew.subject + ' - ' + rew.prize.reward.rewardName + ' (' + _this.settings.lbWidget.settings.rewards.rewardFormatter(rew.prize.reward) + ')');
+      labelText = stripHtml(rew.subject + ' - ' + rew.prize.reward.rewardName + ' (' + _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(rew.prize.reward) + ')');
       descriptionText = stripHtml((typeof rew.prize.reward.description !== 'undefined' && rew.prize.reward.description.length > 0) ? rew.prize.reward.description : rew.body);
     }
 

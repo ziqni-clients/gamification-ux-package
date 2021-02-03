@@ -78,6 +78,7 @@ export const LbWidget = function (options) {
       activeContest: null,
       refreshInterval: null,
       refreshIntervalMillis: 10000,
+      includeMetadata: false,
       extractImageHeader: true // will extract the first found image inside the body tag and move it on top
     },
     achievements: {
@@ -193,7 +194,34 @@ export const LbWidget = function (options) {
     translation: translation,
     resources: [],
     styles: {},
-    startupCallback: function (instance) {
+    partialFunctions: {
+      startupCallback: function (instance) {},
+      rewardFormatter: function (reward) {
+        var defaultRewardValue = reward.value;
+
+        if (typeof reward.unitOfMeasure !== 'undefined' && typeof reward.unitOfMeasure.symbol !== 'undefined' && reward.unitOfMeasure.symbol !== null) {
+          defaultRewardValue = reward.unitOfMeasure.symbol + reward.value;
+        }
+
+        return defaultRewardValue;
+      },
+      competitionDataAvailableResponseParser: function (competitionData, callback) { callback(competitionData); },
+      competitionDataFinishedResponseParser: function (competitionData, callback) { callback(competitionData); },
+      activeCompetitionDataResponseParser: function (competitionData, callback) { callback(competitionData); },
+      activeContestDataResponseParser: function (contestData, callback) { callback(contestData); },
+      leaderboardDataResponseParser: function (leaderboardData, callback) { callback(leaderboardData); },
+      achievementDataForAllResponseParser: function (achievementData, callback) { callback(achievementData); },
+      achievementDataForMemberGroupResponseParser: function (achievementData, callback) { callback(achievementData); },
+      achievementDataResponseParser: function (achievementData, callback) { callback(achievementData); },
+      rewardDataResponseParser: function (rewardData, callback) { callback(rewardData); },
+      messageDataResponseParser: function (messageData, callback) { callback(messageData); },
+      claimRewardDataResponseParser: function (claimRewardData, callback) { callback(claimRewardData); },
+      issuedAchievementsDataResponseParser: function (issuedAchievementsData, callback) { callback(issuedAchievementsData); },
+      memberAchievementsProgressionDataResponseParser: function (memberAchievementsProgressionData, callback) { callback(memberAchievementsProgressionData); },
+      claimedRewardsDataResponseParser: function (claimedRewardsData, callback) { callback(claimedRewardsData); },
+      notClaimedRewardsDataResponseParser: function (notClaimedRewardsData, callback) { callback(notClaimedRewardsData); },
+      expiredRewardsDataResponseParser: function (expiredRewardsData, callback) { callback(expiredRewardsData); },
+      availableMessagesDataResponseParser: function (availableMessagesData, callback) { callback(availableMessagesData); }
     }
   };
 
@@ -307,18 +335,20 @@ export const LbWidget = function (options) {
         if (xhr.status === 200) {
           var json = JSON.parse(response);
 
-          _this.settings.tournaments.readyCompetitions = [];
-          _this.settings.tournaments.activeCompetitions = [];
+          _this.settings.partialFunctions.competitionDataAvailableResponseParser(json.data, function (compData) {
+            _this.settings.tournaments.readyCompetitions = [];
+            _this.settings.tournaments.activeCompetitions = [];
 
-          mapObject(json.data, function (comp) {
-            if (comp.statusCode === 3) {
-              _this.settings.tournaments.readyCompetitions.push(comp);
-            } else if (comp.statusCode === 5) {
-              _this.settings.tournaments.activeCompetitions.push(comp);
-            }
+            mapObject(compData, function (comp) {
+              if (comp.statusCode === 3) {
+                _this.settings.tournaments.readyCompetitions.push(comp);
+              } else if (comp.statusCode === 5) {
+                _this.settings.tournaments.activeCompetitions.push(comp);
+              }
+            });
+
+            _this.checkForFinishedCompetitions(callback, ajaxInstance);
           });
-
-          _this.checkForFinishedCompetitions(callback, ajaxInstance);
         } else {
           _this.log('failed to checkForActiveCompetitions ' + response);
         }
@@ -369,17 +399,19 @@ export const LbWidget = function (options) {
         if (xhr.status === 200) {
           var json = JSON.parse(response);
 
-          _this.settings.tournaments.finishedCompetitions = [];
+          _this.settings.partialFunctions.competitionDataFinishedResponseParser(json.data, function (compData) {
+            _this.settings.tournaments.finishedCompetitions = [];
 
-          mapObject(json.data, function (comp) {
-            if (comp.statusCode === 7) {
-              _this.settings.tournaments.finishedCompetitions.push(comp);
+            mapObject(compData, function (comp) {
+              if (comp.statusCode === 7) {
+                _this.settings.tournaments.finishedCompetitions.push(comp);
+              }
+            });
+
+            if (typeof callback === 'function') {
+              callback();
             }
           });
-
-          if (typeof callback === 'function') {
-            callback();
-          }
         } else {
           _this.log('failed to checkForActiveCompetitions ' + response);
         }
@@ -450,7 +482,7 @@ export const LbWidget = function (options) {
       _this.settings.uri.memberCompetitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':competitionId', _this.settings.competition.activeCompetitionId)
     );
     var filters = [
-      ('_include=strategy'),
+      ('_include=strategy' + (_this.settings.competition.includeMetadata ? ',metadata' : '')),
       ('_lang=' + _this.settings.language)
     ];
 
@@ -468,9 +500,11 @@ export const LbWidget = function (options) {
         if (xhr.status === 200) {
           var json = JSON.parse(response);
 
-          if (typeof callback === 'function') {
-            callback(json);
-          }
+          _this.settings.partialFunctions.activeCompetitionDataResponseParser(json, function (compData) {
+            if (typeof callback === 'function') {
+              callback(compData);
+            }
+          });
         } else {
           _this.log('failed to loadActiveCompetition ' + response);
         }
@@ -486,42 +520,44 @@ export const LbWidget = function (options) {
     _this.settings.competition.activeContestId = null;
 
     if (typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
-      mapObject(json.data.contests, function (contest) {
-        if (contest.statusCode < 7 && _this.settings.competition.activeContest === null) {
-          _this.settings.competition.activeContest = contest;
-          _this.settings.competition.activeContestId = contest.id;
+      _this.settings.partialFunctions.activeContestDataResponseParser(json.data.contests, function (contests) {
+        mapObject(contests, function (contest) {
+          if (contest.statusCode < 7 && _this.settings.competition.activeContest === null) {
+            _this.settings.competition.activeContest = contest;
+            _this.settings.competition.activeContestId = contest.id;
 
-          if (typeof _this.settings.competition.activeContest.rewards === 'undefined') {
-            _this.settings.competition.activeContest.rewards = [];
-          }
-
-          var rewards = [];
-          mapObject(_this.settings.competition.activeContest.rewards, function (reward) {
-            if (typeof reward.rewardRank === 'string') {
-              var rankParts = reward.rewardRank.split(',');
-              var rewardRank = [];
-
-              mapObject(rankParts, function (part) {
-                if (stringContains(part, '-')) {
-                  var rankRange = part.split('-');
-                  var rageStart = parseInt(rankRange[0]);
-                  var rangeEnd = parseInt(rankRange[1]);
-                  for (var i = rageStart; i <= rangeEnd; i++) {
-                    rewardRank.push(i);
-                  }
-                } else {
-                  rewardRank.push(parseInt(part));
-                }
-              });
-
-              reward.rewardRank = rewardRank;
+            if (typeof _this.settings.competition.activeContest.rewards === 'undefined') {
+              _this.settings.competition.activeContest.rewards = [];
             }
 
-            rewards.push(reward);
-          });
+            var rewards = [];
+            mapObject(_this.settings.competition.activeContest.rewards, function (reward) {
+              if (typeof reward.rewardRank === 'string') {
+                var rankParts = reward.rewardRank.split(',');
+                var rewardRank = [];
 
-          _this.settings.competition.activeContest.rewards = rewards;
-        }
+                mapObject(rankParts, function (part) {
+                  if (stringContains(part, '-')) {
+                    var rankRange = part.split('-');
+                    var rageStart = parseInt(rankRange[0]);
+                    var rangeEnd = parseInt(rankRange[1]);
+                    for (var i = rageStart; i <= rangeEnd; i++) {
+                      rewardRank.push(i);
+                    }
+                  } else {
+                    rewardRank.push(parseInt(part));
+                  }
+                });
+
+                reward.rewardRank = rewardRank;
+              }
+
+              rewards.push(reward);
+            });
+
+            _this.settings.competition.activeContest.rewards = rewards;
+          }
+        });
       });
     }
 
@@ -568,9 +604,11 @@ export const LbWidget = function (options) {
             //   };
             // }
 
-            _this.settings.leaderboard.leaderboardData = json.data;
+            _this.settings.partialFunctions.leaderboardDataResponseParser(json.data, function (lbData) {
+              _this.settings.leaderboard.leaderboardData = lbData;
 
-            callback(json.data);
+              callback(lbData);
+            });
           } else {
             _this.log('failed to getLeaderboardData ' + response);
           }
@@ -621,12 +659,12 @@ export const LbWidget = function (options) {
   this.checkForAvailableAchievements = function (callback) {
     var _this = this;
     var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
-    var date = new Date();
-    var createdDateFilter = date.toISOString();
+    // var date = new Date();
+    // var createdDateFilter = date.toISOString();
     var filters = [
       '_limit=' + _this.settings.achievements.limit,
       '_include=rewards',
-      'scheduledEnd>==' + createdDateFilter,
+      // 'scheduledEnd>==' + createdDateFilter,
       ('_lang=' + _this.settings.language)
     ];
     var withGroups = false;
@@ -640,49 +678,54 @@ export const LbWidget = function (options) {
       filters.push('memberGroups=' + _this.settings.member.groups.join(','));
     }
 
+    // '&scheduledEnd>==' + createdDateFilter +
     checkAchievementsAjax.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?_lang=' + _this.settings.language + '&scheduledEnd>==' + createdDateFilter + '&_uomKey=' + _this.settings.currency,
+      url: _this.settings.uri.gatewayDomain + url + '?_lang=' + _this.settings.language + '&_uomKey=' + _this.settings.currency,
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
       success: function (response, dataObj, xhr) {
         if (xhr.status === 200) {
-          var jsonForAll = JSON.parse(response);
+          var jsonData = JSON.parse(response);
 
-          _this.settings.achievements.totalCount = parseInt(jsonForAll.meta.totalRecordsFound);
-          _this.settings.achievements.list = [];
+          _this.settings.partialFunctions.achievementDataForAllResponseParser(jsonData, function (jsonForAll) {
+            _this.settings.achievements.totalCount = parseInt(jsonForAll.meta.totalRecordsFound);
+            _this.settings.achievements.list = [];
 
-          mapObject(jsonForAll.data, function (ach) {
-            _this.settings.achievements.list.push(ach);
-          });
-
-          if (withGroups) {
-            checkAchievementsAjax.abort().getData({
-              type: 'GET',
-              url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
-              headers: {
-                'X-API-KEY': _this.settings.apiKey
-              },
-              success: function (response, dataObj, xhr) {
-                if (xhr.status === 200) {
-                  var json = JSON.parse(response);
-
-                  _this.settings.achievements.totalCount = _this.settings.achievements.totalCount + parseInt(json.meta.totalRecordsFound);
-
-                  mapObject(json.data, function (ach) {
-                    _this.settings.achievements.list.push(ach);
-                  });
-
-                  if (typeof callback === 'function') callback(_this.settings.achievements.list);
-                } else {
-                  _this.log('failed to checkForAvailableAchievements ' + response);
-                }
-              }
+            mapObject(jsonForAll.data, function (ach) {
+              _this.settings.achievements.list.push(ach);
             });
-          } else {
-            if (typeof callback === 'function') callback(jsonForAll.data);
-          }
+
+            if (withGroups) {
+              checkAchievementsAjax.abort().getData({
+                type: 'GET',
+                url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
+                headers: {
+                  'X-API-KEY': _this.settings.apiKey
+                },
+                success: function (response, dataObj, xhr) {
+                  if (xhr.status === 200) {
+                    var json = JSON.parse(response);
+
+                    _this.settings.partialFunctions.achievementDataForMemberGroupResponseParser(json, function (achievmentMemberGroupData) {
+                      _this.settings.achievements.totalCount = _this.settings.achievements.totalCount + parseInt(achievmentMemberGroupData.meta.totalRecordsFound);
+
+                      mapObject(achievmentMemberGroupData.data, function (ach) {
+                        _this.settings.achievements.list.push(ach);
+                      });
+
+                      if (typeof callback === 'function') callback(_this.settings.achievements.list);
+                    });
+                  } else {
+                    _this.log('failed to checkForAvailableAchievements ' + response);
+                  }
+                }
+              });
+            } else {
+              if (typeof callback === 'function') callback(jsonForAll.data);
+            }
+          });
         } else {
           _this.log('failed to checkForAvailableAchievements ' + response);
         }
@@ -710,7 +753,9 @@ export const LbWidget = function (options) {
         }
 
         if (typeof callback === 'function') {
-          callback(json);
+          _this.settings.partialFunctions.achievementDataResponseParser(json, function (achievementData) {
+            callback(achievementData);
+          });
         }
       },
       error: function () {
@@ -741,7 +786,9 @@ export const LbWidget = function (options) {
         }
 
         if (typeof callback === 'function') {
-          callback(json);
+          _this.settings.partialFunctions.rewardDataResponseParser(json, function (rewardData) {
+            callback(rewardData);
+          });
         }
       },
       error: function () {
@@ -772,7 +819,9 @@ export const LbWidget = function (options) {
         }
 
         if (typeof callback === 'function') {
-          callback(json);
+          _this.settings.partialFunctions.messageDataResponseParser(json, function (messageData) {
+            callback(messageData);
+          });
         }
       },
       error: function () {
@@ -803,7 +852,9 @@ export const LbWidget = function (options) {
         }
 
         if (typeof callback === 'function') {
-          callback(json);
+          _this.settings.partialFunctions.claimRewardDataResponseParser(json, function (claimRewardData) {
+            callback(claimRewardData);
+          });
         }
       },
       error: function () {
@@ -828,15 +879,18 @@ export const LbWidget = function (options) {
       success: function (response, dataObj, xhr) {
         if (xhr.status === 200) {
           var json = JSON.parse(response);
-          var idList = [];
 
-          if (typeof json.aggregations !== 'undefined' && json.aggregations.length > 0) {
-            mapObject(json.aggregations[0].items, function (item) {
-              idList.push(item.value);
-            });
-          }
+          _this.settings.partialFunctions.issuedAchievementsDataResponseParser(json, function (issuedAchievementsData) {
+            var idList = [];
 
-          if (typeof callback === 'function') callback(idList);
+            if (typeof issuedAchievementsData.aggregations !== 'undefined' && issuedAchievementsData.aggregations.length > 0) {
+              mapObject(issuedAchievementsData.aggregations[0].items, function (item) {
+                idList.push(item.value);
+              });
+            }
+
+            if (typeof callback === 'function') callback(idList);
+          });
         } else {
           _this.log('failed to checkForMemberAchievementsIssued ' + response);
         }
@@ -859,7 +913,11 @@ export const LbWidget = function (options) {
         if (xhr.status === 200) {
           var json = JSON.parse(response);
 
-          if (typeof callback === 'function') callback(json.data);
+          if (typeof callback === 'function') {
+            _this.settings.partialFunctions.memberAchievementsProgressionDataResponseParser(json.data, function (memberAchievementsProgressionData) {
+              callback(memberAchievementsProgressionData);
+            });
+          }
         } else {
           _this.log('failed to checkForMemberAchievementsProgression ' + response);
         }
@@ -881,66 +939,72 @@ export const LbWidget = function (options) {
       },
       success: function (response, dataObj, xhr) {
         if (xhr.status === 200) {
-          var jsonForAll = JSON.parse(response);
+          var jsonClaimedPrizes = JSON.parse(response);
 
           _this.settings.rewards.rewards = [];
           _this.settings.rewards.availableRewards = [];
           _this.settings.rewards.expiredRewards = [];
 
-          mapObject(jsonForAll.data, function (message) {
-            var expired = (typeof message.expiry === 'undefined') ? false : (moment(message.expiry).diff(moment()) < 0);
+          _this.settings.partialFunctions.claimedRewardsDataResponseParser(jsonClaimedPrizes.data, function (claimedRewardsData) {
+            mapObject(claimedRewardsData, function (message) {
+              var expired = (typeof message.expiry === 'undefined') ? false : (moment(message.expiry).diff(moment()) < 0);
 
-            if (!expired) {
-              _this.settings.rewards.rewards.push(message);
-            }
-          });
-
-          // not-claimed rewards
-          checkForAvailableRewardsAjax.abort().getData({
-            type: 'GET',
-            url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&messageType=Reward&prize.claimed=false&_hasValuesFor=prize&_limit=100',
-            headers: {
-              'X-API-KEY': _this.settings.apiKey
-            },
-            success: function (response, dataObj, xhr) {
-              if (xhr.status === 200) {
-                var jsonForAll = JSON.parse(response);
-
-                mapObject(jsonForAll.data, function (message) {
-                  var expired = (typeof message.expiry === 'undefined') ? false : (moment(message.expiry).diff(moment()) < 0);
-
-                  if (!expired) {
-                    _this.settings.rewards.availableRewards.push(message);
-                  }
-                });
-
-                // expired rewards
-                var date = new Date();
-                var utcDate = date.getUTCFullYear() + '-' + formatNumberLeadingZeros((date.getUTCMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getUTCDate(), 2) + 'T' + formatNumberLeadingZeros(date.getUTCHours(), 2) + ':' + formatNumberLeadingZeros(date.getUTCMinutes(), 2) + ':00';
-                checkForAvailableRewardsAjax.abort().getData({
-                  type: 'GET',
-                  url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&_limit=100&messageType=Reward&_hasValuesFor=expiry&expiry<==' + utcDate,
-                  headers: {
-                    'X-API-KEY': _this.settings.apiKey
-                  },
-                  success: function (response, dataObj, xhr) {
-                    if (xhr.status === 200) {
-                      var jsonForAll = JSON.parse(response);
-
-                      mapObject(jsonForAll.data, function (message) {
-                        _this.settings.rewards.expiredRewards.push(message);
-                      });
-
-                      if (typeof callback === 'function') callback(_this.settings.rewards.rewards, _this.settings.rewards.availableRewards, _this.settings.rewards.expiredRewards);
-                    } else {
-                      _this.log('failed to checkForAvailableRewards expired ' + response);
-                    }
-                  }
-                });
-              } else {
-                _this.log('failed to checkForAvailableRewards not-claimed ' + response);
+              if (!expired) {
+                _this.settings.rewards.rewards.push(message);
               }
-            }
+            });
+
+            // not-claimed rewards
+            checkForAvailableRewardsAjax.abort().getData({
+              type: 'GET',
+              url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&messageType=Reward&prize.claimed=false&_hasValuesFor=prize&_limit=100',
+              headers: {
+                'X-API-KEY': _this.settings.apiKey
+              },
+              success: function (response, dataObj, xhr) {
+                if (xhr.status === 200) {
+                  var jsonNotClaimed = JSON.parse(response);
+
+                  _this.settings.partialFunctions.notClaimedRewardsDataResponseParser(jsonNotClaimed.data, function (notClaimedRewardsData) {
+                    mapObject(notClaimedRewardsData, function (message) {
+                      var expired = (typeof message.expiry === 'undefined') ? false : (moment(message.expiry).diff(moment()) < 0);
+
+                      if (!expired) {
+                        _this.settings.rewards.availableRewards.push(message);
+                      }
+                    });
+
+                    // expired rewards
+                    var date = new Date();
+                    var utcDate = date.getUTCFullYear() + '-' + formatNumberLeadingZeros((date.getUTCMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getUTCDate(), 2) + 'T' + formatNumberLeadingZeros(date.getUTCHours(), 2) + ':' + formatNumberLeadingZeros(date.getUTCMinutes(), 2) + ':00';
+                    checkForAvailableRewardsAjax.abort().getData({
+                      type: 'GET',
+                      url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&_limit=100&messageType=Reward&_hasValuesFor=expiry&expiry<==' + utcDate,
+                      headers: {
+                        'X-API-KEY': _this.settings.apiKey
+                      },
+                      success: function (response, dataObj, xhr) {
+                        if (xhr.status === 200) {
+                          var jsonExpiredRewards = JSON.parse(response);
+
+                          _this.settings.partialFunctions.expiredRewardsDataResponseParser(jsonExpiredRewards.data, function (expiredRewardsData) {
+                            mapObject(expiredRewardsData, function (message) {
+                              _this.settings.rewards.expiredRewards.push(message);
+                            });
+
+                            if (typeof callback === 'function') callback(_this.settings.rewards.rewards, _this.settings.rewards.availableRewards, _this.settings.rewards.expiredRewards);
+                          });
+                        } else {
+                          _this.log('failed to checkForAvailableRewards expired ' + response);
+                        }
+                      }
+                    });
+                  });
+                } else {
+                  _this.log('failed to checkForAvailableRewards not-claimed ' + response);
+                }
+              }
+            });
           });
         } else {
           _this.log('failed to checkForAvailableRewards claimed ' + response);
@@ -967,15 +1031,17 @@ export const LbWidget = function (options) {
       },
       success: function (response, dataObj, xhr) {
         if (xhr.status === 200) {
-          var jsonForAll = JSON.parse(response);
+          var jsonAvailableMessages = JSON.parse(response);
 
-          _this.settings.messages.messages = [];
+          _this.settings.partialFunctions.availableMessagesDataResponseParser(jsonAvailableMessages.data, function (availableMessagesData) {
+            _this.settings.messages.messages = [];
 
-          mapObject(jsonForAll.data, function (message) {
-            _this.settings.messages.messages.push(message);
+            mapObject(availableMessagesData, function (message) {
+              _this.settings.messages.messages.push(message);
+            });
+
+            if (typeof callback === 'function') callback(_this.settings.messages.messages);
           });
-
-          if (typeof callback === 'function') callback(_this.settings.messages.messages);
         } else {
           _this.log('failed to checkForAvailableMessages ' + response);
         }
@@ -1226,7 +1292,7 @@ export const LbWidget = function (options) {
     _this.settings.miniScoreBoard.initLayout(function () {
       _this.settings.miniScoreBoard.settings.active = true;
       _this.activeDataRefresh(function () {
-        _this.settings.startupCallback(_this);
+        _this.settings.partialFunctions.startupCallback(_this);
       });
 
       if (_this.settings.enableNotifications) {

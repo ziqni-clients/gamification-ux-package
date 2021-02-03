@@ -237,6 +237,9 @@ export const MainWidget = function (options) {
   this.navigationItems = function (container, navigationList) {
     var _this = this;
 
+    // sorting navigation by order number
+    navigationList.sort(_this.navigationSorter);
+
     mapObject(navigationList, function (val, key) {
       var navigationItem = document.createElement('div');
       var navigationItemIcon = document.createElement('div');
@@ -1346,6 +1349,18 @@ export const MainWidget = function (options) {
     };
   };
 
+  this.destroyLayout = function () {
+    var _this = this;
+
+    if (_this.settings.container !== null) {
+      remove(_this.settings.container);
+      remove(_this.settings.overlayContainer);
+    }
+
+    _this.settings.container = null;
+    _this.settings.overlayContainer = null;
+  };
+
   this.loadLeaderboard = function (callback) {
     var _this = this;
 
@@ -1373,8 +1388,9 @@ export const MainWidget = function (options) {
 
       _this.mainNavigationCheck();
       _this.leaderboardHeader();
-      _this.eventListeners();
     }
+
+    _this.eventListeners();
 
     _this.leaderboardOptInCheck();
     _this.leaderboardDetailsUpdate();
@@ -1456,36 +1472,44 @@ export const MainWidget = function (options) {
       ? elemContainer.top - elemTop &lt;= elemHeight : elemBottom - elemContainer.bottom &lt;= elemHeight;
   };
 
+  var onresizeInitialised = false;
   this.eventListeners = function () {
     var _this = this;
 
     // unique solution to support horizontal mobile orientation
-    _this.settings.leaderboard.resultContainer.onscroll = function (evt) {
-      evt.preventDefault();
-      var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
+    if (_this.settings.leaderboard.resultContainer !== null &amp;&amp; _this.settings.leaderboard.resultContainer.onscroll === null) {
+      _this.settings.leaderboard.resultContainer.onscroll = function (evt) {
+        evt.preventDefault();
+        var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
 
-      if (member !== null) {
-        _this.missingMember(_this.isElementVisibleInView(member, evt.target));
-      }
-    };
+        if (member !== null) {
+          _this.missingMember(_this.isElementVisibleInView(member, evt.target));
+        }
+      };
+    }
 
-    _this.settings.leaderboard.list.parentNode.onscroll = function (evt) {
-      evt.preventDefault();
-      var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
+    if (_this.settings.leaderboard.list !== null &amp;&amp; _this.settings.leaderboard.list.parentNode.onscroll === null) {
+      _this.settings.leaderboard.list.parentNode.onscroll = function (evt) {
+        evt.preventDefault();
+        var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
 
-      if (member !== null) {
-        _this.missingMember(_this.isElementVisibleInView(member, evt.target));
-      }
-    };
+        if (member !== null) {
+          _this.missingMember(_this.isElementVisibleInView(member, evt.target));
+        }
+      };
+    }
 
-    window.onresize = function (evt) {
-      var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
+    if (!onresizeInitialised) {
+      onresizeInitialised = true;
+      window.onresize = function (evt) {
+        var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
 
-      if (member !== null) {
-        _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
-        _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
-      }
-    };
+        if (member !== null) {
+          _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
+          _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
+        }
+      };
+    }
   };
 
   // this.checkLeaderboardScrollContainer = function(){

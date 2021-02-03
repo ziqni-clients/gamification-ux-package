@@ -339,7 +339,7 @@
 
 			_this.demoData( this.settings.defaultSettings.language );
 
-			_this.settings.widgetInstance.settings.startupCallback = function () {
+			_this.settings.widgetInstance.settings.partialFunctions.startupCallback = function () {
 				_this.animateMiniScoreboardClick( callback );
 
 				const widgetTheme = document.querySelector(".widget-theme-container");
@@ -389,19 +389,21 @@
 					}
 				});
 
-				widgetTheme.querySelector(".cl-language-select select").addEventListener("change", function (ev) {
-					const el = ev.target;
-					const languageChange = el.value;
+				const languageSelector = widgetTheme.querySelector(".cl-language-select select");
+				if( languageSelector !== null ) {
+					languageSelector.addEventListener("change", function (ev) {
+						const el = ev.target;
+						const languageChange = el.value;
 
-					_this.settings.widgetInstance.settings.language = languageChange;
-					_this.settings.defaultSettings.language = languageChange;
+						_this.settings.widgetInstance.settings.language = languageChange;
+						_this.settings.defaultSettings.language = languageChange;
 
-					_this.demoData( languageChange );
+						_this.demoData(languageChange);
 
-					_this.settings.widgetInstance.restart();
+						_this.settings.widgetInstance.restart();
 
-				});
-
+					});
+				}
 
 				_this.eventListeners();
 			};
