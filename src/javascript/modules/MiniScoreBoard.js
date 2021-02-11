@@ -272,6 +272,9 @@ export const MiniScoreBoard = function (options) {
       if (!hasClass(wrapperDomObj, 'cl-show')) {
         addClass(wrapperDomObj, 'cl-show');
       }
+
+      query(_this.settings.container, '.cl-widget-ms-default-results-header-rank').innerHTML = _this.settings.lbWidget.settings.translation.leaderboard.rank;
+      query(_this.settings.container, '.cl-widget-ms-default-results-header-points').innerHTML = _this.settings.lbWidget.settings.translation.leaderboard.points;
       query(_this.settings.container, '.cl-widget-ms-default-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = date;
     }
@@ -409,6 +412,9 @@ export const MiniScoreBoard = function (options) {
       if (!hasClass(wrapperDomObj, 'cl-show')) {
         addClass(wrapperDomObj, 'cl-show');
       }
+
+      query(_this.settings.container, '.cl-widget-ms-first-to-results-header-rank').innerHTML = _this.settings.lbWidget.settings.translation.leaderboard.rank;
+      query(_this.settings.container, '.cl-widget-ms-first-to-results-header-points').innerHTML = _this.settings.lbWidget.settings.translation.leaderboard.points;
       query(_this.settings.container, '.cl-widget-ms-first-to-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-first-to-date').innerHTML = date;
     }
@@ -436,7 +442,7 @@ export const MiniScoreBoard = function (options) {
           img.alt = '';
           img.style.display = 'block';
 
-          query(lbWrapper, '.cl-widget-ms-first-to-mem-label').innerHTML = selfMember ? 'YOU' : '';
+          query(lbWrapper, '.cl-widget-ms-first-to-mem-label').innerHTML = selfMember ? _this.settings.lbWidget.settings.translation.leaderboard.you : '';
           query(lbWrapper, '.cl-widget-ms-first-to-mem-rank').innerHTML = "<span class='cl-mem-rank-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.rank + "</span><span class='cl-mem-rank'>" + lbRankingEntry.rank + '</span>';
           query(lbWrapper, '.cl-widget-ms-first-to-mem-points').innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>" + lbRankingEntry.points + '/' + strategy.recordTimeWhenSumReaches + '</span>';
 
@@ -532,6 +538,8 @@ export const MiniScoreBoard = function (options) {
       if (!hasClass(wrapperDomObj, 'cl-show')) {
         addClass(wrapperDomObj, 'cl-show');
       }
+      query(_this.settings.container, '.cl-widget-ms-sum-best-high-label').innerHTML = _this.settings.lbWidget.settings.translation.miniLeaderboard.highScore;
+      query(_this.settings.container, '.cl-widget-ms-sum-best-last-label').innerHTML = _this.settings.lbWidget.settings.translation.miniLeaderboard.lastScore;
       query(_this.settings.container, '.cl-widget-ms-sum-best-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-sum-best-date').innerHTML = date;
     }
@@ -568,22 +576,22 @@ export const MiniScoreBoard = function (options) {
   this.layoutRequiresOptIn = function () {
     var _this = this;
     var diff = moment(_this.settings.lbWidget.settings.competition.activeCompetition.scheduledStart).diff(moment());
-    var label = 'Starting In';
+    var label = _this.settings.lbWidget.settings.translation.miniLeaderboard.startsIn;
     var wrapperDomObj = _this.settings.infoContainer;
     var date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
     if (diff < 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
-      label = 'starting';
+      label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
       date = '';
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode > 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode < 3) {
       diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
-      label = 'started';
+      label = _this.settings.lbWidget.settings.translation.miniLeaderboard.started;
       date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
-      label = 'finishing';
+      label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
       date = '';
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 4) {
-      label = 'finished';
+      label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finished;
       date = '';
     }
 
@@ -624,6 +632,7 @@ export const MiniScoreBoard = function (options) {
       if (!hasClass(wrapperDomObj, 'cl-show')) {
         addClass(wrapperDomObj, 'cl-show');
       }
+      query(_this.settings.container, '.cl-widget-ms-optin-action').innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
       query(_this.settings.container, '.cl-widget-ms-optin-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-optin-date').innerHTML = date;
     }

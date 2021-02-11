@@ -192,8 +192,8 @@ export const LbWidget = function (options) {
     loadTranslations: true,
     showCopyright: true,
     translation: translation,
-    resources: [],
-    styles: {},
+    resources: [], // Example: ["http://example.com/style.css", "http://example.com/my-fonts.css"]
+    styles: null, // Example: {widgetBgColor: '#1f294a', widgetIcon: 'url(../../../examples/images/logo-icon-3.png)'}
     partialFunctions: {
       startupCallback: function (instance) {},
       rewardFormatter: function (reward) {
@@ -709,11 +709,20 @@ export const LbWidget = function (options) {
                     var json = JSON.parse(response);
 
                     _this.settings.partialFunctions.achievementDataForMemberGroupResponseParser(json, function (achievmentMemberGroupData) {
-                      _this.settings.achievements.totalCount = _this.settings.achievements.totalCount + parseInt(achievmentMemberGroupData.meta.totalRecordsFound);
-
                       mapObject(achievmentMemberGroupData.data, function (ach) {
-                        _this.settings.achievements.list.push(ach);
+                        var found = false;
+                        mapObject(_this.settings.achievements.list, function (achCheck) {
+                          if (achCheck.id === ach.id) {
+                            found = true;
+                          }
+                        });
+
+                        if (!found) {
+                          _this.settings.achievements.list.push(ach);
+                        }
                       });
+
+                      _this.settings.achievements.totalCount = _this.settings.achievements.list.length;
 
                       if (typeof callback === 'function') callback(_this.settings.achievements.list);
                     });
@@ -1742,7 +1751,7 @@ export const LbWidget = function (options) {
   };
 
   this.applyAppearance = function () {
-    if (this.settings.styles) {
+    if (this.settings.styles !== null) {
       const styles = Object.keys(this.settings.styles).reduce((accumulator, currentValue) => {
         return {
           ...accumulator,

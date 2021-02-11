@@ -33,8 +33,9 @@
         "highScore": "Bestenliste",
         "lastScore": "Letzte Punktzahl",
         "rank": "Rang",
-        "startsIn": "Start in",
-        "starting": "ab",
+        "startsIn": "Started in",
+        "started": "gestarted",
+        "starting": "started",
         "finishing": "Abschließen",
         "finished": "abgeschlossen"
     },
