@@ -78,6 +78,7 @@ export const LbWidget = function (options) {
       activeContest: null,
       refreshInterval: null,
       refreshIntervalMillis: 10000,
+      allowNegativeCountdown: false, // false: will mark competition as finishing, true: will continue to countdown into negative
       includeMetadata: false,
       extractImageHeader: true // will extract the first found image inside the body tag and move it on top
     },

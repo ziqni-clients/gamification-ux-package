@@ -1151,6 +1151,8 @@ export const MainWidget = function (options) {
 
     if (diff < 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
       date = '';
+    } else if (diff < 0 && !_this.settings.lbWidget.settings.competition.allowNegativeCountdown) {
+      date = _this.settings.lbWidget.settings.translation.tournaments.finishing;
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode > 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode < 3) {
       diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
       date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));

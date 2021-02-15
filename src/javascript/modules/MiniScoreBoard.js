@@ -121,6 +121,9 @@ export const MiniScoreBoard = function (options) {
       if (diff < 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
         date = '';
+      } else if (diff < 0 && !_this.settings.lbWidget.settings.competition.allowNegativeCountdown) {
+        label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
+        date = '';
       } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode > 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode < 3) {
         diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
         dateObj = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
@@ -582,6 +585,9 @@ export const MiniScoreBoard = function (options) {
 
     if (diff < 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
+      date = '';
+    } else if (diff < 0 && !_this.settings.lbWidget.settings.competition.allowNegativeCountdown) {
+      label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
       date = '';
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode > 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode < 3) {
       diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
