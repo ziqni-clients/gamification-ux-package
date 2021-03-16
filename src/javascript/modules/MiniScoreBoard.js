@@ -286,17 +286,17 @@ export const MiniScoreBoard = function (options) {
       query(_this.settings.container, '.cl-widget-ms-default-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = date;
     }
+    addClass(query(_this.settings.container, '.cl-widget-ms-default-date-wrapper'), 'cl-widget-ms-default-date-only');
 
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
-      if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId) && typeof lbEntry.rankings !== 'undefined') {
+      if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId)) {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-default-results-list');
         scoreArea.innerHTML = '';
 
         query(_this.settings.container, '.cl-widget-ms-default-date-label').innerHTML = label;
         query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = date;
-        addClass(query(_this.settings.container, '.cl-widget-ms-default-date-wrapper'), 'cl-widget-ms-default-date-only');
 
-        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings) {
+        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
           mapObject(lbEntry.rankings, function (lbRankingEntry) {
             scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbRankingEntry));
           });
@@ -436,40 +436,49 @@ export const MiniScoreBoard = function (options) {
       query(_this.settings.container, '.cl-widget-ms-first-to-date').innerHTML = date;
     }
 
+    addClass(query(_this.settings.container, '.cl-widget-ms-first-to-date-wrapper'), 'cl-widget-ms-first-to-date-only');
+
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
-      if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId) && typeof lbEntry.rankings !== 'undefined') {
+      if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId)) {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-first-to-results-list');
         scoreArea.innerHTML = '';
 
-        addClass(query(_this.settings.container, '.cl-widget-ms-first-to-date-wrapper'), 'cl-widget-ms-first-to-date-only');
-
-        mapObject(lbEntry.rankings, function (lbRankingEntry) {
-          var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbRankingEntry.memberId);
-          var lbWrapper = _this.layoutFirstToOrEmptyEntry();
-          var img = query(lbWrapper, '.cl-widget-ms-first-to-mem-img');
-          var selfMember = ((lbRankingEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbRankingEntry.memberId === _this.settings.lbWidget.settings.memberId));
-          var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbRankingEntry.points);
-
-          if (selfMember) {
-            addClass(lbWrapper, 'cl-widget-ms-first-to-mem-self');
-          }
-
-          img.src = icon;
-          img.alt = '';
-          img.style.display = 'block';
-
-          query(lbWrapper, '.cl-widget-ms-first-to-mem-label').innerHTML = selfMember ? _this.settings.lbWidget.settings.translation.leaderboard.you : '';
-          query(lbWrapper, '.cl-widget-ms-first-to-mem-rank').innerHTML = "<span class='cl-mem-rank-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.rank + "</span><span class='cl-mem-rank'>" + lbRankingEntry.rank + '</span>';
-          query(lbWrapper, '.cl-widget-ms-first-to-mem-points').innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>" + formattedPoints + '/' + strategy.recordTimeWhenSumReaches + '</span>';
-
-          scoreArea.appendChild(lbWrapper);
-        });
+        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
+          mapObject(lbEntry.rankings, function (lbRankingEntry) {
+            scoreArea.appendChild(_this.layoutFirstToOrEmptySingleRow(lbRankingEntry, strategy));
+          });
+        } else {
+          scoreArea.appendChild(_this.layoutFirstToOrEmptySingleRow(lbEntry, strategy));
+        }
       }
     });
 
     if (inverse && !hasClass(defaultDomObj, 'cl-inverse')) {
       addClass(defaultDomObj, 'cl-inverse');
     }
+  };
+
+  this.layoutFirstToOrEmptySingleRow = function (lbEntry, strategy) {
+    var _this = this;
+    var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.memberId);
+    var lbWrapper = _this.layoutFirstToOrEmptyEntry();
+    var img = query(lbWrapper, '.cl-widget-ms-first-to-mem-img');
+    var selfMember = ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId));
+    var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.points);
+
+    if (selfMember) {
+      addClass(lbWrapper, 'cl-widget-ms-first-to-mem-self');
+    }
+
+    img.src = icon;
+    img.alt = '';
+    img.style.display = 'block';
+
+    query(lbWrapper, '.cl-widget-ms-first-to-mem-label').innerHTML = selfMember ? _this.settings.lbWidget.settings.translation.leaderboard.you : '';
+    query(lbWrapper, '.cl-widget-ms-first-to-mem-rank').innerHTML = "<span class='cl-mem-rank-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.rank + "</span><span class='cl-mem-rank'>" + lbEntry.rank + '</span>';
+    query(lbWrapper, '.cl-widget-ms-first-to-mem-points').innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>" + formattedPoints + '/' + strategy.recordTimeWhenSumReaches + '</span>';
+
+    return lbWrapper;
   };
 
   this.layoutSumBestOf = function () {

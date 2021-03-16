@@ -89,6 +89,7 @@
 	];
 
 	var widgetInstance = new window._clLeaderBoardV3SelfInit( options );
+	widgetInstance.settings.leaderboard.miniScoreBoard.enableRankings = false;
 	widgetInstance.init();
 
 	document.querySelector(".external-action-buttons").addEventListener("click", function(event){
