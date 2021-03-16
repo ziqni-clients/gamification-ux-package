@@ -13,14 +13,22 @@
     "parcel-plugin-custom-dist-structure": "^1.1.14"
   },
   "dependencies": {
-    "@competitionlabs/leaderboard": "^3.0.2",
+    "@competitionlabs/gamification-ux-package": "^1.0.11",
     "node-forge": "^0.10.0"
   },
   "customDistStructure": {
     "config": {
-      "assets": [".svg", ".png", ".jpg"],
-      "js": [".js"],
-      "css": [".css"]
+      "assets": [
+        ".svg",
+        ".png",
+        ".jpg"
+      ],
+      "js": [
+        ".js"
+      ],
+      "css": [
+        ".css"
+      ]
     }
   }
 }

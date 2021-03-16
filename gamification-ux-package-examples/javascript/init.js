@@ -72,7 +72,7 @@
 		} catch (e) {
 			console.log(element, className);
 			// console.error(e);
-			// console.trace();
+			console.trace();
 		}
 
 		return element;
@@ -221,10 +221,6 @@
 			mapObject(_this.settings.styles, function(style){
 				var li = document.createElement("li");
 
-				if (style.id === _this.settings.activeStyle) {
-					addClass(li, "active");
-				}
-
 				li.dataset.id = style.id;
 
 				if( typeof style.data === "undefined" ) {
@@ -252,6 +248,10 @@
 					li.setAttribute("class", "select " + style.id);
 
 					li.appendChild(select);
+				}
+
+				if (style.id === _this.settings.activeStyle) {
+					addClass(li, "active");
 				}
 
 				navigation.appendChild(li);

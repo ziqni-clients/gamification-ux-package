@@ -2616,16 +2616,16 @@
   background: var(--lb3-achievements-progress-fill-color);
   border-radius: 5px;
   transition: all 0.3s ease;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: right;
+  color: var(--lb3-achievements-progress-text-color);
+  text-transform: uppercase;
+  padding: 0 6px;
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-progression-bar.cl-ach-complete {
-  font-size: 10px;
-  line-height: 13px;
-  color: var(--lb3-achievements-progress-text-color);
   width: 100%;
-  text-align: right;
-  padding: 0 6px;
-  text-transform: uppercase;
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-more {

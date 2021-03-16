@@ -1,5 +1,5 @@
 {
-  "time": "2020-04-21T11:43:47.437Z",
+  "time": "2021-01-21T11:43:47.437Z",
   "data": {
     "statusCode": 5,
     "numberOfRounds": 1,
@@ -52,11 +52,11 @@
           "unitOfMeasureType": "Currency"
         }
       }],
-      "scheduledStart": "2020-04-21T11:52:00.000+0000",
+      "scheduledStart": "2021-04-01T11:52:00.000+0000",
       "id": "123456789",
       "termsConditions": "",
       "status": "NotStarted",
-      "scheduledEnd": "2020-05-30T12:52:00.000+0000",
+      "scheduledEnd": "2021-05-30T12:52:00.000+0000",
       "strategy": {
         "type": "TotalCumulative",
         "limitUpdatesTo": 0,
@@ -67,11 +67,11 @@
       "competitionId": "iziMnHEBEECEIMYxYtj8",
       "roundType": "TimeBound"
     }],
-    "scheduledStart": "2020-04-21T11:52:00.000+0000",
+    "scheduledStart": "2021-04-01T11:52:00.000+0000",
     "id": "1234567",
     "termsConditions": "",
     "status": "Ready",
-    "scheduledEnd": "2020-05-30T12:52:00.000+0000",
+    "scheduledEnd": "2021-05-30T12:52:00.000+0000",
     "optin": false
   }
 }

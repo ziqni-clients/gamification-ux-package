@@ -1001,6 +1001,7 @@ export const MainWidget = function (options) {
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
       var growthIcon = "<span class='cl-growth-icon cl-growth-" + growthType + "'></span>";
+      var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lb.points);
 
       if (rankCheck.indexOf(lb.rank) !== -1) {
         for (var rc = 0; rc < rankCheck.length; rc++) {
@@ -1016,7 +1017,7 @@ export const MainWidget = function (options) {
         memberName,
         change,
         growthIcon, // growth
-        lb.points,
+        formattedPoints,
         reward, // reward
         count,
         memberFound,
@@ -1080,6 +1081,7 @@ export const MainWidget = function (options) {
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
       var growthIcon = "<span class='cl-growth-icon cl-growth-" + growthType + "'></span>";
+      var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lb.points);
 
       if (rankCheck.indexOf(lb.rank) !== -1) {
         for (var rc = 0; rc < rankCheck.length; rc++) {
@@ -1095,7 +1097,7 @@ export const MainWidget = function (options) {
         memberName,
         change,
         growthIcon, // growth
-        lb.points,
+        formattedPoints,
         reward,
         count,
         memberFound,
@@ -1137,25 +1139,31 @@ export const MainWidget = function (options) {
     if (member !== null) {
       _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
       _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
+    } else {
+      _this.missingMemberReset();
     }
   };
 
   this.updateLeaderboardTime = function () {
     var _this = this;
     var diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledStart).diff(moment());
-    var date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
+    var date = _this.settings.lbWidget.settings.translation.miniLeaderboard.startsIn + ': ' + _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
     if (_this.settings.leaderboard.timerInterval) {
       clearTimeout(_this.settings.leaderboard.timerInterval);
     }
 
-    if (diff < 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
-      date = '';
-    } else if (diff < 0 && !_this.settings.lbWidget.settings.competition.allowNegativeCountdown) {
-      date = _this.settings.lbWidget.settings.translation.tournaments.finishing;
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode > 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode < 3) {
+    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
+      date = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 1) {
+      date = _this.settings.lbWidget.settings.translation.tournaments.starting;
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 2) {
       diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
       date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
+
+      if (diff <= 0) {
+        date = _this.settings.lbWidget.settings.translation.tournaments.finishing;
+      }
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
       date = _this.settings.lbWidget.settings.translation.tournaments.finishing;
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 4) {
@@ -1417,6 +1425,12 @@ export const MainWidget = function (options) {
     }
   };
 
+  this.missingMemberReset = function () {
+    var _this = this;
+    var area = query(_this.settings.container, '.cl-main-widget-lb-missing-member');
+    area.style.display = 'none';
+  };
+
   this.isElementVisibleInView = function (el, container) {
     var position = el.getBoundingClientRect();
     var elemContainer = container.getBoundingClientRect();
@@ -1572,6 +1586,7 @@ export const MainWidget = function (options) {
 
     listIcon.style.opacity = '1';
     _this.hideEmbeddedCompetitionDetailsContent();
+    _this.missingMemberReset();
 
     removeClass(_this.settings.tournamentListContainer, 'cl-show');
 
@@ -1832,7 +1847,9 @@ export const MainWidget = function (options) {
           bar.innerHTML = _this.settings.lbWidget.settings.translation.achievements.complete;
           bar.style.width = '100%';
         } else {
-          bar.style.width = ((perc > 1 || perc === 0) ? perc : 1) + '%';
+          var percValue = ((perc > 1 || perc === 0) ? perc : 1) + '%';
+          bar.innerHTML = (perc > 25 || (perc > 15 && parseInt(_this.settings.section.offsetWidth) > 450)) ? percValue : '';
+          bar.style.width = percValue;
         }
       }
     });
@@ -2182,6 +2199,8 @@ export const MainWidget = function (options) {
       if (member !== null) {
         _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
         _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
+      } else {
+        _this.missingMemberReset();
       }
 
       _this.resetNavigation(callback);
