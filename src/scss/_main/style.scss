@@ -87,7 +87,7 @@
 .cl-widget-ms-wrapper .cl-widget-ms-icon-wrapper .cl-widget-ms-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-widget-icon);
+  background-image: $lb3-widget-icon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   width: 62px;
@@ -1062,7 +1062,7 @@
   margin: -3px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: var(--lb3-tournament-icon-bg-image);
+  background-image: $lb3-tournament-icon-bg-image;
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1071,7 +1071,7 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-tournament-icon);
+  background-image: $lb3-tournament-icon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 50%;
@@ -1082,7 +1082,7 @@
   margin: -6px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: var(--lb3-achievements-icon-bg-image);
+  background-image: $lb3-achievements-icon-bg-image;
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1091,7 +1091,7 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-achievements-icon);
+  background-image: $lb3-achievements-icon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 45%;
@@ -1102,7 +1102,7 @@
   margin: -6px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: var(--lb3-rewards-icon-bg-image);
+  background-image: $lb3-rewards-icon-bg-image;
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1111,7 +1111,7 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-rewards-icon);
+  background-image: $lb3-rewards-icon;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 45%;
@@ -1122,7 +1122,7 @@
   margin: -3px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: var(--lb3-messages-icon-bg-image);
+  background-image: $lb3-messages-icon-bg-image;
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1131,7 +1131,7 @@
 .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-messages-icon);
+  background-image: $lb3-messages-icon;
   background-repeat: no-repeat;
   background-position: 50% 42%;
   background-size: 45%;
@@ -1266,7 +1266,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-list-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-tournament-header-list-back-image);
+  background-image: $lb3-tournament-header-list-back-image;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   width: 30px;
@@ -1304,7 +1304,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-close {
   position: absolute;
   display: block;
-  background-image: var(--lb3-tournament-header-close-back-image);
+  background-image: $lb3-tournament-header-close-back-image;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -1493,7 +1493,7 @@
   position: absolute;
   content: "";
   display: block;
-  background-image: var(--lb3-widget-info-icon-bg-img);
+  background-image: $lb3-widget-info-icon-bg-img;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -1507,7 +1507,7 @@
   color: var(--lb3-image-banner-active-tournament-details-label-color);
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-details-content-label::before{
-  background-image: var(--lb3-widget-image-banner-active-info-icon-bg-img);
+  background-image: $lb3-widget-image-banner-active-info-icon-bg-img;
 }
 
 // .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-info-icon {
@@ -1713,7 +1713,7 @@
   border: 1px solid #e2d45f;
   border-radius: 100%;
   color: var(--lb3-tournament-lb-place-font-color);
-  background-image: var(--lb3-tournament-lb-top-res-back);
+  background-image: $lb3-tournament-lb-top-res-back;
   text-align: center;
   font-size: 11px;
   font-weight: 400;
@@ -1933,7 +1933,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: var(--prev-btn-icon-bg);
+  background-image: $prev-btn-icon-bg;
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -2116,7 +2116,7 @@
   top: 13px;
   width: 30px;
   height: 26px;
-  background-image: var(--prev-btn-icon-bg);
+  background-image: $prev-btn-icon-bg;
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -2335,7 +2335,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-close {
   position: absolute;
   display: block;
-  background-image: var(--lb3-achievements-header-close-image);
+  background-image: $lb3-achievements-header-close-image;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -2445,7 +2445,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: var(--prev-btn-icon-bg);
+  background-image: $prev-btn-icon-bg;
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -2725,7 +2725,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-close {
   position: absolute;
   display: block;
-  background-image: var(--lb3-rewards-header-close-image);
+  background-image: $lb3-rewards-header-close-image;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -3028,7 +3028,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: var(--prev-btn-icon-bg);
+  background-image: $prev-btn-icon-bg;
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -3200,7 +3200,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-close {
   position: absolute;
   display: block;
-  background-image: var(--lb3-messages-header-close-image);
+  background-image: $lb3-messages-header-close-image;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -3353,7 +3353,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: var(--prev-btn-icon-bg);
+  background-image: $prev-btn-icon-bg;
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -3444,7 +3444,7 @@
 .cl-widget-notif-wrapper .cl-widget-notif-icon-wrapper .cl-widget-notif-icon {
   display: block;
   min-height: 100%;
-  background-image: var(--lb3-notification-back-image);
+  background-image: $lb3-notification-back-image;
   background-repeat: no-repeat;
   background-position: 50% 50%;
   width: 80px;
@@ -3939,22 +3939,22 @@ only screen and (-webkit-min-device-pixel-ratio: 2),
 only screen and (min-device-pixel-ratio: 2) {
 
   .cl-widget-ms-wrapper .cl-widget-ms-icon-wrapper .cl-widget-ms-icon {
-    background-image: var(--lb3-widget-icon-2x);
+    background-image: $lb3-widget-icon-2x;
   }
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach {
-    background-image: var(--lb3-achievements-icon-bg-image-2x);
+    background-image: $lb3-achievements-icon-bg-image-2x;
   }
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb {
-    background-image: var(--lb3-tournament-icon-bg-image-2x);
+    background-image: $lb3-tournament-icon-bg-image-2x;
   }
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards {
-    background-image: var(--lb3-rewards-icon-bg-image-2x);
+    background-image: $lb3-rewards-icon-bg-image-2x;
   }
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox {
-    background-image: var(--lb3-messages-icon-bg-image-2x);
+    background-image: $lb3-messages-icon-bg-image-2x;
   }
   .cl-widget-notif-wrapper .cl-widget-notif-icon-wrapper .cl-widget-notif-icon {
-    background-image: var(--lb3-achievements-icon-bg-image-2x);
+    background-image: $lb3-achievements-icon-bg-image-2x;
   }
 }
 

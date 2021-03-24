@@ -222,7 +222,7 @@
 	object-position: center center;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label::before {
-  background-image: var(--lb3-widget-info-icon-bg-img);
+  background-image: $lb3-widget-info-icon-bg-img;
   background-size: 100%;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard{
@@ -595,7 +595,7 @@
 	left: 0;
   width: 30px;
 	height: 40px;
-  background: var(--lb3-tournament-list-bg-icon) no-repeat;
+  background: $lb3-tournament-list-bg-icon no-repeat;
   background-size: contain;
   background-position: center;
 }
