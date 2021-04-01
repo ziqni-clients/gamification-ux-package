@@ -203,6 +203,41 @@ export const LbWidget = function (options) {
     resources: [], // Example: ["http://example.com/style.css", "http://example.com/my-fonts.css"]
     styles: null, // Example: {widgetBgColor: '#1f294a', widgetIcon: 'url(../../../examples/images/logo-icon-3.png)'}
     partialFunctions: {
+      uri: {
+        availableCompetitionsListParameters: function (filter) {
+          return filter;
+        },
+        finishedCompetitionsListParameters: function (filter) {
+          return filter;
+        },
+        competitionByIdParameters: function (filter) {
+          return filter;
+        },
+        leaderboardParameters: function (filter) {
+          return filter;
+        },
+        achievementsAvailableForAllListParameters: function (filter) {
+          return filter;
+        },
+        achievementsForMemberListParameters: function (filter) {
+          return filter;
+        },
+        achievementByIdParameters: function (filter) {
+          return filter;
+        },
+        claimedRewardsListParameters: function (filter) {
+          return filter;
+        },
+        notClaimedRewardsListParameters: function (filter) {
+          return filter;
+        },
+        expiredRewardsListParameters: function (filter) {
+          return filter;
+        },
+        availableMessagesListParameters: function (filter) {
+          return filter;
+        }
+      },
       startupCallback: function (instance) {},
       rewardFormatter: function (reward) {
         var defaultRewardValue = reward.value;
@@ -333,9 +368,11 @@ export const LbWidget = function (options) {
       filters.push('options.limitEntrantsTo=' + _this.settings.groups);
     }
 
+    filters = _this.settings.partialFunctions.uri.availableCompetitionsListParameters(filters);
+
     ajaxInstanceToUse.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
+      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -397,9 +434,11 @@ export const LbWidget = function (options) {
       filters.push('options.limitEntrantsTo=' + _this.settings.groups);
     }
 
+    filters = _this.settings.partialFunctions.uri.finishedCompetitionsListParameters(filters);
+
     ajaxInstanceToUse.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
+      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -498,9 +537,11 @@ export const LbWidget = function (options) {
       filters.push('_uomKey=' + _this.settings.currency);
     }
 
+    filters = _this.settings.partialFunctions.uri.competitionByIdParameters(filters);
+
     _this.settings.globalAjax.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
+      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -590,9 +631,11 @@ export const LbWidget = function (options) {
         filters.push('memberId=' + _this.settings.memberId);
       }
 
+      filters = _this.settings.partialFunctions.uri.leaderboardParameters(filters);
+
       _this.settings.globalAjax.abort().getData({
         type: 'GET',
-        url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
+        url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
         headers: {
           'X-API-KEY': _this.settings.apiKey
         },
@@ -672,27 +715,22 @@ export const LbWidget = function (options) {
     var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
     // var date = new Date();
     // var createdDateFilter = date.toISOString();
-    var filters = [
+    var basicFilters = [
       '_limit=' + _this.settings.achievements.limit,
       '_include=rewards',
       // 'scheduledEnd>==' + createdDateFilter,
       ('_lang=' + _this.settings.language)
     ];
-    var withGroups = false;
 
     if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-      filters.push('_uomKey=' + _this.settings.currency);
+      basicFilters.push('_uomKey=' + _this.settings.currency);
     }
 
-    if (typeof _this.settings.member.groups !== 'undefined' && _this.settings.member.groups.length > 0) {
-      withGroups = true;
-      filters.push('memberGroups=' + _this.settings.member.groups.join(','));
-    }
+    basicFilters = _this.settings.partialFunctions.uri.achievementsAvailableForAllListParameters(basicFilters);
 
-    // '&scheduledEnd>==' + createdDateFilter +
     checkAchievementsAjax.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?_lang=' + _this.settings.language + '&_uomKey=' + _this.settings.currency,
+      url: _this.settings.uri.gatewayDomain + url + ((basicFilters.length > 0) ? '?' + basicFilters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -708,10 +746,15 @@ export const LbWidget = function (options) {
               _this.settings.achievements.list.push(ach);
             });
 
-            if (withGroups) {
+            if (typeof _this.settings.member.groups !== 'undefined' && _this.settings.member.groups.length > 0) {
+              basicFilters.push('memberGroups=' + _this.settings.member.groups.join(','));
+
+              basicFilters = _this.settings.partialFunctions.uri.achievementsForMemberListParameters(basicFilters);
+
+              var filterParameters = ((basicFilters.length > 0) ? '?' + basicFilters.join('&') : '');
               checkAchievementsAjax.abort().getData({
                 type: 'GET',
-                url: _this.settings.uri.gatewayDomain + url + '?' + filters.join('&'),
+                url: _this.settings.uri.gatewayDomain + url + filterParameters,
                 headers: {
                   'X-API-KEY': _this.settings.apiKey
                 },
@@ -756,9 +799,18 @@ export const LbWidget = function (options) {
   var getAchievementsAjax = new cLabs.Ajax();
   this.getAchievement = function (achievementId, callback) {
     var _this = this;
+    var filters = [
+      '_lang=' + _this.settings.language
+    ];
+
+    if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
+      filters.push('_uomKey=' + _this.settings.currency);
+    }
+
+    filters = _this.settings.partialFunctions.uri.achievementByIdParameters(filters);
 
     getAchievementsAjax.abort().getData({
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.achievement.replace(':space', _this.settings.spaceName).replace(':id', achievementId) + '?_lang=' + _this.settings.language + '&_uomKey=' + _this.settings.currency,
+      url: _this.settings.uri.gatewayDomain + _this.settings.uri.achievement.replace(':space', _this.settings.spaceName).replace(':id', achievementId) + ((filters.length > 0) ? '?' + filters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -949,11 +1001,27 @@ export const LbWidget = function (options) {
   this.checkForAvailableRewards = function (callback) {
     var _this = this;
     var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
+    var claimedFilters = [
+      '_sortByFields=created:desc',
+      'messageType=Reward',
+      'prize.claimed=true',
+      '_hasValuesFor=prize',
+      '_limit=100'
+    ];
+    var notClaimedFilters = [
+      '_sortByFields=created:desc',
+      'messageType=Reward',
+      'prize.claimed=false',
+      '_hasValuesFor=prize',
+      '_limit=100'
+    ];
+
+    claimedFilters = _this.settings.partialFunctions.uri.claimedRewardsListParameters(claimedFilters);
 
     // claimed rewards
     checkForAvailableRewardsAjax.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&messageType=Reward&prize.claimed=true&_hasValuesFor=prize&_limit=100',
+      url: _this.settings.uri.gatewayDomain + url + ((claimedFilters.length > 0) ? '?' + claimedFilters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
@@ -974,10 +1042,12 @@ export const LbWidget = function (options) {
               }
             });
 
+            notClaimedFilters = _this.settings.partialFunctions.uri.notClaimedRewardsListParameters(notClaimedFilters);
+
             // not-claimed rewards
             checkForAvailableRewardsAjax.abort().getData({
               type: 'GET',
-              url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&messageType=Reward&prize.claimed=false&_hasValuesFor=prize&_limit=100',
+              url: _this.settings.uri.gatewayDomain + url + ((notClaimedFilters.length > 0) ? '?' + notClaimedFilters.join('&') : ''),
               headers: {
                 'X-API-KEY': _this.settings.apiKey
               },
@@ -997,9 +1067,19 @@ export const LbWidget = function (options) {
                     // expired rewards
                     var date = new Date();
                     var utcDate = date.getUTCFullYear() + '-' + formatNumberLeadingZeros((date.getUTCMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getUTCDate(), 2) + 'T' + formatNumberLeadingZeros(date.getUTCHours(), 2) + ':' + formatNumberLeadingZeros(date.getUTCMinutes(), 2) + ':00';
+                    var expiredFilters = [
+                      '_sortByFields=created:desc',
+                      'messageType=Reward',
+                      '_hasValuesFor=expiry',
+                      '_limit=100',
+                      'expiry<==' + utcDate
+                    ];
+
+                    expiredFilters = _this.settings.partialFunctions.uri.expiredRewardsListParameters(expiredFilters);
+
                     checkForAvailableRewardsAjax.abort().getData({
                       type: 'GET',
-                      url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&_limit=100&messageType=Reward&_hasValuesFor=expiry&expiry<==' + utcDate,
+                      url: _this.settings.uri.gatewayDomain + url + ((expiredFilters.length > 0) ? '?' + expiredFilters.join('&') : ''),
                       headers: {
                         'X-API-KEY': _this.settings.apiKey
                       },
@@ -1040,12 +1120,19 @@ export const LbWidget = function (options) {
     var date = new Date();
 
     date.setDate(date.getMonth() - 1);
-
     var createdDateFilter = date.getFullYear() + '-' + formatNumberLeadingZeros((date.getMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getDate(), 2);
+    var filters = [
+      '_sortByFields=created:desc',
+      '_hasNoValuesFor=prize',
+      '_limit=100',
+      'created>==' + createdDateFilter
+    ];
+
+    filters = _this.settings.partialFunctions.uri.availableMessagesListParameters(filters);
 
     checkForAvailableMessagesAjax.abort().getData({
       type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + '?_sortByFields=created:desc&_hasNoValuesFor=prize&_limit=100&created>==' + createdDateFilter,
+      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
       headers: {
         'X-API-KEY': _this.settings.apiKey
       },
