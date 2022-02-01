@@ -197,20 +197,20 @@
 		this.demoData = function () {
 			// lookup services override
 			this.settings.widgetInstance.settings.uri.gatewayDomain = "";
-			this.settings.widgetInstance.settings.uri.members = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample_:id.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample_:competitionId.json";
-			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
-			this.settings.widgetInstance.settings.uri.achievements = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievement = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messages = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberReward = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messageById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
-			this.settings.widgetInstance.settings.uri.assets = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
+			this.settings.widgetInstance.settings.uri.members = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample_:id.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample_:competitionId.json";
+			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
+			this.settings.widgetInstance.settings.uri.achievements = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievement = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messages = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberReward = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messageById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
+			this.settings.widgetInstance.settings.uri.assets = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
 		};
 
 		this.navigation = function () {
@@ -329,11 +329,11 @@
 			// widgetInstance.settings.layout.allowOrientationChange = false;
 			// widgetInstance.settings.layout.enableMiniScoreBoardDragging = false;
 			// _this.settings.widgetInstance.settings.resources = [
-			// 	("https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/themes/css/theme/cl-style-1-light-theme.css?t=" + ( new Date().getTime() ))
+			// 	("https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/themes/css/theme/cl-style-1-light-theme.css?t=" + ( new Date().getTime() ))
 			// ];
 
 			_this.settings.defaultSettings.resources = [
-				("https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/themes/css/theme/" + _this.settings.activeStyle + ".css?t=" + ( new Date().getTime() ))
+				("https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/themes/css/theme/" + _this.settings.activeStyle + ".css?t=" + ( new Date().getTime() ))
 			];
 			_this.settings.widgetInstance.settings = mergeObjects(_this.settings.widgetInstance.settings, _this.settings.defaultSettings);
 
@@ -369,7 +369,7 @@
 							});
 
 							const updateResource = [
-								("https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/themes/css/theme/" + el.dataset.id + ".css?t=" + ( new Date().getTime() ))
+								("https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/themes/css/theme/" + el.dataset.id + ".css?t=" + ( new Date().getTime() ))
 							];
 							_this.settings.widgetInstance.settings.resources = updateResource;
 
@@ -722,7 +722,7 @@
 			defaultSettings: {
 				language: "ja",
 				uri: {
-					translationPath: "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/build/i18n/translation_:language.json"
+					translationPath: "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/build/i18n/translation_:language.json"
 				}
 			}
 		});
@@ -732,21 +732,21 @@
 			// lookup services override
 			const language = (lang === "ja") ? lang + "/" : "";
 			this.settings.widgetInstance.settings.uri.gatewayDomain = "";
-			this.settings.widgetInstance.settings.uri.members = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:id.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:competitionId.json";
-			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
-			this.settings.widgetInstance.settings.uri.achievements = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievement = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-data-sample_id:id.json";
-			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messages = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-claimed-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberReward = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-reward-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messageById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-data-sample.json";
-			this.settings.widgetInstance.settings.uri.assets = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
-			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
+			this.settings.widgetInstance.settings.uri.members = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:id.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:competitionId.json";
+			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
+			this.settings.widgetInstance.settings.uri.achievements = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievement = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-data-sample_id:id.json";
+			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messages = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-claimed-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberReward = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-reward-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messageById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-data-sample.json";
+			this.settings.widgetInstance.settings.uri.assets = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
+			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
 		};
 
 		widgetSetup.init();
@@ -837,21 +837,21 @@
 		widgetSetup.demoData = function () {
 			// lookup services override
 			this.settings.widgetInstance.settings.uri.gatewayDomain = "";
-			this.settings.widgetInstance.settings.uri.members = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:id.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:competitionId.json";
-			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
-			this.settings.widgetInstance.settings.uri.achievements = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievement = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messages = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberReward = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messageById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
-			this.settings.widgetInstance.settings.uri.assets = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
-			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
+			this.settings.widgetInstance.settings.uri.members = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:id.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:competitionId.json";
+			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
+			this.settings.widgetInstance.settings.uri.achievements = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievement = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messages = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberReward = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messageById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
+			this.settings.widgetInstance.settings.uri.assets = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
+			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
 		};
 
 		widgetSetup.init();
@@ -870,8 +870,8 @@
 					if (xhr.status === 200) {
 
 
-						widgetSetup.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:id.json";
-						widgetSetup.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:competitionId.json";
+						widgetSetup.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:id.json";
+						widgetSetup.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:competitionId.json";
 
 						callback();
 					} else {
@@ -1391,7 +1391,7 @@
 			defaultSettings: {
 				language: "ja",
 				uri: {
-					translationPath: "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/build/i18n/translation_:language.json"
+					translationPath: "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/build/i18n/translation_:language.json"
 				}
 			}
 		});
@@ -1400,21 +1400,21 @@
 			// lookup services override
 			const language = (lang === "ja") ? lang + "/" : "";
 			this.settings.widgetInstance.settings.uri.gatewayDomain = "";
-			this.settings.widgetInstance.settings.uri.members = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:id.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:competitionId.json";
-			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
-			this.settings.widgetInstance.settings.uri.achievements = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievement = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-data-sample_id:id.json";
-			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messages = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-claimed-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberReward = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-reward-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messageById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-data-sample.json";
-			this.settings.widgetInstance.settings.uri.assets = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
-			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
+			this.settings.widgetInstance.settings.uri.members = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:id.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "competition-data-sample_:competitionId.json";
+			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
+			this.settings.widgetInstance.settings.uri.achievements = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievement = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "achievements-data-sample_id:id.json";
+			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messages = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-claimed-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberReward = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-reward-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messageById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/" + language + "messages-data-sample.json";
+			this.settings.widgetInstance.settings.uri.assets = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
+			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
 		};
 
 		widgetSetup.init();
@@ -1577,21 +1577,21 @@
 		widgetSetup.demoData = function () {
 			// lookup services override
 			this.settings.widgetInstance.settings.uri.gatewayDomain = "";
-			this.settings.widgetInstance.settings.uri.members = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:id.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:competitionId.json";
-			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
-			this.settings.widgetInstance.settings.uri.achievements = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievement = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
-			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messages = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
-			this.settings.widgetInstance.settings.uri.memberReward = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
-			this.settings.widgetInstance.settings.uri.messageById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
-			this.settings.widgetInstance.settings.uri.assets = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
-			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
+			this.settings.widgetInstance.settings.uri.members = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:id.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opt-in_:competitionId.json";
+			this.settings.widgetInstance.settings.uri.contestLeaderboard = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
+			this.settings.widgetInstance.settings.uri.achievements = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievement = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsProgression = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
+			this.settings.widgetInstance.settings.uri.achievementsIssued = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messages = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
+			this.settings.widgetInstance.settings.uri.memberReward = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
+			this.settings.widgetInstance.settings.uri.messageById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
+			this.settings.widgetInstance.settings.uri.assets = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
+			this.settings.widgetInstance.settings.uri.memberCompetitionOptIn = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-opt-in-sample.json";
 		};
 
 		widgetSetup.init();
@@ -1610,8 +1610,8 @@
 					if (xhr.status === 200) {
 
 
-						widgetSetup.settings.widgetInstance.settings.uri.competitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:id.json";
-						widgetSetup.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3-eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:competitionId.json";
+						widgetSetup.settings.widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:id.json";
+						widgetSetup.settings.widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample-opted-in_:competitionId.json";
 
 						callback();
 					} else {
