@@ -1,6 +1,12 @@
-<p align="center">
-    <img width="600" src="https://www.competitionlabs.com/wp-content/uploads/2020/01/Logo-v4.svg"><br/>
-</p>
+> Ziqni formerly known as CompetitionLabs.
+
+> Please ignore the naming confusion between CompetitionLabs and Ziqni throughout the project.
+
+[//]: # (<p align="center">)
+
+[//]: # (    <img width="600" src="https://www.competitionlabs.com/wp-content/uploads/2020/01/Logo-v4.svg"><br/>)
+
+[//]: # (</p>)
 
 # Gamification UX package
 
