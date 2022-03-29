@@ -66,6 +66,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@competitionlabs/gamification-ux-package": "^1.0.15",
     "css-vars-ponyfill": "^2.3.2",
     "fs": "^0.0.1-security",
     "identicon.js": "^2.3.3",
