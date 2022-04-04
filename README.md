@@ -223,7 +223,7 @@ Running the project in dev mode will initialise with an example page.
     			memberId: '<member_reference_id>',
     			language: "en",
     			uri: {
-    				gatewayDomain: "https://gateway.competitionlabs.com",
+    				gatewayDomain: "https://gateway.ziqni.com",
     				translationPath: "https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/build/i18n/translation_:language.json"
     			},
     			resources: [

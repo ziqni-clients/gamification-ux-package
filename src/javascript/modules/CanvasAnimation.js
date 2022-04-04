@@ -601,7 +601,7 @@ export const CanvasAnimation = function (options) {
       _this.settings.updateActive = true;
 
       // Can not load gif cross domain unless it has CORS header
-      // const gifURL = "https://gateway.competitionlabs.com/alex/assets/Olp_TXUBp93_Cg_BQGsD/skull-animaiton.gif";
+      // const gifURL = "https://gateway.ziqni.com/alex/assets/Olp_TXUBp93_Cg_BQGsD/skull-animaiton.gif";
       const gifURL = _this.settings.imageSrc;
       // timeout just waits till script has been parsed and executed
       // then starts loading a gif
@@ -634,7 +634,7 @@ export const CanvasAnimation = function (options) {
       _this.settings.canvasHeightHalf = _this.settings.canvasHeight / 2;
 
       // trigger ACH
-      // _this.settings.lbWidget.settings.canvasAnimation.settings.imageSrc = 'https://gateway.competitionlabs.com/alex/assets/Olp_TXUBp93_Cg_BQGsD/skull-animaiton.gif';
+      // _this.settings.lbWidget.settings.canvasAnimation.settings.imageSrc = 'https://gateway.ziqni.com/alex/assets/Olp_TXUBp93_Cg_BQGsD/skull-animaiton.gif';
       // _this.settings.lbWidget.settings.canvasAnimation.init();
 
       requestAnimationFrame(update);

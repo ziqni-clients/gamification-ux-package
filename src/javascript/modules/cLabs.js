@@ -2,7 +2,7 @@
 
 // var apiURL = "http://192.168.1.8:9998";
 
-const apiURL = 'https://gateway.competitionlabs.com';
+const apiURL = 'https://gateway.ziqni.com';
 
 const cLabs = {
   api: {
