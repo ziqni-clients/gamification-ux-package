@@ -223,7 +223,7 @@ Running the project in dev mode will initialise with an example page.
     			memberId: '<member_reference_id>',
     			language: "en",
     			uri: {
-    				gatewayDomain: "https://gateway.competitionlabs.com",
+    				gatewayDomain: "https://gateway.ziqni.com",
     				translationPath: "https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/build/i18n/translation_:language.json"
     			},
     			resources: [
@@ -289,6 +289,20 @@ The setting "enforceGameLookup" should be set to "true" and game/product ID shou
   enforceGameLookup: true,
   gameId: "my_id"
 }
+```
+
+### How to disable Tournaments, Achievements, Rewards, or Inbox tabs:
+```text
+To disable Tournaments, Achievements, Rewards, or Inbox tabs on the full widget preview the following settings has to be set to "false":
+
+navigation: {    
+  tournaments: {enable: false},
+  achievements: {enable: false},
+  rewards: {enable: false},
+  inbox: {enable: false},
+},
+
+Note: at least one tab should be left enabled
 ```
 
 ### How to disable Inbox/Messaging section:

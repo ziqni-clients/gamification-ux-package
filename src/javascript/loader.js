@@ -57,7 +57,7 @@ import mapObject from './utils/mapObject';
         apiKey: '',
         resources: [],
         uri: {
-          gatewayDomain: 'https://gateway.competitionlabs.com'
+          gatewayDomain: 'https://gateway.ziqni.com'
         },
         language: 'en',
         currency: ''
