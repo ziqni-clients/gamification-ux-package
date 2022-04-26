@@ -291,6 +291,20 @@ The setting "enforceGameLookup" should be set to "true" and game/product ID shou
 }
 ```
 
+### How to disable Tournaments, Achievements, Rewards, or Inbox tabs:
+```text
+To disable Tournaments, Achievements, Rewards, or Inbox tabs on the full widget preview the following settings has to be set to "false":
+
+navigation: {    
+  tournaments: {enable: false},
+  achievements: {enable: false},
+  rewards: {enable: false},
+  inbox: {enable: false},
+},
+
+Note: at least one tab should be left enabled
+```
+
 ### How to disable Inbox/Messaging section:
 ```text
 To disable the inbox/messaging area on the full widget preview the following setting "messages.enabled" has to be set to "false":
