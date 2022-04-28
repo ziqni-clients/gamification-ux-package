@@ -265,7 +265,8 @@ export const LbWidget = function (options) {
       notClaimedRewardsDataResponseParser: function (notClaimedRewardsData, callback) { callback(notClaimedRewardsData); },
       expiredRewardsDataResponseParser: function (expiredRewardsData, callback) { callback(expiredRewardsData); },
       availableMessagesDataResponseParser: function (availableMessagesData, callback) { callback(availableMessagesData); }
-    }
+    },
+    callback: null
   };
 
   if (typeof options !== 'undefined') {
@@ -1408,6 +1409,10 @@ export const LbWidget = function (options) {
       }
 
       _this.cleanup();
+
+      if (typeof _this.settings.callback === 'function') {
+        _this.settings.callback();
+      }
     });
   };
 
