@@ -24,6 +24,8 @@ import { MiniScoreBoard } from './MiniScoreBoard';
 import { MainWidget } from './MainWidget';
 import { CanvasAnimation } from './CanvasAnimation';
 
+import membersApi from '../api/membersApi';
+
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
 
 /**
@@ -1340,27 +1342,29 @@ export const LbWidget = function (options) {
     }
   };
 
-  this.loadMember = function (callback) {
-    var _this = this;
-
-    _this.settings.globalAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.members.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var json = JSON.parse(response);
-
-          _this.settings.member = json.data;
-
-          callback(json.data);
-        } else {
-          _this.log('failed to loadMember ' + response);
-        }
-      }
-    });
+  this.loadMember = async function (callback) {
+    const memberInfo = await membersApi.handleGetMember(this.settings.memberId, this.settings.apiKey);
+    console.log('memberInfo:', memberInfo);
+    // var _this = this;
+    //
+    // _this.settings.globalAjax.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + _this.settings.uri.members.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var json = JSON.parse(response);
+    //
+    //       _this.settings.member = json.data;
+    //
+    //       callback(json.data);
+    //     } else {
+    //       _this.log('failed to loadMember ' + response);
+    //     }
+    //   }
+    // });
   };
 
   this.loadWidgetTranslations = function (callback) {
