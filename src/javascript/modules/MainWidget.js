@@ -997,6 +997,7 @@ export const MainWidget = function (options) {
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
       var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : lb.name;
+      var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
@@ -1009,6 +1010,10 @@ export const MainWidget = function (options) {
             count++;
           }
         }
+      }
+
+      if (memberNameLength) {
+        memberName = memberName.slice(0, memberNameLength) + '*****';
       }
 
       _this.leaderboardRowUpdate(
@@ -1077,6 +1082,7 @@ export const MainWidget = function (options) {
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
       var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : lb.name;
+      var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
@@ -1089,6 +1095,10 @@ export const MainWidget = function (options) {
             count++;
           }
         }
+      }
+
+      if (memberNameLength && memberName !== _this.settings.lbWidget.settings.translation.leaderboard.you) {
+        memberName = memberName.slice(0, memberNameLength) + '*****';
       }
 
       _this.leaderboardRowUpdate(
