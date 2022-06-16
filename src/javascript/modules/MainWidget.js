@@ -1012,7 +1012,7 @@ export const MainWidget = function (options) {
         }
       }
 
-      if (memberNameLength) {
+      if (memberNameLength && memberName !== _this.settings.lbWidget.settings.translation.leaderboard.you) {
         memberName = memberName.slice(0, memberNameLength) + '*****';
       }
 
