@@ -69,10 +69,13 @@
     "@ziqni-tech/gamification-api-client": "0.0.1",
     "css-vars-ponyfill": "^2.3.2",
     "fs": "^0.0.1-security",
+    "handlebars": "^4.7.7",
+    "handlebars-loader": "^1.7.2",
     "identicon.js": "^2.3.3",
     "jssha": "^3.2.0",
     "moment": "2.24.0",
     "node-forge": "^0.10.0",
+    "regenerator-runtime": "^0.13.9",
     "url-polyfill": "^1.1.12",
     "yargs": "^16.1.0"
   },

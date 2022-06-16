@@ -60,7 +60,7 @@ module.exports = {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'svg-url-loader',
-        query: {
+        options: {
           limit: 8192,
           mimetype: 'application/svg+xml'
         }
@@ -68,10 +68,20 @@ module.exports = {
       {
         test: /\.(png|jpg)$/,
         loader: 'url-loader',
-        query: {
+        options: {
           limit: 8192
         }
       },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+        options: {
+          helperDirs: path.join(__dirname, '../src/templates/helpers'),
+          precompileOptions: {
+            knownHelpersOnly: false
+          }
+        }
+      }
     ]
   },
   plugins: [

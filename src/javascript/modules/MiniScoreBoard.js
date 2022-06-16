@@ -41,34 +41,13 @@ export const MiniScoreBoard = function (options) {
   }
 
   this.layout = function () {
-    var wrapper = document.createElement('div');
-    var iconWrapper = document.createElement('div');
-    var icon = document.createElement('div');
-
-    var informationWrapper = document.createElement('div');
-    var informationTopWrapper = document.createElement('div');
-    var informationWrapperClose = document.createElement('div');
-    var informationClose = document.createElement('a');
-
-    wrapper.setAttribute('class', 'cl-widget-ms-wrapper');
-    iconWrapper.setAttribute('class', 'cl-widget-ms-icon-wrapper');
-    icon.setAttribute('class', 'cl-widget-ms-icon');
-    informationTopWrapper.setAttribute('class', 'cl-widget-ms-information-top-wrapper');
-    informationWrapper.setAttribute('class', 'cl-widget-ms-information-wrapper');
-    informationWrapperClose.setAttribute('class', 'cl-widget-ms-information-close-wrapper');
-    informationClose.setAttribute('class', 'cl-widget-ms-information-close');
-
-    informationClose.href = 'javascript:void(0);';
-    informationClose.innerHTML = 'x';
+    const wrapper = document.createElement('div');
+    wrapper.setAttribute('class', 'cl-widget-ms-wrapper cl-ms-default-style');
 
     this.initialLayoutPosition(wrapper);
 
-    informationWrapperClose.appendChild(informationClose);
-    informationWrapper.appendChild(informationWrapperClose);
-    informationTopWrapper.appendChild(informationWrapper);
-    iconWrapper.appendChild(icon);
-    wrapper.appendChild(iconWrapper);
-    wrapper.appendChild(informationTopWrapper);
+    const template = require('../../templates/mini-scoreboard/layout.hbs');
+    wrapper.innerHTML = template();
 
     return wrapper;
   };
