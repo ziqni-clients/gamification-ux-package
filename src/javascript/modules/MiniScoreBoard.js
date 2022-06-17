@@ -134,6 +134,10 @@ export const MiniScoreBoard = function (options) {
         dateObj = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
         label = '&nbsp;';
         date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
+        if (diff <= 0) {
+          label = _this.settings.lbWidget.settings.translation.tournaments.finishing;
+          date = '';
+        }
         inverse = true;
       } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
@@ -143,6 +147,9 @@ export const MiniScoreBoard = function (options) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finished;
         date = '';
         inverse = true;
+      } else if (diff <= 0) {
+        label = _this.settings.lbWidget.settings.translation.tournaments.finished;
+        date = '';
       }
     }
 

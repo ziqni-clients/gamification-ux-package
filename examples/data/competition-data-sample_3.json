@@ -1,5 +1,5 @@
 {
-  "time": "2021-03-15T23:42:47.165Z",
+  "time": "2022-06-17T23:42:47.165Z",
   "data": {
     "statusCode": 5,
     "numberOfRounds": 1,
@@ -53,11 +53,11 @@
             "unitOfMeasureType": "Currency"
           }
         }],
-        "scheduledStart": "2021-03-15T23:49:00.000+0000",
+        "scheduledStart": "2022-06-17T23:49:00.000+0000",
         "id": "EhdEOHgBgc9ofrhHczEj",
         "termsConditions": "<p>a sda das das<br></p>",
         "status": "NotStarted",
-        "scheduledEnd": "2021-03-17T00:04:00.000+0000",
+        "scheduledEnd": "2022-06-17T08:04:00.000+0000",
         "round": 1,
         "competitionId": "ARdEOHgBgc9ofrhHYzE3",
         "roundType": "TimeBound",
@@ -69,10 +69,10 @@
         }
       }
     ],
-    "scheduledStart": "2021-03-15T23:49:00.000+0000",
+    "scheduledStart": "2022-06-17T23:49:00.000+0000",
     "id": "3",
     "termsConditions": "<p>a sda das das<br></p>",
     "status": "Ready",
-    "scheduledEnd": "2021-03-17T00:04:00.000+0000"
+    "scheduledEnd": "2022-06-18T00:04:00.000+0000"
   }
 }
