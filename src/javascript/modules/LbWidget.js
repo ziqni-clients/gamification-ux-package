@@ -58,6 +58,7 @@ export const LbWidget = function (options) {
     currency: '',
     spaceName: '',
     memberId: '',
+    memberNameLength: 0,
     groups: '',
     gameId: '',
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
