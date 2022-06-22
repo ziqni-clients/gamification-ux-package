@@ -20,63 +20,62 @@
   font-style: normal;
 }
 :root {
-  --primary-color:#2D9CDB;
-  --primary-color-darken: #2D9CDB;
-  --primary-color-lighten: #555555;
-  --primary-font-color:#4f4f4f;
-  --primary-background-color:#f2f2f2;
-  --primary-background-color-hover: #828282;
-  --light-font-color:#ffffff;
+  --primary-color:#ff6600;
+  --primary-color-darken: #ee6103;
+  --primary-color-lighten: #ff7010;
+  --primary-font-color:#3a3a3a;
+  --primary-background-color:#F9F9F9;
+  --light-font-color:#FFFFFF;
   --darkest-color: #212121;
-  --light-color: #ffffff;
+  --light-grey: #b4b4b4;
   --lb3-widget-font: "Gotham A", "Gotham B", "Gotham", Helvetica, Arial, serif;
   --lb3-widget-bg-color: var(--primary-color);
   --lb3-widget-border-color: var(--primary-color);
   --lb3-widget-text-color: #ffffff;
   --lb3-widget-date-text-color: #ffffff;
-  --lb3-widget-header-text-color: var(--light-color);
-  --lb3-widget-navigation-icon-width: 25%;
-  --lb3-widget-navigation-icon-height: 32px;
+  --lb3-widget-header-text-color: var(--light-grey);
+  --lb3-widget-navigation-icon-width: 73px;
+  --lb3-widget-navigation-icon-height: 73px;
+  --main-widget-image-banner-active-details-content-background: var(--primary-color);
   --lb3-close-btn-bg-color: var(--primary-color);
-  --lb3-miniscoreboard-close-wrapper-border: 2px solid #252525;
+  --lb3-miniscoreboard-close-wrapper-border: 2px solid var(--primary-color);
+  --lb3-miniscoreboard-close-btn-back: var(--primary-color);
   --lb3-miniscoreboard-close-btn-color: #fff;
   --lb3-miniscoreboard-close-btn-font-size: 18px;
-  --lb3-miniscoreboard-opt-btn-border: 1px solid var(--light-font-color);
-  --lb3-miniscoreboard-opt-btn-back: #33c334;
-  --lb3-miniscoreboard-opt-btn-back-hover: #28A02A;
-  --lb3-miniscoreboard-opt-btn-color: var(--light-font-color);
+  --lb3-miniscoreboard-opt-btn-border: 1px solid var(--primary-background-color);
+  --lb3-miniscoreboard-opt-btn-back: var(--primary-background-color);
+  --lb3-miniscoreboard-opt-btn-back-hover: var(--primary-color);
+  --lb3-miniscoreboard-opt-btn-color-hover: #ffffff;
+  --lb3-miniscoreboard-opt-btn-color: var(--primary-color);
   --lb3-miniscoreboard-opt-line-height: 22px;
   --lb3-miniscoreboard-opt-font-size: 14px;
-  --lb3-miniscoreboard-date-color: var(--light-font-color);
-  --lb3-miniscoreboard-rank-label-color: var(--light-font-color);
-  --lb3-miniscoreboard-points-label-color: var(--light-font-color);
-  --lb3-miniscoreboard-close-btn-back: var(--primary-color);
-  --lb3-widget-navigation-background-color: var(--primary-background-color);
-  --lb3-widget-nav-icon-active-bg-color: #2F80ED;
-  --lb3-miniscoreboard-inverse-first-to-date-color: var(--primary-font-color);
-  --lb3-miniscoreboard-inverse-first-to-date-only-color: var(--light-font-color);
-  --lb3-miniscoreboard-first-to-header-rank-color: var(--light-font-color);
-  --lb3-miniscoreboard-first-to-header-points-color: var(--light-font-color);
-  --lb3-miniscoreboard-vertical-first-to-rank-color: var(--light-font-color);
-  --lb3-miniscoreboard-vertical-first-to-points-color: var(--light-font-color);
-  --lb3-miniscoreboard-first-to-date-color: var(--primary-font-color);
-  --lb3-tournament-header-back: var(--primary-color-darken);
-  --lb3-tournament-header-border-bottom: 0px;
+  --lb3-miniscoreboard-date-color: var(--light-grey);
+  --lb3-miniscoreboard-rank-label-color: var(--light-grey);
+  --lb3-miniscoreboard-points-label-color: var(--light-grey);
+  --lb3-miniscoreboard-inverse-first-to-date-color: var(--light-grey);
+  --lb3-miniscoreboard-inverse-first-to-date-only-color: var(--light-grey);
+  --lb3-miniscoreboard-first-to-header-rank-color: var(--light-grey);
+  --lb3-miniscoreboard-first-to-header-points-color: var(--light-grey);
+  --lb3-miniscoreboard-vertical-first-to-rank-color: var(--light-grey);
+  --lb3-miniscoreboard-vertical-first-to-points-color: var(--light-grey);
+  --lb3-miniscoreboard-first-to-date-color: var(--light-grey);
+  --lb3-tournament-header-back: var(--primary-color);
+  --lb3-tournament-header-border-bottom: 1px solid #4c4c4c;
   --lb3-tournament-header-label-color: var(--light-font-color);
   --lb3-tournament-header-date-color: var(--light-font-color);
   --lb3-tournament-details-bg-color: var(--primary-background-color);
   --lb3-tournament-details-label-color: var(--primary-font-color);
+  --lb3-image-banner-active-tournament-details-label-color: #ffffff;
   --lb3-tournament-footer-bg-color: var(--primary-color);
-  --lb3-tournament-footer-top-border: none;
+  --lb3-tournament-footer-top-border: 1px solid #4c4c4c;
   --lb3-tournament-footer-text-color: var(--light-font-color);
   --lb3-tournament-container-bg-color: var(--primary-background-color);
   --lb3-tournament-container-text-color: var(--primary-font-color);
-  --lb3-tournament-container-text-size: 14px;
+  --lb3-tournament-container-text-size: 12px;
   --lb3-tournament-container-height: 28px;
   --lb3-tournament-container-line-height: 28px;
-  --lb3-tournament-container-description-color: var(--light-color);
-  --lb3-tournament-top-results-text-color: var(--primary-font-color);
-  --lb3-tournament-lb-top-results-place-box-shadow: unset;
+  --lb3-tournament-description-close-arrow-up-color: #ffffff;
+  --lb3-tournament-description-close-background: var(--primary-color);
   --lb3-tournament-lb-place-font-color: var(--primary-font-color);
   --lb3-tournament-lb-first-place-back-position: 0 0;
   --lb3-tournament-lb-first-place-back-size: 100%;
@@ -90,10 +89,11 @@
   --lb3-tournament-lb-third-place-back-size: 100%;
   --lb3-tournament-lb-third-place-color: unset;
   --lb3-tournament-lb-third-place-border: none;
-  --lb3-tournament-header-text-color: #4f4f4f;
-  --lb3-tournament-header-text-size: 13px;
-  --lb3-image-banner-active-tournament-details-label-color: var(--primary-font-color);
-  --lb3-tournament-top-results-bg-color: #ffffff;
+  --lb3-tournament-header-text-color: var(--primary-font-color);
+  --lb3-tournament-header-text-size: 11px;
+  --lb3-tournament-top-results-text-color: var(--primary-font-color);
+  --lb3-tournament-lb-top-results-place-box-shadow: 1px 1px 3px #575f57;
+  --lb3-tournament-top-results-bg-color: #E4E3D6;
   --lb3-tournament-top-results-bg-box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
   --lb3-tournament-details-container-bg-color: var(--primary-background-color);
   --lb3-tournament-details-header-color: #e4bc1f;
@@ -102,36 +102,34 @@
   --lb3-tournament-details-link-color: #2c9ab7;
   --lb3-tournament-list-bg-color: var(--primary-background-color);
   --lb3-tournament-details-opt-in-back: var(--primary-background-color);
-  --lb3-tournament-details-opt-in-back-border-top: 1px solid var(--light-color);
-  --lb3-tournament-details-opt-in-btn-back: #33c334;
-  --lb3-tournament-details-opt-in-btn-back-hover: #28A02A;
-  --lb3-tournament-details-opt-in-btn-color-hover: #FFF;
-  --lb3-tournament-details-opt-in-btn-border-hover: 1px solid #28A02A;
-  --lb3-tournament-details-opt-in-color: var(--light-font-color);
-  --lb3-tournament-details-opt-in-border: 1px solid var(--light-font-color);
-  --lb3-tournament-list-accordion-label-back: #ffffff;
-  --lb3-tournament-list-accordion-label-color: #4F4F4F;
-  --lb3-tournament-list-accordion-label-color-hover: #ffffff;
-  --lb3-tournament-list-accordion-label-icon: #4F4F4F;
-  --lb3-tournament-list-accordion-label-icon-hover: var(--light-font-color);
-  --lb3-tournament-list-accordion-label-icon-show: var(--light-font-color);
-  --lb3-tournament-list-accordion-label-back-show: #2F80ED;
+  --lb3-tournament-details-opt-in-back-border-top: 1px solid var(--light-grey);
+  --lb3-tournament-details-opt-in-btn-back: var(--primary-background-color);
+  --lb3-tournament-details-opt-in-btn-back-hover: var(--primary-color);
+  --lb3-tournament-details-opt-in-btn-color-hover: #ffffff;
+  --lb3-tournament-details-opt-in-btn-border-hover: 1px solid var(--primary-color);
+  --lb3-tournament-details-opt-in-color: var(--primary-font-color);
+  --lb3-tournament-details-opt-in-border: 1px solid var(--primary-font-color);
+  --lb3-tournament-list-accordion-label-back: var(--primary-color-darken);
+  --lb3-tournament-list-accordion-label-icon: var(--light-font-color);
+  --lb3-tournament-list-accordion-label-icon-show: var(--primary-color);
+  --lb3-tournament-list-accordion-label-back-show: #f2f2f2;
   --lb3-tournament-list-accordion-label-back-hover: var(--primary-color-lighten);
-  --lb3-tournament-list-accordion-label-color-show: #ffffff;
-  --lb3-tournament-list-item-cont-border-bottom: 1px solid var(--light-color);
+  --lb3-tournament-list-accordion-label-color-show: var(--primary-color);
+  --lb3-tournament-list-item-cont-border-bottom: 1px solid var(--light-grey);
   --lb3-tournament-list-item-cont-back-hover: #e5e2d5;
   --lb3-tournament-lb-active-member-row-height: 28px;
-  --lb3-tournament-lb-active-member-row-back: var(--primary-color);
-  --lb3-tournament-lb-active-member-row-color: var(--light-font-color);
+  --lb3-tournament-lb-active-member-row-back: #E4E3D6;
+  --lb3-tournament-lb-active-member-row-color: var(--primary-color);
   --lb3-tournament-lb-opt-in-back: var(--primary-background-color);
-  --lb3-tournament-lb-opt-in-btn-back: #33c334;
-  --lb3-tournament-lb-opt-in-btn-color: var(--light-font-color);
-  --lb3-tournament-lb-opt-in-btn-back-hover: #28A02A;
-  --lb3-tournament-lb-opt-in-border: 1px solid var(--light-font-color);
-  --lb3-tournament-lb-opt-in-btn-border-hover: 1px solid #28A02A;
-  --lb3-achievements-header-bg-color: var(--primary-color-darken);
+  --lb3-tournament-lb-opt-in-btn-back: var(--primary-background-color);
+  --lb3-tournament-lb-opt-in-btn-color: var(--primary-font-color);
+  --lb3-tournament-lb-opt-in-border: 1px solid var(--primary-font-color);
+  --lb3-tournament-lb-opt-in-btn-back-hover: var(--primary-color);
+  --lb3-tournament-lb-opt-in-btn-color-hover: #fff;
+  --lb3-tournament-lb-opt-in-btn-border-hover: 1px solid var(--primary-color);
+  --lb3-achievements-header-bg-color: var(--primary-color);
   --lb3-achievements-header-label-color: var(--light-font-color);
-  --lb3-achievements-header-date-color: var(--light-color);
+  --lb3-achievements-header-date-color: var(--light-grey);
   --lb3-achievements-header-border-bottom: 1px solid #4c4c4c;
   --lb3-achievements-details-bg-color: var(--primary-background-color);
   --lb3-achievements-container-bg-color: var(--primary-background-color);
@@ -140,8 +138,8 @@
   --lb3-achievements-details-body-color: var(--primary-font-color);
   --lb3-achievements-details-link-color: #2c9ab7;
   --lb3-achievements-footer-bg-color: var(--primary-color);
-  --lb3-achievements-footer-top-border: none;
-  --lb3-achievements-footer-text-color: var(--light-color);
+  --lb3-achievements-footer-top-border: 1px solid #4c4c4c;
+  --lb3-achievements-footer-text-color: var(--light-font-color);
   --lb3-achievements-divider-color: #e5e2d5;
   --lb3-achievements-item-label-color: var(--primary-font-color);
   --lb3-achievements-item-body-color: var(--primary-font-color);
@@ -149,16 +147,16 @@
   --lb3-achievements-progress-fill-color: #fff;
   --lb3-achievements-progress-text-color: var(--primary-color);
   --lb3-achievements-progress-border: 1px solid var(--primary-color);
-  --lb3-achievements-btn-bg-color: var(--light-font-color);
-  --lb3-achievements-btn-hover-color: var(--light-color);
+  --lb3-achievements-btn-bg-color: var(--primary-color);
+  --lb3-achievements-btn-hover-color: var(--primary-color-lighten);
   --lb3-achievements-btn-border-radius: 3px;
   --lb3-achievements-btn-box-shadow: 1px 3px 4px rgba(0,0,0,0.2);
   --lb3-achievements-btn-border: none;
-  --lb3-rewards-header-bg-color: var(--primary-color-darken);
+  --lb3-rewards-header-bg-color: var(--primary-color);
   --lb3-rewards-header-border-bottom: 1px solid #4c4c4c;
   --lb3-rewards-footer-bg-color: var(--primary-color);
-  --lb3-rewards-footer-top-border: none;
-  --lb3-rewards-footer-text-color: var(--light-color);
+  --lb3-rewards-footer-top-border: 1px solid #4c4c4c;
+  --lb3-rewards-footer-text-color: var(--light-font-color);
   --lb3-rewards-bg-color: var(--primary-background-color);
   --lb3-rewards-divider-color: #e5e2d5;
   --lb3-rewards-item-label-color: var(--primary-font-color);
@@ -172,14 +170,14 @@
   --lb3-rewards-details-body-color: var(--primary-font-color);
   --lb3-rewards-details-reward-bg-color: #173135;
   --lb3-rewards-winnings-bg-color: var(--primary-color);
-  --lb3-rewards-btn-bg-color: #ffffff;
+  --lb3-rewards-btn-bg-color: var(--primary-color);
   --lb3-rewards-btn-border: none;
   --lb3-rewards-btn-hover-color: var(--primary-color-lighten);
   --lb3-rewards-btn-border-radius: 3px;
   --lb3-rewards-btn-box-shadow: 1px 3px 4px rgba(0,0,0,0.2);
-  --lb3-rewards-accordion-container-show-bg-color: var(--darkest-color);
-  --lb3-rewards-accordion-container-show-color: #ffffff;
-  --lb3-messages-header-bg-color: var(--primary-color-darken);
+  --lb3-rewards-accordion-container-show-bg-color: #f2f2f2;
+  --lb3-rewards-accordion-container-show-color: var(--primary-color);
+  --lb3-messages-header-bg-color: var(--primary-color);
   --lb3-messages-header-text-color: #fff;
   --lb3-messages-header-date-color: var(--primary-font-color);
   --lb3-messages-header-border-bottom: 1px solid #4c4c4c;
@@ -193,8 +191,8 @@
   --lb3-messages-details-date-color: var(--primary-font-color);
   --lb3-messages-details-text-color: var(--primary-font-color);
   --lb3-messages-footer-bg-color: var(--primary-color);
-  --lb3-messages-footer-text-color: #fff;
-  --lb3-messages-footer-top-border: none;
+  --lb3-messages-footer-text-color: var(--light-font-color);
+  --lb3-messages-footer-top-border: 1px solid #4c4c4c;
 }
 
 .cl-widget-ms-wrapper, .cl-widget-notif-wrapper {
@@ -1252,7 +1250,7 @@
   margin: -3px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: inherit;
+  background-image: url(../../images/big-orange-btn-icon.png);
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1272,7 +1270,7 @@
   margin: -6px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: inherit;
+  background-image: url(../../images/big-orange-btn-icon.png);
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1292,7 +1290,7 @@
   margin: -6px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: inherit;
+  background-image: url(../../images/big-orange-btn-icon.png);
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1312,7 +1310,7 @@
   margin: -3px -3px;
   width: var(--lb3-widget-navigation-icon-width);
   height: var(--lb3-widget-navigation-icon-height);
-  background-image: inherit;
+  background-image: url(../../images/big-orange-btn-icon.png);
   background-repeat: no-repeat;
   background-color: transparent;
   background-size: 100%;
@@ -1493,7 +1491,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-close {
   position: absolute;
   display: block;
-  background-image: url(../../images/close-icon-grey.svg);
+  background-image: url(../../cl-black-theme/images/close-icon.svg);
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -1708,7 +1706,7 @@
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-details-content-label::before {
-  background-image: url(../../images/info-icon-dark.svg);
+  background-image: url(../../images/info-icon.svg);
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-footer {
@@ -2142,7 +2140,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: url(../../images/prev-btn-icon-grey.svg);
+  background-image: url(../../images/prev-btn-icon-orange.svg);
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -2326,7 +2324,7 @@
   top: 13px;
   width: 30px;
   height: 26px;
-  background-image: url(../../images/prev-btn-icon-grey.svg);
+  background-image: url(../../images/prev-btn-icon-orange.svg);
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -2540,7 +2538,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-close {
   position: absolute;
   display: block;
-  background-image: url(../../images/close-icon-grey.svg);
+  background-image: url(../../cl-black-theme/images/close-icon.svg);
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -2652,7 +2650,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: url(../../images/prev-btn-icon-grey.svg);
+  background-image: url(../../images/prev-btn-icon-orange.svg);
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -2930,7 +2928,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-close {
   position: absolute;
   display: block;
-  background-image: url(../../images/close-icon-grey.svg);
+  background-image: url(../../cl-black-theme/images/close-icon.svg);
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -3233,7 +3231,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: url(../../images/prev-btn-icon-grey.svg);
+  background-image: url(../../images/prev-btn-icon-orange.svg);
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -3404,7 +3402,7 @@
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-close {
   position: absolute;
   display: block;
-  background-image: url(../../images/close-icon-grey.svg);
+  background-image: url(../../cl-black-theme/images/close-icon.svg);
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 70%;
@@ -3559,7 +3557,7 @@
   top: 16px;
   width: 30px;
   height: 26px;
-  background-image: url(../../images/prev-btn-icon-grey.svg);
+  background-image: url(../../images/prev-btn-icon-orange.svg);
   background-repeat: no-repeat;
   background-size: 100%;
   cursor: pointer;
@@ -4196,905 +4194,22 @@
   }
 
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach {
-    background-image: inherit;
+    background-image: url(../../images/big-orange-btn-icon-x2.png);
   }
 
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb {
-    background-image: inherit;
+    background-image: url(../../images/big-orange-btn-icon-x2.png);
   }
 
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards {
-    background-image: inherit;
+    background-image: url(../../images/big-orange-btn-icon-x2.png);
   }
 
   .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox {
-    background-image: inherit;
+    background-image: url(../../images/big-orange-btn-icon-x2.png);
   }
 
   .cl-widget-notif-wrapper .cl-widget-notif-icon-wrapper .cl-widget-notif-icon {
-    background-image: inherit;
-  }
-}
-.cl-main-widget-wrapper .cl-main-widget-navigation-container {
-  position: unset;
-  height: unset;
-  z-index: unset;
-  left: unset;
-  top: unset;
-  width: 100%;
-  padding: 0.5em 0;
-}
-
-.cl-widget-ms-wrapper .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action:hover {
-  border: 1px solid var(--lb3-miniscoreboard-opt-btn-back-hover);
-}
-
-.cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action {
-  background: #33c334;
-}
-
-.cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action:hover {
-  background: #28A02A;
-}
-
-.cl-widget-ms-wrapper .cl-widget-ms-information-wrapper {
-  box-shadow: 0 1px 5px #424242;
-}
-
-.cl-widget-ms-wrapper .cl-widget-ms-information-close-wrapper {
-  box-shadow: 1px -1px 3px rgba(0, 0, 0, 0.4);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header-labels {
-  padding: 0 0 3px 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-navigation-item .cl-main-navigation-item-count {
-  position: absolute;
-  top: -9px;
-  right: 3px;
-  width: auto;
-  padding: 0 3px;
-  border-radius: 50%;
-  font-size: 10px;
-  color: #ffffff;
-  background: #4F4F4F;
-  min-width: 18px;
-  text-align: center;
-  line-height: 15px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-active-nav .cl-main-navigation-item .cl-main-navigation-item-count {
-  top: -9px;
-  line-height: 15px;
-  font-size: 10px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-items {
-  width: 100%;
-  display: flex;
-  justify-content: left;
-  background-color: var(--lb3-widget-navigation-background-color);
-  border-radius: 3px;
-  float: unset;
-  padding: 0;
-  box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.3);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb {
-  margin: 5px 0px;
-  width: var(--lb3-widget-navigation-icon-width);
-  height: var(--lb3-widget-navigation-icon-height);
-  background-image: none;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-size: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb-icon {
-  background-size: contain;
-  opacity: 1;
-  background-image: url(../../images/big-tournament-icon-dark.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb.cl-active-nav .cl-main-widget-navigation-lb-icon {
-  background-image: url(../../images/big-tournament-icon.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach {
-  margin: 5px 0px;
-  width: var(--lb3-widget-navigation-icon-width);
-  height: var(--lb3-widget-navigation-icon-height);
-  background-image: none;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-size: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach-icon {
-  background-size: contain;
-  opacity: 1;
-  background-image: url(../../images/big-challenge-icon-dark.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach.cl-active-nav .cl-main-widget-navigation-ach-icon {
-  background-image: url(../../images/big-challenge-icon.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards {
-  margin: 5px 0px;
-  width: var(--lb3-widget-navigation-icon-width);
-  height: var(--lb3-widget-navigation-icon-height);
-  background-image: none;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-size: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards-icon {
-  background-size: contain;
-  opacity: 1;
-  background-image: url(../../images/big-reward-icon-dark.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards.cl-active-nav .cl-main-widget-navigation-rewards-icon {
-  background-image: url(../../images/big-reward-icon.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox {
-  margin: 5px 0px;
-  width: var(--lb3-widget-navigation-icon-width);
-  height: var(--lb3-widget-navigation-icon-height);
-  background-image: none;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-size: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox-icon {
-  background-size: contain;
-  opacity: 1;
-  background-image: url(../../images/big-message-icon-dark.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox.cl-active-nav .cl-main-widget-navigation-inbox-icon {
-  background-image: url(../../images/big-message-icon.svg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb.cl-active-nav, .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-lb.cl-active-nav:hover {
-  opacity: 1;
-  margin: -3px 0 -3px 0;
-  background-color: var(--lb3-widget-nav-icon-active-bg-color);
-  border-radius: 4px;
-  transition: all 0.3s;
-  height: 47px;
-  width: var(--lb3-widget-navigation-icon-width);
-  padding: 5px;
-  box-shadow: 1px 2px 5px #5e5e5e;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards.cl-active-nav, .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-rewards.cl-active-nav:hover {
-  width: var(--lb3-widget-navigation-icon-width);
-  opacity: 1;
-  margin: -3px 0 -3px 0;
-  background-color: var(--lb3-widget-nav-icon-active-bg-color);
-  border-radius: 4px;
-  transition: all 0.3s;
-  height: 47px;
-  padding: 5px;
-  box-shadow: 1px 2px 5px #5e5e5e;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox.cl-active-nav, .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-inbox.cl-active-nav:hover {
-  width: var(--lb3-widget-navigation-icon-width);
-  opacity: 1;
-  margin: -3px 0 -3px 0;
-  background-color: var(--lb3-widget-nav-icon-active-bg-color);
-  border-radius: 4px;
-  transition: all 0.3s;
-  height: 47px;
-  padding: 5px;
-  box-shadow: 1px 2px 5px #5e5e5e;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach.cl-active-nav, .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-ach.cl-active-nav:hover {
-  width: var(--lb3-widget-navigation-icon-width);
-  opacity: 1;
-  margin: -3px 0 -3px 0;
-  background-color: var(--lb3-widget-nav-icon-active-bg-color);
-  border-radius: 4px;
-  transition: all 0.3s;
-  height: 47px;
-  padding: 5px;
-  box-shadow: 1px 2px 5px #5e5e5e;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container {
-  padding: 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb {
-  height: calc(100% - 70px);
-  overflow: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-lb {
-  height: calc(100% - 60px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-list-icon {
-  opacity: 0.849;
-  transition: opacity 0.3s;
-  height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-list-icon:hover {
-  opacity: 1;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-close {
-  background-size: 100%;
-  right: -15px;
-  width: 40px;
-  height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-details {
-  height: auto;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content {
-  padding: 5px 0 5px 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-image-container .cl-main-widget-lb-details-image {
-  float: unset;
-  padding: unset;
-  margin: unset;
-  border: unset;
-  max-height: unset;
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-  object-position: center center;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content-label::before {
-  background-image: url(../../images/info-icon-dark.svg);
-  background-size: 100%;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard {
-  padding: 84px 0 22px 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body {
-  height: calc(100% - 91px);
-  scrollbar-width: none;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body::-webkit-scrollbar {
-  width: 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body .cl-main-widget-lb-leaderboard-body-res .cl-lb-row:last-child {
-  margin-bottom: 35px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard .cl-lb-member-row::after {
-  border-radius: 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard-body {
-  height: calc(100% - 110px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-lb-details-container .cl-main-widget-lb-details-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-pre-loader {
-  width: 100%;
-  height: calc(100% - 70px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-pre-loader {
-  height: calc(100% - 60px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body-res {
-  padding: 0 10px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-missing-member {
-  margin: 0 0 0 10px;
-  border-radius: 0;
-  width: calc(100% - 20px);
-  padding: 0;
-  bottom: 23px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-missing-member::before {
-  position: absolute;
-  left: -5px;
-  top: 0;
-  content: "";
-  background: var(--lb3-tournament-lb-active-member-row-back);
-  width: 5px;
-  height: 100%;
-  border-radius: 5px 0 0 5px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-missing-member::after {
-  position: absolute;
-  right: -5px;
-  top: 0;
-  content: "";
-  background: var(--lb3-tournament-lb-active-member-row-back);
-  width: 5px;
-  height: 100%;
-  border-radius: 0 5px 5px 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard .cl-lb-member-row {
-  box-shadow: -4px 2px 4px 2px rgba(0, 0, 0, 0.25), 640px 2px 4px 2px rgba(0, 0, 0, 0.25);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description :last-child {
-  margin-bottom: 50px;
-}
-
-/**
- * Competition list
- */
-.cl-main-widget-tournaments-list {
-  height: calc(100% - 60px);
-  top: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-tournaments-list {
-  height: calc(100% - 40px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-footer {
-  border-radius: 0;
-}
-
-/**
-	 * ****************************************
-	 * ********** Achievements Area ***********
-	 * ****************************************
-	 */
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach {
-  height: calc(100% - 70px);
-  overflow: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-section-ach {
-  height: calc(100% - 60px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-more {
-  float: left;
-  text-align: center;
-  color: #4f4f4f;
-  position: absolute;
-  top: -2px;
-  right: 0;
-  line-height: 25px;
-  background: #ffffff;
-  text-decoration: none;
-  border-radius: 3px;
-  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.2);
-  text-transform: uppercase;
-  padding: 4px 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-progression-bar.cl-ach-complete {
-  line-height: 12px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-close {
-  background-size: 100%;
-  right: -15px;
-  width: 40px;
-  height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-ach-details-container .cl-main-widget-ach-details-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-reward {
-  height: calc(100% - 70px);
-  overflow: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-section-reward {
-  height: calc(100% - 60px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-close {
-  background-size: 100%;
-  right: -15px;
-  border-bottom: unset;
-  width: 40px;
-  height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-list {
-  overflow: hidden;
-  padding-top: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-reward-details-container {
-  top: 40px;
-  height: calc(100% - 62px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-reward-details-container .cl-main-widget-reward-details-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-reward-details-container .cl-main-widget-reward-claim-btn {
-  color: var(--primary-color);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-inbox {
-  height: calc(100% - 70px);
-  overflow: unset;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-section-inbox {
-  height: calc(100% - 60px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-close {
-  background-size: 100%;
-  right: -15px;
-  border-bottom: unset;
-  width: 40px;
-  height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-list {
-  overflow: hidden;
-  padding-top: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-inbox-details-container {
-  top: 40px;
-  height: calc(100% - 62px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-inbox-details-container .cl-main-widget-inbox-details-header-label {
-  font-weight: 600;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-list {
-  padding-top: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-ach-details-container {
-  top: 40px;
-  height: calc(100% - 62px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-list-body {
-  height: 568px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header-top-res {
-  border-radius: 5px;
-  padding: 0 10px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header-top-res .cl-rank-col-value {
-  color: var(--darkest-color);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-header {
-  padding: 0 10px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-lb-rank-1 .cl-rank-col-value,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-lb-rank-2 .cl-rank-col-value,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-lb-rank-3 .cl-rank-col-value {
-  height: 23px;
-  width: 23px;
-  line-height: 20px;
-}
-
-@media screen and (min-width: 600px) {
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-rank-col,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-icon-col {
-    width: 5%;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-name-col {
-    width: 38%;
-  }
-}
-/****************************************************************
-	 ******* Embedded description styling and layout changes ********
-	 ****************************************************************/
-.cl-main-widget-wrapper .cl-main-section-image-banner-active .cl-main-widget-lb-details-image-container {
-  max-width: 100%;
-  overflow: hidden;
-  max-height: 200px;
-  text-align: center;
-}
-
-.cl-main-widget-wrapper .cl-main-section-image-banner-active .cl-main-widget-lb-details-image {
-  max-height: 200px;
-  width: auto;
-}
-
-@media screen and (min-width: 1040px) {
-  .cl-main-widget-wrapper .cl-main-section-image-banner-active .cl-main-widget-lb-details-image {
-    width: 100%;
-    height: auto;
-  }
-}
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-description-container {
-  float: left;
-  width: 100%;
-  display: block;
-  height: 0;
-  overflow: hidden;
-  padding: 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
-  padding: 10px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
-  top: 200px;
-  height: calc(100% - 200px);
-  padding-top: 84px;
-  padding-bottom: 3px;
-}
-
-@media screen and (max-width: 600px) {
-  .cl-main-widget-wrapper .cl-main-section-image-banner-active .cl-main-widget-lb-details-image-container {
-    max-height: 110px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-section-image-banner-active .cl-main-widget-lb-leaderboard {
-    top: 130px;
-    height: calc(100% - 130px);
-  }
-}
-@media screen and (min-width: 601px) {
-  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
-    height: calc(100% - 265px);
-  }
-}
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description-container {
-  display: block;
-  position: relative;
-  height: calc(100% - 70px);
-  overflow: hidden;
-  background: var(--primary-color-darken);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description {
-  float: left;
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  overflow: auto;
-  color: var(--lb3-tournament-container-description-color);
-  font-size: 12px;
-  padding: 10px 10px 50px 10px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description a {
-  color: var(--primary-font-color);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description p {
-  margin-bottom: 1em;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description img {
-  max-width: 100%;
-  margin-bottom: 1em;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description-close {
-  float: left;
-  width: 100%;
-  height: 50px;
-  background: var(--primary-background-color);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  cursor: pointer;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description-close::before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 50%;
-  top: 13px;
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--primary-font-color);
-  border-right: transparent;
-  border-bottom: transparent;
-  transform: translate(-50%) rotate(45deg);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details {
-  height: calc(100% - 51px);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-leaderboard {
-  display: none;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-missing-member {
-  display: block !important;
-  width: calc(100% - 20px);
-  position: relative;
-  left: 10px;
-  border-radius: 4px;
-  box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.25);
-  bottom: 43px;
-  margin: 0;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-missing-member::before {
-  display: none;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-missing-member::after {
-  display: none;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description *:last-child {
-  margin-bottom: 50px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-date {
-  display: none;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-tour-list-details-cont .cl-tour-list-details-wrap {
-  padding-left: 45px;
-  position: relative;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-tour-list-details-cont .cl-tour-list-details-wrap::before {
-  display: block;
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  width: 30px;
-  height: 40px;
-  background: url(../../images/info-icon-dark.svg) no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-main-accordion-container .cl-accordion-label {
-  background: var(--lb3-tournament-list-accordion-label-back);
-  color: var(--lb3-tournament-list-accordion-label-color);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-main-accordion-container .cl-accordion-label:hover {
-  background: var(--lb3-tournament-list-accordion-label-back-hover);
-  color: var(--lb3-tournament-list-accordion-label-color-hover);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-tournaments-list .cl-main-accordion-container .cl-shown .cl-accordion-label {
-  background: var(--lb3-tournament-list-accordion-label-back-show);
-  color: var(--lb3-tournament-list-accordion-label-color-show);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-accordion-container .cl-accordion-label::after {
-  color: var(--lb3-tournament-list-accordion-label-icon);
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-accordion-container .cl-accordion-label:hover::after {
-  color: var(--lb3-tournament-list-accordion-label-icon-hover);
-}
-
-/* Tab heights */
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-label,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header .cl-main-widget-ach-header-label,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header .cl-main-widget-reward-header-label,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header .cl-main-widget-inbox-header-label {
-  line-height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-ach-header,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-reward-header,
-.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-inbox-header {
-  height: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-lb-details-container {
-  height: calc(100% - 62px);
-  top: 40px;
-}
-
-.cl-main-widget-wrapper .cl-main-widget-section-container.cl-hidden-copyright .cl-main-widget-lb-details-container {
-  height: calc(100% - 45px);
-}
-
-/********************************************************************
- ***************************** END **********************************
- *******************************************************************/
-/**
- * *************************************
- * ********** Mobile Devices ***********
- * *************************************
- */
-/* Portrait and Landscape [@media only screen and (min-device-width: 375px) and (max-device-width: 812px)] */
-@media (max-width: 1000px) {
-  .cl-main-widget-wrapper {
-    left: 0;
-    max-width: unset;
-    transform: unset;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-name-col {
-    max-width: 200px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-growth-col {
-    max-width: 55px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-points-col {
-    max-width: 220px;
-  }
-}
-@media (max-width: 812px) {
-  .cl-main-widget-wrapper .cl-main-widget-navigation-container {
-    width: 100%;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-items {
-    padding: 0;
-  }
-
-  .cl-main-widget-wrapper .cl-hidden-navigation .cl-main-widget-section-container {
-    padding: 0 0 0 0;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-pre-loader {
-    opacity: 1;
-    top: 81px;
-    height: calc(100% - 80px);
-    width: 100%;
-  }
-
-  .cl-main-widget-wrapper .cl-hidden-navigation .cl-main-widget-pre-loader {
-    height: 100%;
-    width: 100%;
-    top: 0;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-list-icon {
-    width: 30px;
-    height: 40px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header {
-    height: 42px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-date {
-    line-height: 42px;
-    font-size: 14px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-label {
-    line-height: 42px;
-    font-size: 16px;
-    display: block;
-  }
-
-  .cl-widget-ms-wrapper .cl-main-widget-lb-header-date .time-ind {
-    font-size: 7px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-lb-details-container {
-    height: calc(100% - 64px);
-    top: 42px;
-  }
-}
-@media (max-height: 520px) and (max-width: 812px) {
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header {
-    height: 40px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-list-icon {
-    width: 30px;
-    height: 40px;
-    margin: 3px 0 0 10px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-header .cl-main-widget-lb-header-date {
-    line-height: 40px;
-    font-size: 13px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details {
-    height: 40px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-details-content {
-    padding: 2px 0 0 0;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard {
-    padding: 80px 0 22px 0;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-pre-loader {
-    top: 61px;
-    height: calc(100% - 60px);
-  }
-
-  .cl-main-widget-wrapper .cl-hidden-navigation .cl-main-widget-pre-loader {
-    height: 100%;
-    width: 100%;
-    top: 0;
-  }
-
-  .cl-main-widget-wrapper .cl-hidden-navigation .cl-main-widget-section-container {
-    padding: 0 0 0 0;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-missing-member {
-    bottom: 28px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description {
-    padding-bottom: 26px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-widget-lb-details-description-close {
-    height: 30px;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-res-container {
-    overflow: auto;
-  }
-
-  .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-lb-leaderboard-body {
-    overflow: unset;
-  }
-}
-@media screen and (max-width: 480px) {
-  .cl-main-widget-wrapper .cl-main-widget-navigation-container .cl-main-widget-navigation-items {
-    justify-content: space-between;
+    background-image: url(../../images/big-orange-btn-icon-x2.png);
   }
 }

@@ -3,8 +3,8 @@ $lb3-widget-icon-2x: url(../../images/ziqni-logo.svg);
 $lb3-widget-info-icon-bg-img: url(../../images/info-icon-dark.svg);
 $lb3-widget-image-banner-active-info-icon-bg-img:  url(../../images/info-icon.svg);
 $lb3-tournament-icon: url(../../images/big-tournament-icon.svg);
-$lb3-tournament-icon-bg-image: url(../../images/big-blue-btn-icon.png);
-$lb3-tournament-icon-bg-image-2x: url(../../images/big-blue-btn-icon-x2.png);
+$lb3-tournament-icon-bg-image: url(../../images/big-grey-btn-icon.png);
+$lb3-tournament-icon-bg-image-2x: url(../../images/big-grey-btn-icon-2x.png);
 $lb3-tournament-header-close-back-image: url(../../cl-black-theme/images/close-icon.svg);
 $lb3-tournament-header-list-back-image: url(../../cl-black-theme/images/menu.svg);
 $lb3-tournament-lb-top-res-back: url(../../images/medals-v3.png);
@@ -12,28 +12,29 @@ $lb3-tournament-lb-first-place-back: url(../../images/medals.png);
 $lb3-tournament-lb-second-place-back: url(../../images/medals.png);
 $lb3-tournament-lb-third-place-back: url(../../images/medals.png);
 $lb3-achievements-icon: url(../../images/big-challenge-icon.svg);
-$lb3-achievements-icon-bg-image: url(../../images/big-blue-btn-icon.png);
-$lb3-achievements-icon-bg-image-2x: url(../../images/big-blue-btn-icon-x2.png);
+$lb3-achievements-icon-bg-image: url(../../images/big-grey-btn-icon.png);
+$lb3-achievements-icon-bg-image-2x: url(../../images/big-grey-btn-icon-2x.png);
 $lb3-achievements-header-close-image: url(../../cl-black-theme/images/close-icon.svg);
 $lb3-rewards-icon: url(../../images/big-reward-icon.svg);
-$lb3-rewards-icon-bg-image: url(../../images/big-blue-btn-icon.png);
-$lb3-rewards-icon-bg-image-2x: url(../../images/big-blue-btn-icon-x2.png);
+$lb3-rewards-icon-bg-image: url(../../images/big-grey-btn-icon.png);
+$lb3-rewards-icon-bg-image-2x: url(../../images/big-grey-btn-icon-2x.png);
 $lb3-rewards-header-close-image: url(../../cl-black-theme/images/close-icon.svg);
 $lb3-messages-icon: url(../../images/big-message-icon.svg);
-$lb3-messages-icon-bg-image: url(../../images/big-blue-btn-icon.png);
-$lb3-messages-icon-bg-image-2x: url(../../images/big-blue-btn-icon-x2.png);
+$lb3-messages-icon-bg-image: url(../../images/big-grey-btn-icon.png);
+$lb3-messages-icon-bg-image-2x: url(../../images/big-grey-btn-icon-2x.png);
 $lb3-messages-header-close-image: url(../../cl-black-theme/images/close-icon.svg);
 $lb3-notification-back-image: url(../../images/big-blue-btn-icon2.png);
-$prev-btn-icon-bg: url(../../images/prev-btn-icon-blue.svg);
+$prev-btn-icon-bg: url(../../images/prev-btn-icon-grey.svg);
 
 :root {
   //Theme Colours
-  --primary-color:#1f294a;
-  --primary-color-darken: #222E54;
-  --primary-color-lighten: #2C3B6A;
+  --primary-color: #f1f2f4;
+  --primary-color-darken: #555555;
+  --primary-color-lighten: #999999;
 
-  --primary-font-color:#3a3a3a;
+  --primary-font-color: #282f37;
   --primary-background-color:#F9F9F9;
+  --primary-background-color-hover: #d7d7d7;
   --light-font-color:#FFFFFF;
 
   --darkest-color: #212121;
@@ -43,8 +44,8 @@ $prev-btn-icon-bg: url(../../images/prev-btn-icon-blue.svg);
   --lb3-widget-font: "Gotham A", "Gotham B", "Gotham", Helvetica, Arial, serif;
   --lb3-widget-bg-color: var(--primary-color);
   --lb3-widget-border-color: var(--primary-color);
-  --lb3-widget-text-color: #ffffff;
-  --lb3-widget-date-text-color: #ffffff;
+  --lb3-widget-text-color: var(--primary-font-color);
+  --lb3-widget-date-text-color: var(--primary-font-color);
   --lb3-widget-header-text-color: var(--light-grey);
 
   --lb3-widget-navigation-icon-width: 73px;
@@ -241,9 +242,4 @@ $prev-btn-icon-bg: url(../../images/prev-btn-icon-blue.svg);
   --lb3-messages-footer-text-color: var(--light-font-color);
   --lb3-messages-footer-top-border: 1px solid #4c4c4c;
 
-  // NOTIFICATIONS
-
-  //ASSETS
-
 }
-

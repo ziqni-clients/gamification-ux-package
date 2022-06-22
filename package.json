@@ -6,6 +6,7 @@
     "dev": "cross-env --env.production=dev --env.THEME=cl-style-1-light-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
     "build": "rimraf build && cross-env --env.production=prod --env.THEME=cl-style-1-light-theme webpack --config ./webpack/webpack.config.js --progress",
     "dev:layouts": "cross-env --env.production=layouts webpack-dev-server --config ./webpack/webpack.config.js --progress",
+    "dev:cl-style-1-default-theme": "cross-env --env.production=dev --env.THEME=cl-style-1-default-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
     "dev:cl-style-1-light-theme": "cross-env --env.production=dev --env.THEME=cl-style-1-light-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
     "dev:cl-style-1-dark-theme": "cross-env --env.production=dev --env.THEME=cl-style-1-dark-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
     "dev:cl-style-2-default-theme": "cross-env --env.production=dev --env.THEME=cl-style-2-default-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
