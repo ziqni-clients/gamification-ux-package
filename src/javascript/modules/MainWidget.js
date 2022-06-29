@@ -1146,9 +1146,13 @@ export const MainWidget = function (options) {
     _this.updateLeaderboardResults(remainingResults);
 
     var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
+    var memberInTop = query(_this.settings.leaderboard.topResults, '.cl-lb-member-row');
+
     if (member !== null) {
       _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.list.parentNode));
       _this.missingMember(_this.isElementVisibleInView(member, _this.settings.leaderboard.resultContainer));
+    } else if (memberInTop !== null) {
+      _this.missingMember(true);
     } else {
       _this.missingMemberReset();
     }
@@ -1425,6 +1429,10 @@ export const MainWidget = function (options) {
     var _this = this;
     var area = query(_this.settings.container, '.cl-main-widget-lb-missing-member');
     var member = query(_this.settings.leaderboard.list, '.cl-lb-member-row');
+
+    if (!member) {
+      member = query(_this.settings.leaderboard.topResults, '.cl-lb-member-row');
+    }
 
     if (area !== null && member !== null) {
       area.innerHTML = member.innerHTML;
