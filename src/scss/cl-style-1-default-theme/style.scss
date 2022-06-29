@@ -83,6 +83,17 @@
   }
 }
 
+.cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-information-top-wrapper .cl-widget-ms-information-wrapper {
+  padding: 27px 5px 0 5px;
+  .cl-widget-ms-first-to-mem-entry.cl-widget-ms-first-to-mem-self {
+    background: none !important;
+    padding: 0 !important;
+  }
+  .cl-widget-ms-default-date-only {
+    padding: 0;
+  }
+}
+
 .cl-widget-ms-wrapper {
   .cl-widget-ms-information-top-wrapper {
     .cl-widget-ms-information-wrapper {
