@@ -25,13 +25,13 @@ Our widget "out of the box" is a product that you can use immediately by placing
 The Leaderboard Widget package lives in [npm](https://www.npmjs.com/get-npm). To install the latest stable version, run the following command:
 
 ```sh
-npm install @competitionlabs/gamification-ux-package
+npm install @ziqni-tech/gamification-ux-package
 ```
 
 Or if you're using [yarn](https://classic.yarnpkg.com/en/docs/install/):
 
 ```sh
-yarn add @competitionlabs/gamification-ux-package
+yarn add @ziqni-tech/gamification-ux-package
 ```
 
 ## Build
@@ -177,6 +177,7 @@ npm run dev:layouts -- --theme=grey-theme-refresh
 
 #### Themes:
 Style 1"
+* cl-style-1-default-theme
 * cl-style-1-light-theme
 * cl-style-1-dark-theme
 
