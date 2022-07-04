@@ -1,7 +1,13 @@
 {
-  "name": "@competitionlabs/gamification-ux-package",
+  "name": "@ziqni-tech/gamification-ux-package",
   "version": "1.0.15",
+  "author": "ZIQNI LTD",
+  "license": "ISC",
   "description": "Our Gamification UX package enables you to quickly roll out your gamification experience. The package allows you to implement tournament leaderboards, achievements, missions, rewards and a message inbox in a most modular way.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ziqniio/gamification-ux-package"
+  },
   "scripts": {
     "dev": "cross-env --env.production=dev --env.THEME=cl-style-1-light-theme webpack-dev-server --config ./webpack/webpack.config.js --progress",
     "build": "rimraf build && cross-env --env.production=prod --env.THEME=cl-style-1-default-theme webpack --config ./webpack/webpack.config.js --progress",
@@ -34,8 +40,6 @@
     "jsdoc": "rimraf docs && jsdoc -c jsdoc.json",
     "jsdoc:open": "webpack-dev-server --open --port 9003 --contentBase ./docs"
   },
-  "author": "COMPETITION LABS LTD",
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
@@ -67,7 +71,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@competitionlabs/gamification-ux-package": "^1.0.15",
     "css-vars-ponyfill": "^2.3.2",
     "fs": "^0.0.1-security",
     "identicon.js": "^2.3.3",
@@ -76,10 +79,6 @@
     "node-forge": "^0.10.0",
     "url-polyfill": "^1.1.12",
     "yargs": "^16.1.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/competitionlabs/widgets/tree/master/leaderboard_v3"
   },
   "main": "build/javascript/gamification-ux-package.v3.js",
   "style": "build/css/style.css"
