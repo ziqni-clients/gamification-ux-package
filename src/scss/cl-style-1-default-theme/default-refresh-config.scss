@@ -151,7 +151,7 @@ $prev-btn-icon-bg: url(../../images/prev-btn-icon-grey.svg);
   --lb3-tournament-list-accordion-label-back: var(--primary-color-darken);
   --lb3-tournament-list-accordion-label-icon: var(--light-font-color);
   --lb3-tournament-list-accordion-label-icon-show: var(--primary-color);
-  --lb3-tournament-list-accordion-label-back-show: #f2f2f2;
+  --lb3-tournament-list-accordion-label-back-show: var(--primary-color-darken);
   --lb3-tournament-list-accordion-label-back-hover: var(--primary-color-lighten);
   --lb3-tournament-list-accordion-label-color-show: var(--primary-color);
   --lb3-tournament-list-item-cont-border-bottom: 1px solid var(--light-grey);

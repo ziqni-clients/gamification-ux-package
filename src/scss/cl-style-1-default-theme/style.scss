@@ -95,6 +95,11 @@
 }
 
 .cl-widget-ms-wrapper {
+  .cl-widget-ms-default-wrapper {
+    .cl-widget-ms-default-date-label {
+      padding-left: 4px;
+    }
+  }
   .cl-widget-ms-information-top-wrapper {
     .cl-widget-ms-information-wrapper {
       padding: 0 10px 0 30px;

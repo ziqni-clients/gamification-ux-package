@@ -295,6 +295,23 @@ export const MiniScoreBoard = function (options) {
     }
     addClass(query(_this.settings.container, '.cl-widget-ms-default-date-wrapper'), 'cl-widget-ms-default-date-only');
 
+    if (!_this.settings.lbWidget.settings.leaderboard.leaderboardData.length && lbWrapper) {
+      const memberRankElement = query(lbWrapper, '.cl-widget-ms-default-mem-rank');
+      if (memberRankElement) {
+        memberRankElement.innerHTML = "<span class='cl-mem-rank-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.rank + "</span><span class='cl-mem-rank'>--</span>";
+      }
+
+      const memberPointsElement = query(lbWrapper, '.cl-widget-ms-default-mem-points');
+      if (memberPointsElement) {
+        memberPointsElement.innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>--</span>";
+      }
+
+      const resultsWrapper = query(lbWrapper, '.cl-widget-ms-default-mem-entry');
+      if (resultsWrapper) {
+        addClass(resultsWrapper, 'cl-widget-ms-default-mem-self');
+      }
+    }
+
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
       if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId)) {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-default-results-list');
