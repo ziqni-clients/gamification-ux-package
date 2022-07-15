@@ -265,7 +265,7 @@
 .cl-widget-ms-wrapper .cl-widget-ms-default-wrapper .cl-widget-ms-default-date-wrapper {
   float: left;
   width: 100%;
-  padding: 2px 0 2px 12px;
+  padding: 0;
   font-size: 10px;
   line-height: 12px;
 }
@@ -308,7 +308,7 @@
   line-height: 16px;
   background: none;
   font-weight: bold;
-  padding: 0 4px 0 0;
+  padding: 0 4px 0 4px;
 }
 
 .cl-widget-ms-wrapper .cl-widget-ms-default-mem-entry .cl-widget-ms-default-mem-rank {
@@ -377,7 +377,9 @@
 }
 
 .cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-information-top-wrapper .cl-widget-ms-default-wrapper .cl-widget-ms-default-date-label {
-  display: none;
+  width: 100%;
+  padding: 0;
+  text-align: center;
 }
 
 .cl-widget-ms-wrapper.cl-vertical-mini .cl-widget-ms-information-top-wrapper .cl-widget-ms-default-wrapper .cl-widget-ms-default-date {
@@ -815,7 +817,7 @@
   border-radius: 10px 10px 10px 10px;
   color: var(--lb3-widget-text-color);
   padding: 27px 5px 0 5px;
-  height: 199px;
+  height: 205px;
   transition: all 0.3s ease;
   position: relative;
   left: 0;
