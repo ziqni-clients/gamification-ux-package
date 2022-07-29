@@ -354,7 +354,8 @@ export const LbWidget = function (options) {
       'statusCode>==3',
       'statusCode<==5',
       '_sortByFields=options.scheduledDates.end:desc',
-      ('_lang=' + _this.settings.language)
+      ('_lang=' + _this.settings.language),
+      '_limit=999'
     ];
     var ajaxInstanceToUse = (typeof ajaxInstance !== 'undefined' && ajaxInstance !== null) ? ajaxInstance : competitionCheckAjax;
 
