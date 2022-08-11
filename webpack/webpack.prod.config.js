@@ -51,7 +51,13 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules|tests)/,
-        use: ['babel-loader']
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-object-rest-spread']
+          }
+        }
       },
       {
         test: /\.scss$/i,

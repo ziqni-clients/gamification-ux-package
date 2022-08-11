@@ -1,4 +1,5 @@
 import moment from 'moment';
+import 'regenerator-runtime/runtime';
 import Identicon from 'identicon.js';
 import jsSHA from 'jssha';
 import cssVars from 'css-vars-ponyfill';
@@ -23,6 +24,19 @@ import { Notifications } from './Notifications';
 import { MiniScoreBoard } from './MiniScoreBoard';
 import { MainWidget } from './MainWidget';
 import { CanvasAnimation } from './CanvasAnimation';
+
+import {
+  ApiClientStomp,
+  MembersApiWs,
+  MemberRequest,
+  CompetitionsApiWs,
+  CompetitionRequest,
+  EntityChangesApiWs,
+  ContestsApiWs,
+  ContestRequest,
+  AchievementsApiWs,
+  AchievementRequest
+} from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
 
@@ -55,6 +69,8 @@ export const LbWidget = function (options) {
     currency: '',
     spaceName: '',
     memberId: '',
+    apiClientStomp: null,
+    authToken: '',
     memberNameLength: 0,
     groups: '',
     gameId: '',
@@ -169,21 +185,21 @@ export const LbWidget = function (options) {
     uri: {
       gatewayDomain: cLabs.api.url,
 
-      members: '/api/v1/:space/members/reference/:id',
+      // members: '/api/v1/:space/members/reference/:id',
       assets: '/assets/attachments/:attachmentId',
 
       memberSSE: '/api/v1/:space/sse/reference/:id',
       memberSSEHeartbeat: '/api/v1/:space/sse/reference/:id/heartbeat',
 
-      competitions: '/api/v1/:space/competitions',
-      competitionById: '/api/v1/:space/competitions/:id',
+      // competitions: '/api/v1/:space/competitions',
+      // competitionById: '/api/v1/:space/competitions/:id',
       contestLeaderboard: '/api/v1/:space/contests/:id/leaderboard',
 
       achievement: '/api/v1/:space/achievements/:id',
-      achievements: '/api/v1/:space/achievements/members/reference/:id',
-      // achievements: "/api/v1/:space/achievements",
+      // achievements: '/api/v1/:space/achievements/members/reference/:id',
       achievementsProgression: '/api/v1/:space/members/reference/:id/achievements',
       achievementsIssued: '/api/v1/:space/members/reference/:id/achievements/issued',
+      // /api/v1/:space/members/reference/:id/competition/:competitionId
 
       messages: '/api/v1/:space/members/reference/:id/messages',
       messageById: '/api/v1/:space/members/reference/:id/messages/:messageId',
@@ -341,133 +357,209 @@ export const LbWidget = function (options) {
    * get a list of available competition filtered by provided global criteria
    * @param callback {Function}
    */
-  const competitionCheckAjax = new cLabs.Ajax();
+  // const competitionCheckAjax = new cLabs.Ajax();
 
-  this.checkForAvailableCompetitions = function (callback, ajaxInstance) {
-    var _this = this;
-    var url = (_this.settings.memberId.length === 0) ? (
-      _this.settings.uri.competitions.replace(':space', _this.settings.spaceName)
-    ) : (
-      _this.settings.uri.memberCompetitions.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId)
-    );
-    var filters = [
-      'statusCode>==3',
-      'statusCode<==5',
-      '_sortByFields=options.scheduledDates.end:desc',
-      ('_lang=' + _this.settings.language),
-      '_limit=999'
-    ];
-    var ajaxInstanceToUse = (typeof ajaxInstance !== 'undefined' && ajaxInstance !== null) ? ajaxInstance : competitionCheckAjax;
+  this.checkForAvailableCompetitions = async function (callback, ajaxInstance) {
+    const _this = this;
+    // const url = (_this.settings.memberId.length === 0) ? (
+    //   _this.settings.uri.competitions.replace(':space', _this.settings.spaceName)
+    // ) : (
+    //   _this.settings.uri.memberCompetitions.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId)
+    // );
 
-    if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-      filters.push('_uomKey=' + _this.settings.currency);
-    }
+    const competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
 
-    if (_this.settings.gameId.length > 0 && _this.settings.enforceGameLookup) {
-      filters.push('options.products.productRefId=' + _this.settings.gameId);
-    }
-
-    if (_this.settings.groups.length > 0 && _this.settings.memberId.length === 0) {
-      filters.push('options.limitEntrantsTo=' + _this.settings.groups);
-    }
-
-    filters = _this.settings.partialFunctions.uri.availableCompetitionsListParameters(filters);
-
-    ajaxInstanceToUse.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var json = JSON.parse(response);
-
-          _this.settings.partialFunctions.competitionDataAvailableResponseParser(json.data, function (compData) {
-            _this.settings.tournaments.readyCompetitions = [];
-            _this.settings.tournaments.activeCompetitions = [];
-
-            mapObject(compData, function (comp) {
-              if (comp.statusCode === 3) {
-                _this.settings.tournaments.readyCompetitions.push(comp);
-              } else if (comp.statusCode === 5) {
-                _this.settings.tournaments.activeCompetitions.push(comp);
-              }
-            });
-
-            _this.checkForFinishedCompetitions(callback, ajaxInstance);
-          });
-        } else {
-          _this.log('failed to checkForActiveCompetitions ' + response);
-        }
+    const readyCompetitionRequest = CompetitionRequest.constructFromObject({
+      competitionFilter: {
+        productIds: [],
+        tags: [],
+        startDate: null,
+        endDate: null,
+        statusCode: {
+          moreThan: 10,
+          lessThan: 20
+        },
+        sortBy: [{
+          queryField: 'created',
+          order: 'Desc'
+        }],
+        limit: 99,
+        skip: 0
       }
+    }, null);
+
+    const activeCompetitionRequest = CompetitionRequest.constructFromObject({
+      competitionFilter: {
+        productIds: [],
+        tags: [],
+        startDate: null,
+        endDate: null,
+        statusCode: {
+          moreThan: 20,
+          lessThan: 30
+        },
+        sortBy: [{
+          queryField: 'created',
+          order: 'Desc'
+        }],
+        limit: 99,
+        skip: 0
+      }
+    }, null);
+
+    const finishedCompetitionRequest = CompetitionRequest.constructFromObject({
+      competitionFilter: {
+        productIds: [],
+        tags: [],
+        startDate: null,
+        endDate: null,
+        statusCode: {
+          moreThan: 30,
+          lessThan: 40
+        },
+        sortBy: [{
+          queryField: 'created',
+          order: 'Desc'
+        }],
+        limit: 99,
+        skip: 0
+      }
+    }, null);
+
+    await competitionsApiWsClient.getCompetitions(readyCompetitionRequest, (json) => {
+      _this.settings.tournaments.readyCompetitions = json.data ?? [];
     });
+
+    await competitionsApiWsClient.getCompetitions(activeCompetitionRequest, (json) => {
+      _this.settings.tournaments.activeCompetitions = json.data ?? [];
+    });
+
+    await competitionsApiWsClient.getCompetitions(finishedCompetitionRequest, (json) => {
+      _this.settings.tournaments.finishedCompetitions = json.data ?? [];
+    });
+
+    if (typeof callback === 'function') {
+      callback();
+    }
+
+    // var filters = [
+    //   'statusCode>==3',
+    //   'statusCode<==5',
+    //   '_sortByFields=options.scheduledDates.end:desc',
+    //   ('_lang=' + _this.settings.language),
+    //   '_limit=999'
+    // ];
+    // var ajaxInstanceToUse = (typeof ajaxInstance !== 'undefined' && ajaxInstance !== null) ? ajaxInstance : competitionCheckAjax;
+    //
+    // if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
+    //   filters.push('_uomKey=' + _this.settings.currency);
+    // }
+    //
+    // if (_this.settings.gameId.length > 0 && _this.settings.enforceGameLookup) {
+    //   filters.push('options.products.productRefId=' + _this.settings.gameId);
+    // }
+    //
+    // if (_this.settings.groups.length > 0 && _this.settings.memberId.length === 0) {
+    //   filters.push('options.limitEntrantsTo=' + _this.settings.groups);
+    // }
+    //
+    // filters = _this.settings.partialFunctions.uri.availableCompetitionsListParameters(filters);
+    //
+    // ajaxInstanceToUse.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var json = JSON.parse(response);
+    //
+    //       _this.settings.partialFunctions.competitionDataAvailableResponseParser(json.data, function (compData) {
+    //         _this.settings.tournaments.readyCompetitions = [];
+    //         _this.settings.tournaments.activeCompetitions = [];
+    //
+    //         mapObject(compData, function (comp) {
+    //           if (comp.statusCode === 3) {
+    //             _this.settings.tournaments.readyCompetitions.push(comp);
+    //           } else if (comp.statusCode === 5) {
+    //             _this.settings.tournaments.activeCompetitions.push(comp);
+    //           }
+    //         });
+    //
+    //         _this.checkForFinishedCompetitions(callback, ajaxInstance);
+    //       });
+    //     } else {
+    //       _this.log('failed to checkForActiveCompetitions ' + response);
+    //     }
+    //   }
+    // });
   };
 
   /**
    * get a list of finished competition filtered by provided global criteria
    * @param callback {Function}
    */
-  const competitionFinishedCheckAjax = new cLabs.Ajax();
+  // const competitionFinishedCheckAjax = new cLabs.Ajax();
 
-  this.checkForFinishedCompetitions = function (callback, ajaxInstance) {
-    var _this = this;
-    var url = (_this.settings.memberId.length === 0) ? (
-      _this.settings.uri.competitions.replace(':space', _this.settings.spaceName)
-    ) : (
-      _this.settings.uri.memberCompetitions.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId)
-    );
-    var filters = [
-      'statusCode=7',
-      '_limit=10',
-      '_sortByFields=options.scheduledDates.end:desc',
-      ('_lang=' + _this.settings.language)
-    ];
-    var ajaxInstanceToUse = (typeof ajaxInstance !== 'undefined' && ajaxInstance !== null) ? ajaxInstance : competitionFinishedCheckAjax;
-
-    if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-      filters.push('_uomKey=' + _this.settings.currency);
-    }
-
-    if (_this.settings.gameId.length > 0 && _this.settings.enforceGameLookup) {
-      filters.push('options.products.productRefId=' + _this.settings.gameId);
-    }
-
-    if (_this.settings.groups.length > 0 && _this.settings.memberId.length === 0) {
-      filters.push('options.limitEntrantsTo=' + _this.settings.groups);
-    }
-
-    filters = _this.settings.partialFunctions.uri.finishedCompetitionsListParameters(filters);
-
-    ajaxInstanceToUse.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var json = JSON.parse(response);
-
-          _this.settings.partialFunctions.competitionDataFinishedResponseParser(json.data, function (compData) {
-            _this.settings.tournaments.finishedCompetitions = [];
-
-            mapObject(compData, function (comp) {
-              if (comp.statusCode === 7) {
-                _this.settings.tournaments.finishedCompetitions.push(comp);
-              }
-            });
-
-            if (typeof callback === 'function') {
-              callback();
-            }
-          });
-        } else {
-          _this.log('failed to checkForActiveCompetitions ' + response);
-        }
-      }
-    });
-  };
+  // this.checkForFinishedCompetitions = function (callback, ajaxInstance) {
+  //   var _this = this;
+  //   var url = (_this.settings.memberId.length === 0) ? (
+  //     _this.settings.uri.competitions.replace(':space', _this.settings.spaceName)
+  //   ) : (
+  //     _this.settings.uri.memberCompetitions.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId)
+  //   );
+  //   var filters = [
+  //     'statusCode=7',
+  //     '_limit=10',
+  //     '_sortByFields=options.scheduledDates.end:desc',
+  //     ('_lang=' + _this.settings.language)
+  //   ];
+  //   var ajaxInstanceToUse = (typeof ajaxInstance !== 'undefined' && ajaxInstance !== null) ? ajaxInstance : competitionFinishedCheckAjax;
+  //
+  //   if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
+  //     filters.push('_uomKey=' + _this.settings.currency);
+  //   }
+  //
+  //   if (_this.settings.gameId.length > 0 && _this.settings.enforceGameLookup) {
+  //     filters.push('options.products.productRefId=' + _this.settings.gameId);
+  //   }
+  //
+  //   if (_this.settings.groups.length > 0 && _this.settings.memberId.length === 0) {
+  //     filters.push('options.limitEntrantsTo=' + _this.settings.groups);
+  //   }
+  //
+  //   filters = _this.settings.partialFunctions.uri.finishedCompetitionsListParameters(filters);
+  //
+  //   ajaxInstanceToUse.abort().getData({
+  //     type: 'GET',
+  //     url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
+  //     headers: {
+  //       'X-API-KEY': _this.settings.apiKey
+  //     },
+  //     success: function (response, dataObj, xhr) {
+  //       if (xhr.status === 200) {
+  //         var json = JSON.parse(response);
+  //
+  //         _this.settings.partialFunctions.competitionDataFinishedResponseParser(json.data, function (compData) {
+  //           _this.settings.tournaments.finishedCompetitions = [];
+  //
+  //           mapObject(compData, function (comp) {
+  //             if (comp.statusCode === 7) {
+  //               _this.settings.tournaments.finishedCompetitions.push(comp);
+  //             }
+  //           });
+  //
+  //           if (typeof callback === 'function') {
+  //             callback();
+  //           }
+  //         });
+  //       } else {
+  //         _this.log('failed to checkForActiveCompetitions ' + response);
+  //       }
+  //     }
+  //   });
+  // };
 
   this.prepareActiveCompetition = function (callback) {
     var _this = this;
@@ -525,53 +617,89 @@ export const LbWidget = function (options) {
   };
 
   this.loadActiveCompetition = function (callback) {
-    var _this = this;
-    var url = (_this.settings.memberId.length === 0) ? (
-      _this.settings.uri.competitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeCompetitionId)
-    ) : (
-      _this.settings.uri.memberCompetitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':competitionId', _this.settings.competition.activeCompetitionId)
-    );
-    var filters = [
-      ('_include=strategy' + (_this.settings.competition.includeMetadata ? ',metadata' : '')),
-      ('_lang=' + _this.settings.language)
+    const availableCompetitions = [
+      ...this.settings.tournaments.activeCompetitions,
+      ...this.settings.tournaments.readyCompetitions,
+      ...this.settings.tournaments.finishedCompetitions
     ];
 
-    if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-      filters.push('_uomKey=' + _this.settings.currency);
-    }
+    const competition = availableCompetitions.filter(c => {
+      return c.id === this.settings.competition.activeCompetitionId;
+    });
 
-    filters = _this.settings.partialFunctions.uri.competitionByIdParameters(filters);
-
-    _this.settings.globalAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var json = JSON.parse(response);
-
-          _this.settings.partialFunctions.activeCompetitionDataResponseParser(json, function (compData) {
-            if (typeof callback === 'function') {
-              callback(compData);
-            }
-          });
-        } else {
-          _this.log('failed to loadActiveCompetition ' + response);
-        }
+    this.settings.partialFunctions.activeCompetitionDataResponseParser(competition, function (compData) {
+      if (typeof callback === 'function') {
+        callback(compData);
       }
     });
+    // var _this = this;
+    // var url = (_this.settings.memberId.length === 0) ? (
+    //   _this.settings.uri.competitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeCompetitionId)
+    // ) : (
+    //   _this.settings.uri.memberCompetitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':competitionId', _this.settings.competition.activeCompetitionId)
+    // );
+    // var filters = [
+    //   ('_include=strategy' + (_this.settings.competition.includeMetadata ? ',metadata' : '')),
+    //   ('_lang=' + _this.settings.language)
+    // ];
+    //
+    // if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
+    //   filters.push('_uomKey=' + _this.settings.currency);
+    // }
+    //
+    // filters = _this.settings.partialFunctions.uri.competitionByIdParameters(filters);
+    //
+    // _this.settings.globalAjax.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var json = JSON.parse(response);
+    //
+    //       _this.settings.partialFunctions.activeCompetitionDataResponseParser(json, function (compData) {
+    //         if (typeof callback === 'function') {
+    //           callback(compData);
+    //         }
+    //       });
+    //     } else {
+    //       _this.log('failed to loadActiveCompetition ' + response);
+    //     }
+    //   }
+    // });
   };
 
-  this.setActiveCompetition = function (json, callback) {
-    var _this = this;
-
-    _this.settings.competition.activeCompetition = json.data;
+  this.setActiveCompetition = async function (json, callback) {
+    const _this = this;
+    console.log('setActiveCompetition json:', json);
+    _this.settings.competition.activeCompetition = json[0];
     _this.settings.competition.activeContest = null;
-    _this.settings.competition.activeContestId = null;
 
-    if (typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
+    const contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
+
+    const contestRequest = ContestRequest.constructFromObject({
+      contestFilter: {
+        productIds: [],
+        tags: [],
+        startDate: null,
+        endDate: null,
+        sortBy: [],
+        ids: [],
+        competitionIds: [json[0].id],
+        statusCode: [],
+        constraints: [],
+        limit: 99,
+        skip: 0
+      }
+    }, null);
+
+    await contestsApiWsClient.getContests(contestRequest, (json) => {
+      console.log('Contests data:', json.data);
+    });
+
+    if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
       _this.settings.partialFunctions.activeContestDataResponseParser(json.data.contests, function (contests) {
         mapObject(contests, function (contest) {
           if (contest.statusCode < 7 && _this.settings.competition.activeContest === null) {
@@ -712,91 +840,117 @@ export const LbWidget = function (options) {
     }
   };
 
-  var checkAchievementsAjax = new cLabs.Ajax();
-  this.checkForAvailableAchievements = function (callback) {
-    var _this = this;
-    var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
-    // var date = new Date();
-    // var createdDateFilter = date.toISOString();
-    var basicFilters = [
-      '_limit=' + _this.settings.achievements.limit,
-      '_include=rewards',
-      // 'scheduledEnd>==' + createdDateFilter,
-      ('_lang=' + _this.settings.language)
-    ];
+  // var checkAchievementsAjax = new cLabs.Ajax();
+  this.checkForAvailableAchievements = async function (callback) {
+    const _this = this;
+    // var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
+    // // var date = new Date();
+    // // var createdDateFilter = date.toISOString();
+    // var basicFilters = [
+    //   '_limit=' + _this.settings.achievements.limit,
+    //   '_include=rewards',
+    //   // 'scheduledEnd>==' + createdDateFilter,
+    //   ('_lang=' + _this.settings.language)
+    // ];
 
-    if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-      basicFilters.push('_uomKey=' + _this.settings.currency);
-    }
+    const achievementsApiWsClient = new AchievementsApiWs(this.apiClientStomp);
 
-    basicFilters = _this.settings.partialFunctions.uri.achievementsAvailableForAllListParameters(basicFilters);
-
-    checkAchievementsAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + ((basicFilters.length > 0) ? '?' + basicFilters.join('&') : ''),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var jsonData = JSON.parse(response);
-
-          _this.settings.partialFunctions.achievementDataForAllResponseParser(jsonData, function (jsonForAll) {
-            _this.settings.achievements.totalCount = parseInt(jsonForAll.meta.totalRecordsFound);
-            _this.settings.achievements.list = [];
-
-            mapObject(jsonForAll.data, function (ach) {
-              _this.settings.achievements.list.push(ach);
-            });
-
-            if (typeof _this.settings.member.groups !== 'undefined' && _this.settings.member.groups.length > 0) {
-              basicFilters.push('memberGroups=' + _this.settings.member.groups.join(','));
-
-              basicFilters = _this.settings.partialFunctions.uri.achievementsForMemberListParameters(basicFilters);
-
-              var filterParameters = ((basicFilters.length > 0) ? '?' + basicFilters.join('&') : '');
-              checkAchievementsAjax.abort().getData({
-                type: 'GET',
-                url: _this.settings.uri.gatewayDomain + url + filterParameters,
-                headers: {
-                  'X-API-KEY': _this.settings.apiKey
-                },
-                success: function (response, dataObj, xhr) {
-                  if (xhr.status === 200) {
-                    var json = JSON.parse(response);
-
-                    _this.settings.partialFunctions.achievementDataForMemberGroupResponseParser(json, function (achievmentMemberGroupData) {
-                      mapObject(achievmentMemberGroupData.data, function (ach) {
-                        var found = false;
-                        mapObject(_this.settings.achievements.list, function (achCheck) {
-                          if (achCheck.id === ach.id) {
-                            found = true;
-                          }
-                        });
-
-                        if (!found) {
-                          _this.settings.achievements.list.push(ach);
-                        }
-                      });
-
-                      _this.settings.achievements.totalCount = _this.settings.achievements.list.length;
-
-                      if (typeof callback === 'function') callback(_this.settings.achievements.list);
-                    });
-                  } else {
-                    _this.log('failed to checkForAvailableAchievements ' + response);
-                  }
-                }
-              });
-            } else {
-              if (typeof callback === 'function') callback(jsonForAll.data);
-            }
-          });
-        } else {
-          _this.log('failed to checkForAvailableAchievements ' + response);
-        }
+    const achievementRequest = AchievementRequest.constructFromObject({
+      achievementFilter: {
+        productIds: [],
+        tags: [],
+        startDate: null,
+        endDate: null,
+        ids: [],
+        statusCode: null,
+        sortBy: [{
+          queryField: 'created',
+          order: 'Desc'
+        }],
+        skip: 0,
+        limit: 99,
+        constraints: []
       }
+    }, null);
+
+    await achievementsApiWsClient.getAchievements(achievementRequest, (json) => {
+      _this.settings.achievements.list = json.data;
+      _this.settings.achievements.totalCount = _this.settings.achievements.list.length;
+      if (typeof callback === 'function') callback(_this.settings.achievements.list);
     });
+
+    // if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
+    //   basicFilters.push('_uomKey=' + _this.settings.currency);
+    // }
+    //
+    // basicFilters = _this.settings.partialFunctions.uri.achievementsAvailableForAllListParameters(basicFilters);
+    //
+    // checkAchievementsAjax.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + url + ((basicFilters.length > 0) ? '?' + basicFilters.join('&') : ''),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var jsonData = JSON.parse(response);
+    //
+    //       _this.settings.partialFunctions.achievementDataForAllResponseParser(jsonData, function (jsonForAll) {
+    //         _this.settings.achievements.totalCount = parseInt(jsonForAll.meta.totalRecordsFound);
+    //         _this.settings.achievements.list = [];
+    //
+    //         mapObject(jsonForAll.data, function (ach) {
+    //           _this.settings.achievements.list.push(ach);
+    //         });
+    //
+    //         if (typeof _this.settings.member.groups !== 'undefined' && _this.settings.member.groups.length > 0) {
+    //           basicFilters.push('memberGroups=' + _this.settings.member.groups.join(','));
+    //
+    //           basicFilters = _this.settings.partialFunctions.uri.achievementsForMemberListParameters(basicFilters);
+    //
+    //           var filterParameters = ((basicFilters.length > 0) ? '?' + basicFilters.join('&') : '');
+    //           checkAchievementsAjax.abort().getData({
+    //             type: 'GET',
+    //             url: _this.settings.uri.gatewayDomain + url + filterParameters,
+    //             headers: {
+    //               'X-API-KEY': _this.settings.apiKey
+    //             },
+    //             success: function (response, dataObj, xhr) {
+    //               if (xhr.status === 200) {
+    //                 var json = JSON.parse(response);
+    //
+    //                 _this.settings.partialFunctions.achievementDataForMemberGroupResponseParser(json, function (achievmentMemberGroupData) {
+    //                   mapObject(achievmentMemberGroupData.data, function (ach) {
+    //                     var found = false;
+    //                     mapObject(_this.settings.achievements.list, function (achCheck) {
+    //                       if (achCheck.id === ach.id) {
+    //                         found = true;
+    //                       }
+    //                     });
+    //
+    //                     if (!found) {
+    //                       _this.settings.achievements.list.push(ach);
+    //                     }
+    //                   });
+    //
+    //                   _this.settings.achievements.totalCount = _this.settings.achievements.list.length;
+    //
+    //                   if (typeof callback === 'function') callback(_this.settings.achievements.list);
+    //                 });
+    //               } else {
+    //                 _this.log('failed to checkForAvailableAchievements ' + response);
+    //               }
+    //             }
+    //           });
+    //         } else {
+    //           if (typeof callback === 'function') callback(jsonForAll.data);
+    //         }
+    //       });
+    //     } else {
+    //       _this.log('failed to checkForAvailableAchievements ' + response);
+    //     }
+    //   }
+    // });
   };
 
   var getAchievementsAjax = new cLabs.Ajax();
@@ -1342,27 +1496,58 @@ export const LbWidget = function (options) {
     }
   };
 
-  this.loadMember = function (callback) {
-    var _this = this;
+  this.loadMember = async function (callback) {
+    const _this = this;
 
-    _this.settings.globalAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.members.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var json = JSON.parse(response);
+    const membersApiWsClient = new MembersApiWs(this.apiClientStomp);
+    const memberRequest = MemberRequest.constructFromObject({
+      includeFields: [
+        'id',
+        'memberRefId',
+        'memberType',
+        'name',
+        'jsonClass',
+        'accountId',
+        'groups',
+        'created'
+      ],
+      includeCustomFields: [],
+      includeMetaDataFields: []
+    }, null);
 
-          _this.settings.member = json.data;
-
-          callback(json.data);
-        } else {
-          _this.log('failed to loadMember ' + response);
-        }
-      }
+    await membersApiWsClient.getMember(memberRequest, (json) => {
+      _this.settings.member = json.data;
+      callback(json.data);
     });
+
+    const apiWsClient = new EntityChangesApiWs(this.apiClientStomp);
+    const entityChangeSubscriptionRequest = {
+      entityType: 'Competition',
+      action: 'Subscribe',
+      constraints: [],
+      callback: ''
+    };
+
+    apiWsClient.subscribeToEntityChanges(entityChangeSubscriptionRequest, (data) => { console.log('Competition callback data 2', data); });
+
+    // _this.settings.globalAjax.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + _this.settings.uri.members.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var json = JSON.parse(response);
+    //
+    //       _this.settings.member = json.data;
+    //
+    //       callback(json.data);
+    //     } else {
+    //       _this.log('failed to loadMember ' + response);
+    //     }
+    //   }
+    // });
   };
 
   this.loadWidgetTranslations = function (callback) {
@@ -1879,7 +2064,36 @@ export const LbWidget = function (options) {
    * @memberOf LbWidget
    * @return {undefined}
    */
-  this.init = function () {
+  this.init = async function () {
+    const memberTokenRequest = {
+      member: 'Test_key-4a702ee0-bc28-43ab-8088-7ec7625908a2',
+      apiKey: '4ad48941a7c4aa4586abc31a5958a35a',
+      isReferenceId: true,
+      expires: 360000000,
+      resource: 'ziqni-gapi'
+    };
+
+    const response = await fetch('https://api.ziqni.com/member-token', {
+      method: 'post',
+      body: JSON.stringify(memberTokenRequest),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const body = await response.json();
+
+    if (body.data && body.data.jwtToken) {
+      this.settings.authToken = body.data.jwtToken;
+    } else {
+      console.error('Member Token Error');
+    }
+
+    this.apiClientStomp = ApiClientStomp.instance;
+
+    await this.apiClientStomp.connect({ token: this.settings.authToken });
+
     this.loadStylesheet(() => {
       this.applyAppearance();
 

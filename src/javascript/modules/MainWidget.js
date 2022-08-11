@@ -1639,7 +1639,7 @@ export const MainWidget = function (options) {
     var detailsContainer = document.createElement('div');
     var detailsWrapper = document.createElement('div');
     var label = document.createElement('div');
-    var category = document.createElement('div');
+    // var category = document.createElement('div');
     var description = document.createElement('div');
     var progressionWrapper = document.createElement('div');
     var progressionCont = document.createElement('div');
@@ -1651,7 +1651,7 @@ export const MainWidget = function (options) {
     detailsContainer.setAttribute('class', 'cl-ach-list-details-cont');
     detailsWrapper.setAttribute('class', 'cl-ach-list-details-wrap');
     label.setAttribute('class', 'cl-ach-list-details-label');
-    category.setAttribute('class', 'cl-ach-list-details-category');
+    // category.setAttribute('class', 'cl-ach-list-details-category');
     description.setAttribute('class', 'cl-ach-list-details-description');
     progressionWrapper.setAttribute('class', 'cl-ach-list-progression');
     progressionCont.setAttribute('class', 'cl-ach-list-progression-cont');
@@ -1665,10 +1665,10 @@ export const MainWidget = function (options) {
     listItem.dataset.id = ach.id;
 
     label.innerHTML = ach.name;
-    category.innerHTML = ach.category.join(', ');
+    // category.innerHTML = ach.category.join(', ');
 
     detailsWrapper.appendChild(label);
-    detailsWrapper.appendChild(category);
+    // detailsWrapper.appendChild(category);
     detailsWrapper.appendChild(description);
 
     if (cpomntainsImage) {
@@ -1983,7 +1983,7 @@ export const MainWidget = function (options) {
     description.setAttribute('class', 'cl-tour-list-details-description');
 
     listItem.dataset.id = tournament.id;
-    label.innerHTML = tournament.label;
+    label.innerHTML = tournament.name ?? '';
     description.innerHTML = (descriptionContent.length > 100) ? descriptionContent.substr(0, 100) + '...' : descriptionContent;
 
     detailsWrapper.appendChild(label);
