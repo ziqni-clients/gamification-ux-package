@@ -187,6 +187,7 @@ export const LbWidget = function (options) {
 
       messages: '/api/v1/:space/members/reference/:id/messages',
       messageById: '/api/v1/:space/members/reference/:id/messages/:messageId',
+      notificationById: '/api/v1/:space/members/reference/:id/notifications/:messageId',
 
       memberReward: '/api/v1/:space/members/reference/:id/award/:awardId',
       memberRewardClaim: '/api/v1/:space/members/reference/:id/award/:awardId/award',
@@ -907,6 +908,38 @@ export const LbWidget = function (options) {
     });
   };
 
+  this.getNotification = function (notificationId, callback) {
+    var _this = this;
+
+    getMessageAjax.abort().getData({
+      url: _this.settings.uri.gatewayDomain + _this.settings.uri.notificationById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':messageId', notificationId),
+      headers: {
+        'X-API-KEY': _this.settings.apiKey
+      },
+      type: 'GET',
+      success: function (response, dataObj, xhr) {
+        var json = null;
+        if (xhr.status === 200) {
+          try {
+            json = JSON.parse(response);
+          } catch (e) {
+          }
+        }
+
+        if (typeof callback === 'function') {
+          _this.settings.partialFunctions.messageDataResponseParser(json, function (messageData) {
+            callback(messageData);
+          });
+        }
+      },
+      error: function () {
+        if (typeof callback === 'function') {
+          callback(null);
+        }
+      }
+    });
+  };
+
   var claimRewardAjax = new cLabs.Ajax();
   this.claimReward = function (rewardId, callback) {
     var _this = this;
@@ -1122,13 +1155,14 @@ export const LbWidget = function (options) {
     var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
     var date = new Date();
 
-    date.setDate(date.getMonth() - 1);
+    // date.setDate(date.getMonth() - 1);
     var createdDateFilter = date.getFullYear() + '-' + formatNumberLeadingZeros((date.getMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getDate(), 2);
     var filters = [
       '_sortByFields=created:desc',
       '_hasNoValuesFor=prize',
       '_limit=100',
-      'created>==' + createdDateFilter
+      'created>==' + createdDateFilter,
+      'messageType!=Notification'
     ];
 
     filters = _this.settings.partialFunctions.uri.availableMessagesListParameters(filters);

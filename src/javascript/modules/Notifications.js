@@ -98,7 +98,6 @@ export const Notifications = function (options) {
   var processed = {};
   this.startSSE = function () {
     var _this = this;
-
     _this.settings.sseInstance = new Messaging({
       sseUrl: _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSE.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId),
       heartbeat: _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSEHeartbeat.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId),
@@ -155,8 +154,35 @@ export const Notifications = function (options) {
     var description = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-description');
     var descriptionText = stripHtml(data.data.description);
 
+    removeClass(query(_this.settings.container, '.cl-widget-notif-icon-wrapper'), 'simple-notification');
+
     label.innerHTML = (data.data.name.length > 23) ? data.data.name.substr(0, 23) + '...' : data.data.name;
     description.innerHTML = (descriptionText.length > 60) ? descriptionText.substr(0, 60) + '...' : descriptionText;
+
+    _this.settings.detailsContainer.dataset.id = data.data.id;
+
+    _this.settings.container.style.display = 'block';
+    setTimeout(function () {
+      addClass(query(_this.settings.container, '.cl-widget-notif-information-wrapper'), 'cl-show');
+    }, 200);
+
+    if (_this.settings.canvasInstance !== null) {
+      _this.handleCanvasAnimations(data.data);
+    }
+
+    _this.autoNotificationHide();
+  };
+
+  this.showNotification = function (data) {
+    var _this = this;
+    var label = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-label');
+    var description = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-description');
+    var descriptionText = stripHtml(data.data.body);
+
+    addClass(query(_this.settings.container, '.cl-widget-notif-icon-wrapper'), 'simple-notification');
+
+    label.innerHTML = (data.data.subject.length > 23) ? data.data.subject.substring(0, 23) + '...' : data.data.subject;
+    description.innerHTML = (descriptionText.length > 60) ? descriptionText.substring(0, 60) + '...' : descriptionText;
 
     _this.settings.detailsContainer.dataset.id = data.data.id;
 
@@ -206,9 +232,15 @@ export const Notifications = function (options) {
 
         _this.settings.eventStream.splice(index, 1);
       } else if (typeof data.notificationId !== 'undefined') {
-        _this.settings.checkInterval = setTimeout(function () {
-          _this.eventStreamCheck();
-        }, _this.settings.checkTimeout);
+        _this.settings.lbWidget.getNotification(data.notificationId, function (messageData) {
+          _this.showNotification(messageData);
+
+          _this.settings.checkInterval = setTimeout(function () {
+            _this.eventStreamCheck();
+          }, _this.settings.onDisplayCheckTimeout);
+
+          _this.settings.eventStream.splice(index, 1);
+        });
       } else {
         _this.settings.checkInterval = setTimeout(function () {
           _this.eventStreamCheck();
