@@ -3429,7 +3429,7 @@
  * ******************************************
  */
 .cl-widget-notif-wrapper {
-  z-index: 1001;
+  z-index: 1002;
   display: none;
   max-width: 280px;
   left: 5px;
@@ -3465,6 +3465,16 @@
   display: block;
   min-height: 100%;
   background-image: url(../../images/big-challenge-icon.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 45%;
+}
+
+.cl-widget-notif-wrapper .cl-widget-notif-icon-wrapper.simple-notification .cl-widget-notif-icon::after {
+  content: "";
+  display: block;
+  min-height: 100%;
+  background-image: url(../../images/info-icon.svg);
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 45%;
