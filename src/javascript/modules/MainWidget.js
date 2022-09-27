@@ -1195,6 +1195,7 @@ export const MainWidget = function (options) {
 
   this.getActiveCompetitionDescription = function () {
     return (this.settings.lbWidget.settings.competition.activeContest !== null &&
+        this.settings.lbWidget.settings.competition.activeContest.description &&
         this.settings.lbWidget.settings.competition.activeContest.description.length > 0)
       ? this.settings.lbWidget.settings.competition.activeContest.description
       : ((this.settings.lbWidget.settings.competition.activeCompetition !== null &&

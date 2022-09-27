@@ -862,7 +862,10 @@ export const LbWidget = function (options) {
         startDate: null,
         endDate: null,
         ids: [],
-        statusCode: null,
+        statusCode: {
+          moreThan: 20,
+          lessThan: 30
+        },
         sortBy: [{
           queryField: 'created',
           order: 'Desc'
