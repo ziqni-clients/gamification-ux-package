@@ -9,7 +9,8 @@
   "achievements": {
     "label": "Achievements",
     "more": "More",
-    "complete": "complete 100%"
+    "complete": "complete 100%",
+    "enter": "Enter Achievement"
   },
   "tournaments": {
     "label": "Tournaments",

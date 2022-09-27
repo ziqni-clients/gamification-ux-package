@@ -514,6 +514,9 @@ export const MainWidget = function (options) {
     var sectionAchievementDetailsBodyImageContainer = document.createElement('div');
     var sectionAchievementDetailsBody = document.createElement('div');
 
+    var sectionAchievementDetailsOptInContainer = document.createElement('div');
+    var sectionAchievementDetailsOptInAction = document.createElement('a');
+
     sectionACH.setAttribute('class', _this.settings.lbWidget.settings.navigation.achievements.containerClass + ' cl-main-section-item');
     sectionACHHeader.setAttribute('class', 'cl-main-widget-ach-header');
     sectionACHHeaderLabel.setAttribute('class', 'cl-main-widget-ach-header-label');
@@ -545,9 +548,14 @@ export const MainWidget = function (options) {
     sectionAchievementDetailsBodyContainer.setAttribute('class', 'cl-main-widget-ach-details-body-container');
     sectionAchievementDetailsBodyImageContainer.setAttribute('class', 'cl-main-widget-ach-details-body-image-cont');
     sectionAchievementDetailsBody.setAttribute('class', 'cl-main-widget-ach-details-body');
+    sectionAchievementDetailsOptInContainer.setAttribute('class', 'cl-main-widget-ach-details-optin-container');
+    sectionAchievementDetailsOptInAction.setAttribute('class', 'cl-main-widget-ach-details-optin-action');
 
     sectionACHHeaderLabel.innerHTML = _this.settings.lbWidget.settings.translation.achievements.label;
     sectionACHFooterContent.innerHTML = _this.settings.lbWidget.settings.translation.global.copy;
+
+    sectionAchievementDetailsOptInAction.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+    sectionAchievementDetailsOptInAction.href = 'javascript:void(0);';
 
     sectionAchievementDetailsHeader.appendChild(sectionAchievementDetailsHeaderLabel);
     sectionAchievementDetailsHeader.appendChild(sectionAchievementDetailsHeaderDate);
@@ -566,6 +574,9 @@ export const MainWidget = function (options) {
     sectionACHDetailsContentContainer.appendChild(sectionACHDetailsContentContainerDate);
     sectionACHDetails.appendChild(sectionACHDetailsInfo);
     sectionACHDetails.appendChild(sectionACHDetailsContentContainer);
+
+    sectionAchievementDetailsOptInContainer.appendChild(sectionAchievementDetailsOptInAction);
+    sectionAchievementDetailsContainer.appendChild(sectionAchievementDetailsOptInContainer);
 
     sectionACHListBody.appendChild(sectionACHListBodyResults);
     sectionACHList.appendChild(sectionACHListBody);
@@ -1719,10 +1730,25 @@ export const MainWidget = function (options) {
     var body = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-body');
     var image = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-body-image-cont');
 
-    image.innerHTML = '';
+    let optinRequiredForEntrants = false;
 
-    label.innerHTML = data.data.name;
-    body.innerHTML = data.data.description;
+    if (data.constraints && data.constraints.length) {
+      optinRequiredForEntrants = data.constraints.includes('optinRequiredForEntrants');
+    }
+
+    const optIn = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-optin-action');
+
+    if (optinRequiredForEntrants) {
+      optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.enter;
+      removeClass(optIn, 'cl-disabled');
+      optIn.parentNode.style.display = 'block';
+    } else {
+      addClass(optIn, 'cl-disabled');
+      optIn.parentNode.style.display = 'none';
+    }
+
+    label.innerHTML = data.name;
+    body.innerHTML = data.description;
 
     if (_this.settings.lbWidget.settings.achievements.extractImageHeader) {
       var imageLookup = query(body, 'img');

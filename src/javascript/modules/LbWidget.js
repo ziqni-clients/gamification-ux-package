@@ -956,46 +956,51 @@ export const LbWidget = function (options) {
     // });
   };
 
-  var getAchievementsAjax = new cLabs.Ajax();
+  // var getAchievementsAjax = new cLabs.Ajax();
   this.getAchievement = function (achievementId, callback) {
-    var _this = this;
-    var filters = [
-      '_lang=' + _this.settings.language
-    ];
+    const achievementData = this.settings.achievements.list.filter(a => a.id === achievementId);
 
-    if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-      filters.push('_uomKey=' + _this.settings.currency);
+    if (typeof callback === 'function' && achievementData.length) {
+      callback(achievementData[0]);
     }
-
-    filters = _this.settings.partialFunctions.uri.achievementByIdParameters(filters);
-
-    getAchievementsAjax.abort().getData({
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.achievement.replace(':space', _this.settings.spaceName).replace(':id', achievementId) + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      type: 'GET',
-      success: function (response, dataObj, xhr) {
-        var json = null;
-        if (xhr.status === 200) {
-          try {
-            json = JSON.parse(response);
-          } catch (e) {
-          }
-        }
-
-        if (typeof callback === 'function') {
-          _this.settings.partialFunctions.achievementDataResponseParser(json, function (achievementData) {
-            callback(achievementData);
-          });
-        }
-      },
-      error: function () {
-        if (typeof callback === 'function') {
-          callback(null);
-        }
-      }
-    });
+    // var _this = this;
+    // var filters = [
+    //   '_lang=' + _this.settings.language
+    // ];
+    //
+    // if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
+    //   filters.push('_uomKey=' + _this.settings.currency);
+    // }
+    //
+    // filters = _this.settings.partialFunctions.uri.achievementByIdParameters(filters);
+    //
+    // getAchievementsAjax.abort().getData({
+    //   url: _this.settings.uri.gatewayDomain + _this.settings.uri.achievement.replace(':space', _this.settings.spaceName).replace(':id', achievementId) + ((filters.length > 0) ? '?' + filters.join('&') : ''),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   type: 'GET',
+    //   success: function (response, dataObj, xhr) {
+    //     var json = null;
+    //     if (xhr.status === 200) {
+    //       try {
+    //         json = JSON.parse(response);
+    //       } catch (e) {
+    //       }
+    //     }
+    //
+    //     if (typeof callback === 'function') {
+    //       _this.settings.partialFunctions.achievementDataResponseParser(json, function (achievementData) {
+    //         callback(achievementData);
+    //       });
+    //     }
+    //   },
+    //   error: function () {
+    //     if (typeof callback === 'function') {
+    //       callback(null);
+    //     }
+    //   }
+    // });
   };
 
   var getRewardAjax = new cLabs.Ajax();
