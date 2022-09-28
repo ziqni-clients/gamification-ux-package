@@ -2194,7 +2194,8 @@
 /********Body list reset styles END *******/
 
 
-.cl-main-widget-wrapper .cl-main-widget-lb-details-container .cl-main-widget-lb-details-optin-container {
+.cl-main-widget-wrapper .cl-main-widget-lb-details-container .cl-main-widget-lb-details-optin-container,
+.cl-main-widget-wrapper .cl-main-widget-ach-details-container .cl-main-widget-ach-details-optin-container {
   float: left;
   width: 100%;
   text-align: center;
@@ -2205,7 +2206,8 @@
   border-top: var(--lb3-tournament-details-opt-in-back-border-top);
 }
 
-.cl-main-widget-wrapper .cl-main-widget-lb-details-container .cl-main-widget-lb-details-optin-action {
+.cl-main-widget-wrapper .cl-main-widget-lb-details-container .cl-main-widget-lb-details-optin-action,
+.cl-main-widget-wrapper .cl-main-widget-ach-details-container .cl-main-widget-ach-details-optin-action {
   width: auto;
   cursor: pointer;
   background: var(--lb3-tournament-details-opt-in-btn-back);
