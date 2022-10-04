@@ -71,7 +71,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@ziqni-tech/member-api-client": "file:../ziqni-member-sdks/javascript",
+    "@ziqni-tech/member-api-client": "0.0.3",
     "css-vars-ponyfill": "^2.3.2",
     "fs": "^0.0.1-security",
     "identicon.js": "^2.3.3",
