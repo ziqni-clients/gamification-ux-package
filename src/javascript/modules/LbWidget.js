@@ -35,7 +35,10 @@ import {
   ContestsApiWs,
   ContestRequest,
   AchievementsApiWs,
-  AchievementRequest
+  AchievementRequest,
+  OptInApiWs,
+  ManageOptinRequest,
+  OptInRequestStatus
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -77,6 +80,7 @@ export const LbWidget = function (options) {
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
     apiKey: '',
     member: null,
+    itemsPerPage: 10,
     layout: {
       enableMiniScoreBoardDragging: true, // enable/disable dragging with mouse/touch
       miniScoreBoardPosition: { // default position of mini scoreboard left/right/bottom/top (Example: top: '20px')
@@ -100,6 +104,7 @@ export const LbWidget = function (options) {
       extractImageHeader: true // will extract the first found image inside the body tag and move it on top
     },
     achievements: {
+      activeAchievementId: null,
       limit: 100,
       totalCount: 0,
       list: [],
@@ -841,7 +846,7 @@ export const LbWidget = function (options) {
   };
 
   // var checkAchievementsAjax = new cLabs.Ajax();
-  this.checkForAvailableAchievements = async function (callback) {
+  this.checkForAvailableAchievements = async function (pageNumber, callback) {
     const _this = this;
     // var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
     // // var date = new Date();
@@ -870,15 +875,15 @@ export const LbWidget = function (options) {
           queryField: 'created',
           order: 'Desc'
         }],
-        skip: 0,
-        limit: 99,
+        skip: (pageNumber - 1) * this.settings.itemsPerPage,
+        limit: this.settings.itemsPerPage,
         constraints: []
       }
     }, null);
 
     await achievementsApiWsClient.getAchievements(achievementRequest, (json) => {
       _this.settings.achievements.list = json.data;
-      _this.settings.achievements.totalCount = _this.settings.achievements.list.length;
+      _this.settings.achievements.totalCount = json.meta.totalRecordsFound;
       if (typeof callback === 'function') callback(_this.settings.achievements.list);
     });
 
@@ -1536,7 +1541,7 @@ export const LbWidget = function (options) {
       callback: ''
     };
 
-    apiWsClient.subscribeToEntityChanges(entityChangeSubscriptionRequest, (data) => { console.log('Competition callback data 2', data); });
+    apiWsClient.manageEntityChangeSubscription(entityChangeSubscriptionRequest, (data) => { console.log('Competition callback data 2', data); });
 
     // _this.settings.globalAjax.abort().getData({
     //   type: 'GET',
@@ -1691,7 +1696,7 @@ export const LbWidget = function (options) {
 
           // load achievement data
           if (_this.settings.navigation.achievements.enable) {
-            _this.checkForAvailableAchievements(function (achievementData) {
+            _this.checkForAvailableAchievements(1, function (achievementData) {
               _this.updateAchievementNavigationCounts();
             });
           }
@@ -1758,7 +1763,7 @@ export const LbWidget = function (options) {
   };
 
   var loadCompetitionListAjax = new cLabs.Ajax();
-  this.eventHandlers = function (el) {
+  this.eventHandlers = async function (el) {
     var _this = this;
 
     // mini scoreboard opt-in action
@@ -1821,6 +1826,23 @@ export const LbWidget = function (options) {
         });
       });
 
+      // Achievement details opt-in action
+    } else if (hasClass(el, 'cl-main-widget-ach-details-optin-action') && !hasClass(el, 'checking')) {
+      addClass(el, 'checking');
+      if (_this.settings.achievements.activeAchievementId) {
+        const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+
+        const optInRequest = ManageOptinRequest.constructFromObject({
+          entityId: _this.settings.achievements.activeAchievementId,
+          entityType: 'Achievement',
+          action: 'join'
+        }, null);
+
+        await optInApiWsClient.manageOptin(optInRequest, (json) => {
+          console.log('manageOptin data:', json.data);
+        });
+      }
+
       // close mini scoreboard info area
     } else if (hasClass(el, 'cl-widget-ms-information-close') && !hasClass(el, 'checking')) {
       _this.settings.miniScoreBoard.clearAll();
@@ -1853,9 +1875,16 @@ export const LbWidget = function (options) {
         });
       }
 
+      // pagination
+    } else if (hasClass(el, 'paginator-item')) {
+      if (el.closest('.cl-main-widget-ach-list-body-res')) {
+        _this.settings.mainWidget.loadAchievements(el.dataset.page);
+      }
+
       // load achievement details
     } else if (hasClass(el, 'cl-ach-list-more')) {
       _this.getAchievement(el.dataset.id, function (data) {
+        _this.settings.achievements.activeAchievementId = data.id;
         _this.settings.mainWidget.loadAchievementDetails(data, function () {
         });
       });
@@ -2002,6 +2031,21 @@ export const LbWidget = function (options) {
         _this.eventHandlers(el);
       });
     }
+  };
+
+  this.getMemberAchievementOptInStatus = async function (achievementId) {
+    const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+
+    const optInRequestStatus = OptInRequestStatus.constructFromObject({
+      entityType: 'Achievement',
+      entityId: achievementId,
+      statusCode: 5
+    }, null);
+
+    await optInApiWsClient.manageOptin(optInRequestStatus, (json) => {
+      console.warn('optInRequestStatus json.data:', json.data);
+      return json.data;
+    });
   };
 
   this.closeEverything = function () {

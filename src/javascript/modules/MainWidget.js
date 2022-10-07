@@ -1711,24 +1711,53 @@ export const MainWidget = function (options) {
     return listItem;
   };
 
-  this.achievementListLayout = function (achievementData) {
-    var _this = this;
-    var achList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.achievements.containerClass + ' .cl-main-widget-ach-list-body-res');
+  this.achievementListLayout = function (pageNumber, achievementData) {
+    const _this = this;
+    const achList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.achievements.containerClass + ' .cl-main-widget-ach-list-body-res');
+    const totalCount = _this.settings.lbWidget.settings.achievements.totalCount;
+    const itemsPerPage = _this.settings.lbWidget.settings.itemsPerPage;
+    let paginator = query(achList, '.paginator');
+
+    achList.innerHTML = '';
+
+    if (!paginator && totalCount > itemsPerPage) {
+      const pagesCount = Math.ceil(totalCount / itemsPerPage);
+      paginator = document.createElement('div');
+      paginator.setAttribute('class', 'paginator');
+
+      let page = '';
+
+      for (let i = 0; i < pagesCount; i++) {
+        page += '<span class="paginator-item" data-page=' + (i + 1) + '\>' + (i + 1) + '</span>';
+      }
+      paginator.innerHTML = page;
+    }
 
     mapObject(achievementData, function (ach) {
       if (query(achList, '.cl-ach-' + ach.id) === null) {
-        var listItem = _this.achievementItem(ach);
-
+        const listItem = _this.achievementItem(ach);
         achList.appendChild(listItem);
       }
     });
+
+    if (paginator) {
+      const paginatorItems = query(paginator, '.paginator-item');
+      paginatorItems.forEach(item => {
+        removeClass(item, 'active');
+        if (Number(item.dataset.page) === Number(pageNumber)) {
+          addClass(item, 'active');
+        }
+      });
+
+      achList.appendChild(paginator);
+    }
   };
 
-  this.loadAchievementDetails = function (data, callback) {
-    var _this = this;
-    var label = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-header-label');
-    var body = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-body');
-    var image = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-body-image-cont');
+  this.loadAchievementDetails = async function (data, callback) {
+    const _this = this;
+    const label = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-header-label');
+    const body = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-body');
+    const image = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-body-image-cont');
 
     let optinRequiredForEntrants = false;
 
@@ -1737,6 +1766,13 @@ export const MainWidget = function (options) {
     }
 
     const optIn = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-optin-action');
+
+    console.warn('loadAchievementDetails data:', data);
+    console.warn('_this.settings.lbWidget.settings:', _this.settings.lbWidget.settings);
+
+    const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus();
+
+    console.warn('main widget memberAchievementOptInStatus', memberAchievementOptInStatus);
 
     if (optinRequiredForEntrants) {
       optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.enter;
@@ -1906,14 +1942,14 @@ export const MainWidget = function (options) {
     });
   };
 
-  this.loadAchievements = function (callback) {
-    var _this = this;
+  this.loadAchievements = function (pageNumber, callback) {
+    const _this = this;
 
-    _this.settings.lbWidget.checkForAvailableAchievements(function (achievementData) {
+    _this.settings.lbWidget.checkForAvailableAchievements(pageNumber, function (achievementData) {
       _this.settings.lbWidget.updateAchievementNavigationCounts();
-      _this.achievementListLayout(achievementData);
+      _this.achievementListLayout(pageNumber, achievementData);
 
-      var idList = [];
+      const idList = [];
       mapObject(_this.settings.lbWidget.settings.achievements.list, function (ach) {
         idList.push(ach.id);
       });
@@ -2144,7 +2180,7 @@ export const MainWidget = function (options) {
                 _this.settings.navigationSwitchInProgress = false;
               });
             } else if (hasClass(target, 'cl-main-widget-navigation-ach-icon')) {
-              _this.loadAchievements(function () {
+              _this.loadAchievements(1, function () {
                 var achContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.achievements.containerClass);
 
                 _this.settings.achievement.detailsContainer.style.display = 'none';

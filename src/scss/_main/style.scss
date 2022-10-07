@@ -3424,6 +3424,22 @@
   left: 0;
 }
 
+.cl-main-widget-wrapper {
+  .paginator {
+    float: right;
+    background-color: #fff;
+    padding: 6px 12px;
+    border-radius: 3px;
+    &-item {
+      padding: 3px 8px;
+      cursor: pointer;
+      &.active {
+        background: #e5e5e5;
+        border-radius: 3px;
+      }
+    }
+  }
+}
 
 /**
  * ******************************************
