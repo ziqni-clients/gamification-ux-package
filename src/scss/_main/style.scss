@@ -2549,6 +2549,7 @@
   padding: 0 0 25px 0;
   border-bottom: 1px solid var(--lb3-achievements-divider-color);
   margin: 0 0 10px 0;
+  &--notentered {}
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-item:last-child {
@@ -2597,9 +2598,11 @@
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-progression {
-  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   width: 100%;
-  padding: 10px 126px 0 0;
+  padding: 10px 0 0 0;
   position: relative;
   z-index: 1;
 }
@@ -2633,12 +2636,8 @@
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-more {
-  float: left;
   text-align: center;
   color: var(--light-font-color);
-  position: absolute;
-  top: -2px;
-  right: 0;
   line-height: 25px;
   background: var(--lb3-achievements-btn-bg-color);
   text-decoration: none;
@@ -2646,12 +2645,33 @@
   box-shadow: var(--lb3-achievements-btn-box-shadow);
   text-transform: uppercase;
   padding: 4px 25px;
+  margin-left: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
   border: var(--lb3-achievements-btn-border);
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-more:hover {
+  background: var(--lb3-achievements-btn-hover-color);
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-enter {
+  text-align: center;
+  color: var(--light-font-color);
+  line-height: 25px;
+  background: var(--lb3-achievements-btn-bg-color);
+  text-decoration: none;
+  border-radius: var(--lb3-achievements-btn-border-radius);
+  box-shadow: var(--lb3-achievements-btn-box-shadow);
+  text-transform: uppercase;
+  padding: 4px 25px;
+  margin-left: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: var(--lb3-achievements-btn-border);
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-enter:hover {
   background: var(--lb3-achievements-btn-hover-color);
 }
 

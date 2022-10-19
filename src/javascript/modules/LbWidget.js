@@ -26,19 +26,19 @@ import { MainWidget } from './MainWidget';
 import { CanvasAnimation } from './CanvasAnimation';
 
 import {
-  ApiClientStomp,
-  MembersApiWs,
-  MemberRequest,
-  CompetitionsApiWs,
-  CompetitionRequest,
-  EntityChangesApiWs,
-  ContestsApiWs,
-  ContestRequest,
-  AchievementsApiWs,
   AchievementRequest,
-  OptInApiWs,
+  AchievementsApiWs,
+  ApiClientStomp,
+  CompetitionRequest,
+  CompetitionsApiWs,
+  ContestRequest,
+  ContestsApiWs,
+  EntityChangesApiWs,
   ManageOptinRequest,
-  OptInRequestStatus
+  MemberRequest,
+  MembersApiWs,
+  OptInApiWs,
+  OptInStatesRequest
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -376,10 +376,6 @@ export const LbWidget = function (options) {
 
     const readyCompetitionRequest = CompetitionRequest.constructFromObject({
       competitionFilter: {
-        productIds: [],
-        tags: [],
-        startDate: null,
-        endDate: null,
         statusCode: {
           moreThan: 10,
           lessThan: 20
@@ -395,10 +391,6 @@ export const LbWidget = function (options) {
 
     const activeCompetitionRequest = CompetitionRequest.constructFromObject({
       competitionFilter: {
-        productIds: [],
-        tags: [],
-        startDate: null,
-        endDate: null,
         statusCode: {
           moreThan: 20,
           lessThan: 30
@@ -414,10 +406,6 @@ export const LbWidget = function (options) {
 
     const finishedCompetitionRequest = CompetitionRequest.constructFromObject({
       competitionFilter: {
-        productIds: [],
-        tags: [],
-        startDate: null,
-        endDate: null,
         statusCode: {
           moreThan: 30,
           lessThan: 40
@@ -2036,15 +2024,25 @@ export const LbWidget = function (options) {
   this.getMemberAchievementOptInStatus = async function (achievementId) {
     const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
 
-    const optInRequestStatus = OptInRequestStatus.constructFromObject({
-      entityType: 'Achievement',
-      entityId: achievementId,
-      statusCode: 5
+    const optInStatesRequest = OptInStatesRequest.constructFromObject({
+      optinStatesFilter: {
+        entityTypes: ['Achievement'],
+        ids: [achievementId],
+        statusCodes: {
+          gt: 0,
+          lt: 35
+        },
+        skip: 0,
+        limit: 1
+      }
     }, null);
 
-    await optInApiWsClient.manageOptin(optInRequestStatus, (json) => {
-      console.warn('optInRequestStatus json.data:', json.data);
-      return json.data;
+    console.warn('optInStatesRequest:', optInStatesRequest);
+
+    return new Promise((resolve, reject) => {
+      optInApiWsClient.optInStates(optInStatesRequest, (json) => {
+        resolve(json);
+      });
     });
   };
 
@@ -2121,7 +2119,7 @@ export const LbWidget = function (options) {
       member: 'Test_key-4a702ee0-bc28-43ab-8088-7ec7625908a2',
       apiKey: '4ad48941a7c4aa4586abc31a5958a35a',
       isReferenceId: true,
-      expires: 360000000,
+      expires: 3600000,
       resource: 'ziqni-gapi'
     };
 

@@ -1651,36 +1651,38 @@ export const MainWidget = function (options) {
     var detailsContainer = document.createElement('div');
     var detailsWrapper = document.createElement('div');
     var label = document.createElement('div');
-    // var category = document.createElement('div');
     var description = document.createElement('div');
     var progressionWrapper = document.createElement('div');
     var progressionCont = document.createElement('div');
     var progressionBar = document.createElement('div');
     var moreButton = document.createElement('a');
+    var enterButton = document.createElement('a');
     var cpomntainsImage = (typeof ach.icon !== 'undefined' && ach.icon.length > 0);
 
     listItem.setAttribute('class', 'cl-ach-list-item cl-ach-' + ach.id + (cpomntainsImage ? ' cl-ach-with-image' : ''));
     detailsContainer.setAttribute('class', 'cl-ach-list-details-cont');
     detailsWrapper.setAttribute('class', 'cl-ach-list-details-wrap');
     label.setAttribute('class', 'cl-ach-list-details-label');
-    // category.setAttribute('class', 'cl-ach-list-details-category');
     description.setAttribute('class', 'cl-ach-list-details-description');
     progressionWrapper.setAttribute('class', 'cl-ach-list-progression');
     progressionCont.setAttribute('class', 'cl-ach-list-progression-cont');
     progressionBar.setAttribute('class', 'cl-ach-list-progression-bar');
     moreButton.setAttribute('class', 'cl-ach-list-more');
+    enterButton.setAttribute('class', 'cl-ach-list-enter');
 
     moreButton.dataset.id = ach.id;
     moreButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.more;
     moreButton.href = 'javascript:void(0);';
 
+    enterButton.dataset.id = ach.id;
+    enterButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.listEnterBtn;
+    enterButton.href = 'javascript:void(0);';
+
     listItem.dataset.id = ach.id;
 
     label.innerHTML = ach.name;
-    // category.innerHTML = ach.category.join(', ');
 
     detailsWrapper.appendChild(label);
-    // detailsWrapper.appendChild(category);
     detailsWrapper.appendChild(description);
 
     if (cpomntainsImage) {
@@ -1692,9 +1694,6 @@ export const MainWidget = function (options) {
       image.src = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.assets.replace(':attachmentId', ach.icon);
       image.alt = ach.name;
 
-      // image.onload = function(){
-      // };
-
       imageIconWrapper.appendChild(image);
       detailsContainer.appendChild(imageIconWrapper);
     }
@@ -1703,6 +1702,12 @@ export const MainWidget = function (options) {
 
     progressionCont.appendChild(progressionBar);
     progressionWrapper.appendChild(progressionCont);
+
+    if (Array.isArray(ach.constraints) && ach.constraints.includes('optinRequiredForEntrants')) {
+      progressionWrapper.appendChild(enterButton);
+      addClass(listItem, 'cl-ach-list-item--notentered');
+    }
+
     progressionWrapper.appendChild(moreButton);
 
     listItem.appendChild(detailsContainer);
@@ -1767,10 +1772,7 @@ export const MainWidget = function (options) {
 
     const optIn = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-optin-action');
 
-    console.warn('loadAchievementDetails data:', data);
-    console.warn('_this.settings.lbWidget.settings:', _this.settings.lbWidget.settings);
-
-    const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus();
+    const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus(data.id);
 
     console.warn('main widget memberAchievementOptInStatus', memberAchievementOptInStatus);
 

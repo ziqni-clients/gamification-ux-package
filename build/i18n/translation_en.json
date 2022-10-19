@@ -10,7 +10,8 @@
     "label": "Achievements",
     "more": "More",
     "complete": "complete 100%",
-    "enter": "Enter Achievement"
+    "enter": "Enter Achievement",
+    "listEnterBtn": "Enter"
   },
   "tournaments": {
     "label": "Tournaments",
