@@ -239,7 +239,6 @@ export const MiniScoreBoard = function (options) {
       var lbHeadersRank = document.createElement('div');
       var lbHeadersPoints = document.createElement('div');
       var lbResultsMemEntry = _this.layoutDefaultOrEmptyEntry();
-      var img = query(lbResultsMemEntry, '.cl-widget-ms-default-mem-img');
 
       lbWrapper.setAttribute('class', 'cl-widget-ms-default-wrapper');
       lbDateLabel.setAttribute('class', 'cl-widget-ms-default-date-label');
@@ -261,10 +260,6 @@ export const MiniScoreBoard = function (options) {
 
       query(lbResultsMemEntry, '.cl-widget-ms-default-mem-rank').innerHTML = '--';
       query(lbResultsMemEntry, '.cl-widget-ms-default-mem-points').innerHTML = '--';
-
-      img.src = '';
-      img.alt = '';
-      img.style.display = 'block';
 
       lbHeadersRank.innerHTML = _this.settings.lbWidget.settings.translation.leaderboard.rank;
       lbHeadersPoints.innerHTML = _this.settings.lbWidget.settings.translation.leaderboard.points;

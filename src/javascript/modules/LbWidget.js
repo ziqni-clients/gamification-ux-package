@@ -72,6 +72,7 @@ export const LbWidget = function (options) {
     currency: '',
     spaceName: '',
     memberId: '',
+    memberRefId: '',
     apiClientStomp: null,
     authToken: '',
     memberNameLength: 0,
@@ -79,6 +80,7 @@ export const LbWidget = function (options) {
     gameId: '',
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
     apiKey: '',
+    expires: 3600000,
     member: null,
     itemsPerPage: 10,
     layout: {
@@ -1762,10 +1764,6 @@ export const LbWidget = function (options) {
         _this.revalidateIfSuccessfullOptIn(function (competitionJson) {
           _this.settings.competition.activeCompetition = competitionJson.data;
 
-          // _this.getLeaderboardData(1, function( data ){
-          //  _this.settings.miniScoreBoard.loadScoreBoard( data );
-          // });
-
           // extra action to load competition details on mini scoreboard opt-in - Product request
           _this.deactivateCompetitionsAndLeaderboards(function () {
             _this.settings.leaderboard.leaderboardData = [];
@@ -2108,18 +2106,12 @@ export const LbWidget = function (options) {
     }
   };
 
-  /**
-   * Init LbWidget method
-   * @method
-   * @memberOf LbWidget
-   * @return {undefined}
-   */
-  this.init = async function () {
+  this.generateUserToken = async function () {
     const memberTokenRequest = {
-      member: 'Test_key-4a702ee0-bc28-43ab-8088-7ec7625908a2',
-      apiKey: '4ad48941a7c4aa4586abc31a5958a35a',
+      member: this.settings.memberRefId,
+      apiKey: this.settings.apiKey,
       isReferenceId: true,
-      expires: 3600000,
+      expires: this.settings.expires,
       resource: 'ziqni-gapi'
     };
 
@@ -2139,6 +2131,20 @@ export const LbWidget = function (options) {
     } else {
       console.error('Member Token Error');
     }
+  };
+
+  /**
+   * Init LbWidget method
+   * @method
+   * @memberOf LbWidget
+   * @return {undefined}
+   */
+  this.init = async function () {
+    await this.generateUserToken();
+
+    setInterval(() => {
+      this.generateUserToken();
+    }, this.settings.expires);
 
     this.apiClientStomp = ApiClientStomp.instance;
 
