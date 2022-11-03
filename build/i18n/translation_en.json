@@ -11,7 +11,8 @@
     "more": "More",
     "complete": "complete 100%",
     "enter": "Enter Achievement",
-    "listEnterBtn": "Enter"
+    "listEnterBtn": "Enter",
+    "listLeaveBtn": "leave"
   },
   "tournaments": {
     "label": "Tournaments",

@@ -1265,7 +1265,9 @@ export const MainWidget = function (options) {
       }
     }
 
-    mainLabel.innerHTML = (_this.settings.lbWidget.settings.competition.activeContest !== null) ? _this.settings.lbWidget.settings.competition.activeContest.label : _this.settings.lbWidget.settings.translation.tournaments.noAvailableCompetitions;
+    mainLabel.innerHTML = (_this.settings.lbWidget.settings.competition.activeContest !== null)
+      ? _this.settings.lbWidget.settings.competition.activeContest.name
+      : _this.settings.lbWidget.settings.translation.tournaments.noAvailableCompetitions;
   };
 
   this.showEmbeddedCompetitionDetailsContent = function (callback) {
@@ -1657,6 +1659,7 @@ export const MainWidget = function (options) {
     var progressionBar = document.createElement('div');
     var moreButton = document.createElement('a');
     var enterButton = document.createElement('a');
+    var leaveButton = document.createElement('a');
     var cpomntainsImage = (typeof ach.icon !== 'undefined' && ach.icon.length > 0);
 
     listItem.setAttribute('class', 'cl-ach-list-item cl-ach-' + ach.id + (cpomntainsImage ? ' cl-ach-with-image' : ''));
@@ -1669,6 +1672,7 @@ export const MainWidget = function (options) {
     progressionBar.setAttribute('class', 'cl-ach-list-progression-bar');
     moreButton.setAttribute('class', 'cl-ach-list-more');
     enterButton.setAttribute('class', 'cl-ach-list-enter');
+    leaveButton.setAttribute('class', 'cl-ach-list-leave');
 
     moreButton.dataset.id = ach.id;
     moreButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.more;
@@ -1677,6 +1681,10 @@ export const MainWidget = function (options) {
     enterButton.dataset.id = ach.id;
     enterButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.listEnterBtn;
     enterButton.href = 'javascript:void(0);';
+
+    leaveButton.dataset.id = ach.id;
+    leaveButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.listLeaveBtn;
+    leaveButton.href = 'javascript:void(0);';
 
     listItem.dataset.id = ach.id;
 
@@ -1705,6 +1713,7 @@ export const MainWidget = function (options) {
 
     if (Array.isArray(ach.constraints) && ach.constraints.includes('optinRequiredForEntrants')) {
       progressionWrapper.appendChild(enterButton);
+      progressionWrapper.appendChild(leaveButton);
       addClass(listItem, 'cl-ach-list-item--notentered');
     }
 
