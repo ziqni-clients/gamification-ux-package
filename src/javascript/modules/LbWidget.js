@@ -38,8 +38,8 @@ import {
   MembersApiWs,
   OptInApiWs,
   OptInStatesRequest,
-  RewardsApiWs,
-  RewardRequest
+  RewardsApiWs
+  // RewardRequest
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -101,7 +101,7 @@ export const LbWidget = function (options) {
       activeCompetition: null,
       activeContest: null,
       refreshInterval: null,
-      refreshIntervalMillis: 10000,
+      refreshIntervalMillis: 1000000,
       allowNegativeCountdown: false, // false: will mark competition as finishing, true: will continue to countdown into negative
       includeMetadata: false,
       extractImageHeader: true // will extract the first found image inside the body tag and move it on top
@@ -141,7 +141,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 3000,
+      refreshIntervalMillis: 3000000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -694,10 +694,7 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    console.warn('contestRequest:', contestRequest);
-
     await contestsApiWsClient.getContests(contestRequest, (json) => {
-      console.warn('Contests data:', json.data);
       const contest = json.data;
       if (contest.length) {
         mapObject(contest, function (contest) {
@@ -711,7 +708,10 @@ export const LbWidget = function (options) {
           }
         });
       }
-      console.warn('_this.settings.competition.activeContestId:', _this.settings.competition.activeContestId);
+
+      if (typeof callback === 'function') {
+        callback();
+      }
     });
 
     // if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
@@ -755,10 +755,6 @@ export const LbWidget = function (options) {
     //     });
     //   });
     // }
-
-    if (typeof callback === 'function') {
-      callback();
-    }
   };
 
   this.getLeaderboardData = function (count, callback) {
@@ -1180,21 +1176,29 @@ export const LbWidget = function (options) {
     });
   };
 
-  // var checkForAvailableRewardsAjax = new cLabs.Ajax();
   this.checkForAvailableRewards = async function (callback) {
-    // var _this = this;
-
     const rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
 
-    const rewardRequest = RewardRequest.constructFromObject({
-      // entityIds: [this.settings.competition.activeCompetitionId]
-      entityIds: ['fSle5YMBmMhYKP49CSkE']
-    }, null);
-
-    console.warn('RewardRequest:', rewardRequest);
+    const rewardRequest = {
+      entityFilter: [{
+        entityType: 'Competition',
+        entityIds: [this.settings.competition.activeCompetitionId]
+      }],
+      limit: 20,
+      skip: 0
+    };
 
     await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
-      console.warn('RewardRequest json.data:', json.data);
+      this.settings.rewards.rewards = json.data;
+      this.settings.rewards.availableRewards = json.data;
+      this.settings.rewards.expiredRewards = [];
+      if (typeof callback === 'function') {
+        callback(
+          this.settings.rewards.rewards,
+          this.settings.rewards.availableRewards,
+          this.settings.rewards.expiredRewards
+        );
+      }
     });
 
     // var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
@@ -1474,6 +1478,9 @@ export const LbWidget = function (options) {
             callback();
           }
         }
+        _this.checkForAvailableRewards(function () {
+          _this.updateRewardsNavigationCounts();
+        });
       });
     });
 
