@@ -1329,8 +1329,12 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.leaderboard.refreshInterval);
     }
 
-    _this.settings.miniScoreBoard.clearAll();
-    _this.settings.mainWidget.clearAll();
+    if (_this.settings.miniScoreBoard) {
+      _this.settings.miniScoreBoard.clearAll();
+    }
+    if (_this.settings.mainWidget) {
+      _this.settings.mainWidget.clearAll();
+    }
 
     if (typeof callback === 'function') {
       callback();
@@ -1850,13 +1854,17 @@ export const LbWidget = function (options) {
 
     _this.deactivateCompetitionsAndLeaderboards(function () {
       _this.settings.leaderboard.leaderboardData = [];
-      setTimeout(function () {
-        _this.settings.miniScoreBoard.settings.container.style.display = 'none';
-      }, 200);
+      if (_this.settings.miniScoreBoard) {
+        setTimeout(function () {
+          _this.settings.miniScoreBoard.settings.container.style.display = 'none';
+        }, 200);
+      }
     });
 
-    _this.settings.mainWidget.hide();
-    _this.settings.mainWidget.settings.preLoader.preLoaderActive = false;
+    if (_this.settings.mainWidget) {
+      _this.settings.mainWidget.hide();
+      _this.settings.mainWidget.settings.preLoader.preLoaderActive = false;
+    }
   };
 
   var restartReloadInterval;
