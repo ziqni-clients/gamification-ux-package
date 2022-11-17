@@ -121,7 +121,7 @@ export const LbWidget = function (options) {
       rewards: [],
       expiredRewards: [],
       rewardFormatter: function (reward) {
-        var defaultRewardValue = reward.value;
+        let defaultRewardValue = Number.isInteger(reward.rewardValue) ? reward.rewardValue : reward.rewardValue.toFixed(6);
 
         if (typeof reward.unitOfMeasure !== 'undefined' && typeof reward.unitOfMeasure.symbol !== 'undefined' && reward.unitOfMeasure.symbol !== null) {
           defaultRewardValue = reward.unitOfMeasure.symbol + reward.value;
@@ -265,7 +265,9 @@ export const LbWidget = function (options) {
       },
       startupCallback: function (instance) {},
       rewardFormatter: function (reward) {
-        var defaultRewardValue = reward.value;
+        let defaultRewardValue = Number.isInteger(reward.rewardValue)
+          ? reward.rewardValue
+          : reward.rewardValue.toFixed(6);
 
         if (typeof reward.unitOfMeasure !== 'undefined' && typeof reward.unitOfMeasure.symbol !== 'undefined' && reward.unitOfMeasure.symbol !== null) {
           defaultRewardValue = reward.unitOfMeasure.symbol + reward.value;
@@ -668,10 +670,8 @@ export const LbWidget = function (options) {
   };
 
   this.setActiveCompetition = async function (json, callback) {
-    const _this = this;
-    console.log('setActiveCompetition json:', json);
-    _this.settings.competition.activeCompetition = json[0];
-    _this.settings.competition.activeContest = null;
+    this.settings.competition.activeCompetition = json[0];
+    this.settings.competition.activeContest = null;
 
     const contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
 
@@ -689,21 +689,21 @@ export const LbWidget = function (options) {
           lessThan: 100
         },
         constraints: [],
-        limit: 20,
+        limit: 10,
         skip: 0
       }
     }, null);
 
     await contestsApiWsClient.getContests(contestRequest, (json) => {
-      const contest = json.data;
-      if (contest.length) {
-        mapObject(contest, function (contest) {
-          if (contest.statusCode === 15 && _this.settings.competition.activeContest === null) {
-            _this.settings.competition.activeContest = contest;
-            _this.settings.competition.activeContestId = contest.id;
+      const contests = json.data;
+      if (contests.length) {
+        contests.forEach(contest => {
+          if (contest.statusCode === 15 && this.settings.competition.activeContest === null) {
+            this.settings.competition.activeContest = contest;
+            this.settings.competition.activeContestId = contest.id;
 
-            if (typeof _this.settings.competition.activeContest.rewards === 'undefined') {
-              _this.settings.competition.activeContest.rewards = [];
+            if (typeof this.settings.competition.activeContest.rewards === 'undefined') {
+              this.settings.competition.activeContest.rewards = [];
             }
           }
         });
@@ -713,6 +713,8 @@ export const LbWidget = function (options) {
         callback();
       }
     });
+
+    console.warn('this.settings.competition:', this.settings.competition);
 
     // if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
     //   _this.settings.partialFunctions.activeContestDataResponseParser(json.data.contests, function (contests) {
@@ -879,7 +881,6 @@ export const LbWidget = function (options) {
     }, null);
 
     await achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
-      console.warn('json.data:', json.data);
       _this.settings.achievements.list = json.data;
       _this.settings.achievements.totalCount = json.meta.totalRecordsFound || 0;
       const optInIds = json.data.map(a => {
@@ -1017,37 +1018,47 @@ export const LbWidget = function (options) {
     // });
   };
 
-  var getRewardAjax = new cLabs.Ajax();
+  // var getRewardAjax = new cLabs.Ajax();
   this.getReward = function (rewardId, callback) {
-    var _this = this;
+    let rewardData = null;
+    const idx = this.settings.rewards.rewards.findIndex(r => r.id === rewardId);
+    if (idx !== -1) {
+      rewardData = this.settings.rewards.rewards[idx];
+    }
 
-    getRewardAjax.abort().getData({
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.memberReward.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':awardId', rewardId),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      type: 'GET',
-      success: function (response, dataObj, xhr) {
-        var json = null;
-        if (xhr.status === 200) {
-          try {
-            json = JSON.parse(response);
-          } catch (e) {
-          }
-        }
+    if (typeof callback === 'function') {
+      callback(rewardData);
+    }
 
-        if (typeof callback === 'function') {
-          _this.settings.partialFunctions.rewardDataResponseParser(json, function (rewardData) {
-            callback(rewardData);
-          });
-        }
-      },
-      error: function () {
-        if (typeof callback === 'function') {
-          callback(null);
-        }
-      }
-    });
+    // var _this = this;
+
+    // getRewardAjax.abort().getData({
+    //   url: _this.settings.uri.gatewayDomain + _this.settings.uri.memberReward.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':awardId', rewardId),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   type: 'GET',
+    //   success: function (response, dataObj, xhr) {
+    //     var json = null;
+    //     if (xhr.status === 200) {
+    //       try {
+    //         json = JSON.parse(response);
+    //       } catch (e) {
+    //       }
+    //     }
+    //
+    //     if (typeof callback === 'function') {
+    //       _this.settings.partialFunctions.rewardDataResponseParser(json, function (rewardData) {
+    //         callback(rewardData);
+    //       });
+    //     }
+    //   },
+    //   error: function () {
+    //     if (typeof callback === 'function') {
+    //       callback(null);
+    //     }
+    //   }
+    // });
   };
 
   var getMessageAjax = new cLabs.Ajax();
@@ -1189,8 +1200,8 @@ export const LbWidget = function (options) {
     };
 
     await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
-      this.settings.rewards.rewards = json.data;
-      this.settings.rewards.availableRewards = json.data;
+      this.settings.rewards.rewards = json.data ?? [];
+      this.settings.rewards.availableRewards = json.data ?? [];
       this.settings.rewards.expiredRewards = [];
       if (typeof callback === 'function') {
         callback(
@@ -1868,7 +1879,6 @@ export const LbWidget = function (options) {
         }, null);
 
         await optInApiWsClient.manageOptin(optInRequest, (json) => {
-          console.warn('manageOptin data:', json.data);
           _this.settings.mainWidget.hideAchievementDetails(
             _this.checkForAvailableAchievements(1)
           );
@@ -1972,7 +1982,7 @@ export const LbWidget = function (options) {
 
       // load rewards details
     } else if (hasClass(el, 'cl-rew-list-item') || closest(el, '.cl-rew-list-item') !== null) {
-      var rewardId = (hasClass(el, 'cl-rew-list-item')) ? el.dataset.rewardId : closest(el, '.cl-rew-list-item').dataset.rewardId;
+      var rewardId = (hasClass(el, 'cl-rew-list-item')) ? el.dataset.id : closest(el, '.cl-rew-list-item').dataset.id;
       _this.getReward(rewardId, function (data) {
         _this.settings.mainWidget.loadRewardDetails(data, function () {
         });

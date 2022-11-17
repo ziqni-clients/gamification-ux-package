@@ -1837,12 +1837,12 @@ export const MainWidget = function (options) {
     var icon = query(_this.settings.reward.detailsContainer, '.cl-main-widget-reward-winnings-icon');
     var value = query(_this.settings.reward.detailsContainer, '.cl-main-widget-reward-winnings-value');
 
-    label.innerHTML = data.data.reward.rewardName;
-    body.innerHTML = data.data.reward.description;
-    value.innerHTML = _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(data.data.reward);
-    claimBtn.dataset.id = data.data.id;
+    label.innerHTML = data.name;
+    body.innerHTML = data.description;
+    value.innerHTML = _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(data);
+    claimBtn.dataset.id = data.id;
 
-    if (data.data.claimed) {
+    if (data.claimed) {
       addClass(claimBtn, 'cl-claimed');
       claimBtn.innerHTML = _this.settings.lbWidget.settings.translation.rewards.claimed;
     } else {
@@ -1850,7 +1850,7 @@ export const MainWidget = function (options) {
       claimBtn.innerHTML = _this.settings.lbWidget.settings.translation.rewards.claim;
     }
 
-    if (typeof data.data.reward.icon !== 'undefined') {
+    if (data.icon && typeof data.icon !== 'undefined') {
       icon.innerHTML = '';
 
       var _image = new Image();
@@ -1858,8 +1858,8 @@ export const MainWidget = function (options) {
       imageIconWrapper.setAttribute('class', 'cl-reward-list-item-img-wrapper');
       _image.setAttribute('class', 'cl-reward-list-item-img');
 
-      _image.src = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.assets.replace(':attachmentId', data.data.reward.icon);
-      _image.alt = _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(data.data.reward);
+      _image.src = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.assets.replace(':attachmentId', data.icon);
+      _image.alt = _this.settings.lbWidget.settings.partialFunctions.rewardFormatter(data);
 
       icon.appendChild(_image);
     } else {
@@ -1994,8 +1994,9 @@ export const MainWidget = function (options) {
     description.setAttribute('class', 'cl-rew-list-details-description');
 
     listItem.dataset.id = rew.id;
-    var labelText = stripHtml(rew.subject);
-    var descriptionText = stripHtml(rew.body);
+
+    var labelText = stripHtml(rew.name);
+    var descriptionText = stripHtml(rew.description);
 
     if (typeof rew.prize !== 'undefined') {
       listItem.dataset.rewardId = rew.prize.id;
