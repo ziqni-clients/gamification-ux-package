@@ -714,8 +714,6 @@ export const LbWidget = function (options) {
       }
     });
 
-    console.warn('this.settings.competition:', this.settings.competition);
-
     // if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
     //   _this.settings.partialFunctions.activeContestDataResponseParser(json.data.contests, function (contests) {
     //     mapObject(contests, function (contest) {
