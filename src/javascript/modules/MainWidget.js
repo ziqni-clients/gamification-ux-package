@@ -1242,7 +1242,6 @@ export const MainWidget = function (options) {
   };
 
   this.leaderboardDetailsUpdate = function () {
-    console.warn(666);
     var _this = this;
     var mainLabel = query(_this.settings.section, '.cl-main-widget-lb-details-content-label-text');
     var body = null;

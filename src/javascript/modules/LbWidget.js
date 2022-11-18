@@ -38,7 +38,9 @@ import {
   MembersApiWs,
   OptInApiWs,
   OptInStatesRequest,
-  RewardsApiWs
+  RewardsApiWs,
+  LeaderboardApiWs,
+  LeaderboardSubscriptionRequest
   // RewardRequest
 } from '@ziqni-tech/member-api-client';
 
@@ -698,7 +700,7 @@ export const LbWidget = function (options) {
       const contests = json.data;
       if (contests.length) {
         contests.forEach(contest => {
-          if (contest.statusCode === 15 && this.settings.competition.activeContest === null) {
+          if (contest.statusCode === 25 && this.settings.competition.activeContest === null) {
             this.settings.competition.activeContest = contest;
             this.settings.competition.activeContestId = contest.id;
 
@@ -758,8 +760,23 @@ export const LbWidget = function (options) {
     // }
   };
 
-  this.getLeaderboardData = function (count, callback) {
+  this.getLeaderboardData = async function (count, callback) {
     if (this.settings.competition.activeContestId !== null) {
+      const leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
+      const leaderboardSubscriptionRequest = LeaderboardSubscriptionRequest.constructFromObject({
+        entityId: this.settings.competition.activeContestId,
+        action: 'Subscribe',
+        leaderboardFilter: {
+          topRanksToInclude: 10
+        }
+      });
+
+      console.warn('leaderboardSubscriptionRequest:', leaderboardSubscriptionRequest);
+
+      await leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, async (json) => {
+        console.warn('subscribeToLeaderboard Response json:', json);
+      });
+
       var _this = this;
       var url = _this.settings.uri.contestLeaderboard.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeContestId);
       var filters = [
