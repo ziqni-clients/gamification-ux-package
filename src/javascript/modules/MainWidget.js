@@ -1885,12 +1885,12 @@ export const MainWidget = function (options) {
   };
 
   this.loadMessageDetails = function (data, callback) {
-    var _this = this;
-    var label = query(_this.settings.messages.detailsContainer, '.cl-main-widget-inbox-details-header-label');
-    var body = query(_this.settings.messages.detailsContainer, '.cl-main-widget-inbox-details-body');
+    const _this = this;
+    const label = query(_this.settings.messages.detailsContainer, '.cl-main-widget-inbox-details-header-label');
+    const body = query(_this.settings.messages.detailsContainer, '.cl-main-widget-inbox-details-body');
 
-    label.innerHTML = data.data.subject;
-    body.innerHTML = data.data.body;
+    label.innerHTML = data.subject;
+    body.innerHTML = data.body;
 
     _this.settings.messages.detailsContainer.style.display = 'block';
     setTimeout(function () {

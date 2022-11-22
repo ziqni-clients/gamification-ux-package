@@ -40,8 +40,9 @@ import {
   OptInStatesRequest,
   RewardsApiWs,
   LeaderboardApiWs,
-  LeaderboardSubscriptionRequest
-  // RewardRequest
+  LeaderboardSubscriptionRequest,
+  MessagesApiWs,
+  MessageRequest
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -83,7 +84,7 @@ export const LbWidget = function (options) {
     gameId: '',
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
     apiKey: '',
-    expires: 3600000,
+    expires: 36000,
     member: null,
     itemsPerPage: 10,
     layout: {
@@ -205,20 +206,20 @@ export const LbWidget = function (options) {
       // competitionById: '/api/v1/:space/competitions/:id',
       contestLeaderboard: '/api/v1/:space/contests/:id/leaderboard',
 
-      achievement: '/api/v1/:space/achievements/:id',
+      // achievement: '/api/v1/:space/achievements/:id',
       // achievements: '/api/v1/:space/achievements/members/reference/:id',
       achievementsProgression: '/api/v1/:space/members/reference/:id/achievements',
       achievementsIssued: '/api/v1/:space/members/reference/:id/achievements/issued',
       // /api/v1/:space/members/reference/:id/competition/:competitionId
 
-      messages: '/api/v1/:space/members/reference/:id/messages',
-      messageById: '/api/v1/:space/members/reference/:id/messages/:messageId',
+      // messages: '/api/v1/:space/members/reference/:id/messages',
+      // messageById: '/api/v1/:space/members/reference/:id/messages/:messageId',
 
-      memberReward: '/api/v1/:space/members/reference/:id/award/:awardId',
+      // memberReward: '/api/v1/:space/members/reference/:id/award/:awardId',
       memberRewardClaim: '/api/v1/:space/members/reference/:id/award/:awardId/award',
 
-      memberCompetitions: '/api/v1/:space/members/reference/:id/competitions',
-      memberCompetitionById: '/api/v1/:space/members/reference/:id/competition/:competitionId',
+      // memberCompetitions: '/api/v1/:space/members/reference/:id/competitions',
+      // memberCompetitionById: '/api/v1/:space/members/reference/:id/competition/:competitionId',
       memberCompetitionOptIn: '/api/v1/:space/members/reference/:id/competition/:competitionId/optin',
       memberCompetitionOptInCheck: '/api/v1/:space/members/reference/:id/competition/:competitionId/optin-check',
 
@@ -861,10 +862,10 @@ export const LbWidget = function (options) {
   };
 
   this.updateMessagesNavigationCounts = function () {
-    var _this = this;
+    const _this = this;
 
     if (_this.settings.mainWidget.settings.navigation !== null) {
-      var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.inbox.navigationClass + ' .cl-main-navigation-item-count');
+      const menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.inbox.navigationClass + ' .cl-main-navigation-item-count');
       menuItemCount.innerHTML = _this.settings.messages.messages.length;
     }
   };
@@ -1077,32 +1078,19 @@ export const LbWidget = function (options) {
     // });
   };
 
-  var getMessageAjax = new cLabs.Ajax();
-  this.getMessage = function (messageId, callback) {
-    var _this = this;
+  this.getMessage = async function (messageId, callback) {
+    const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
 
-    getMessageAjax.abort().getData({
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.messageById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':messageId', messageId),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      type: 'GET',
-      success: function (response, dataObj, xhr) {
-        var json = null;
-        if (xhr.status === 200) {
-          try {
-            json = JSON.parse(response);
-          } catch (e) {
-          }
-        }
+    const messageRequest = MessageRequest.constructFromObject({
+      id: messageId
+    });
 
+    await messagesApiWsClient.getMessages(messageRequest, (json) => {
+      if (json.data.length) {
         if (typeof callback === 'function') {
-          _this.settings.partialFunctions.messageDataResponseParser(json, function (messageData) {
-            callback(messageData);
-          });
+          callback(json.data[0]);
         }
-      },
-      error: function () {
+      } else {
         if (typeof callback === 'function') {
           callback(null);
         }
@@ -1341,47 +1329,58 @@ export const LbWidget = function (options) {
     // });
   };
 
-  var checkForAvailableMessagesAjax = new cLabs.Ajax();
-  this.checkForAvailableMessages = function (callback) {
-    var _this = this;
-    var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
-    var date = new Date();
+  // var checkForAvailableMessagesAjax = new cLabs.Ajax();
+  this.checkForAvailableMessages = async function (callback) {
+    const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
 
-    date.setDate(date.getMonth() - 1);
-    var createdDateFilter = date.getFullYear() + '-' + formatNumberLeadingZeros((date.getMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getDate(), 2);
-    var filters = [
-      '_sortByFields=created:desc',
-      '_hasNoValuesFor=prize',
-      '_limit=100',
-      'created>==' + createdDateFilter
-    ];
+    const messageRequest = MessageRequest.constructFromObject({});
 
-    filters = _this.settings.partialFunctions.uri.availableMessagesListParameters(filters);
-
-    checkForAvailableMessagesAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var jsonAvailableMessages = JSON.parse(response);
-
-          _this.settings.partialFunctions.availableMessagesDataResponseParser(jsonAvailableMessages.data, function (availableMessagesData) {
-            _this.settings.messages.messages = [];
-
-            mapObject(availableMessagesData, function (message) {
-              _this.settings.messages.messages.push(message);
-            });
-
-            if (typeof callback === 'function') callback(_this.settings.messages.messages);
-          });
-        } else {
-          _this.log('failed to checkForAvailableMessages ' + response);
-        }
+    await messagesApiWsClient.getMessages(messageRequest, (json) => {
+      this.settings.messages.messages = json.data;
+      if (typeof callback === 'function') {
+        callback(this.settings.messages.messages);
       }
     });
+
+    // var _this = this;
+    // var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
+    // var date = new Date();
+    //
+    // date.setDate(date.getMonth() - 1);
+    // var createdDateFilter = date.getFullYear() + '-' + formatNumberLeadingZeros((date.getMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getDate(), 2);
+    // var filters = [
+    //   '_sortByFields=created:desc',
+    //   '_hasNoValuesFor=prize',
+    //   '_limit=100',
+    //   'created>==' + createdDateFilter
+    // ];
+    //
+    // filters = _this.settings.partialFunctions.uri.availableMessagesListParameters(filters);
+    //
+    // checkForAvailableMessagesAjax.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var jsonAvailableMessages = JSON.parse(response);
+    //
+    //       _this.settings.partialFunctions.availableMessagesDataResponseParser(jsonAvailableMessages.data, function (availableMessagesData) {
+    //         _this.settings.messages.messages = [];
+    //
+    //         mapObject(availableMessagesData, function (message) {
+    //           _this.settings.messages.messages.push(message);
+    //         });
+    //
+    //         if (typeof callback === 'function') callback(_this.settings.messages.messages);
+    //       });
+    //     } else {
+    //       _this.log('failed to checkForAvailableMessages ' + response);
+    //     }
+    //   }
+    // });
   };
 
   var optInMemberAjax = new cLabs.Ajax();
