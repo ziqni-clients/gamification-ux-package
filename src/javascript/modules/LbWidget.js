@@ -78,13 +78,13 @@ export const LbWidget = function (options) {
     memberId: '',
     memberRefId: '',
     apiClientStomp: null,
-    authToken: '',
+    authToken: null,
     memberNameLength: 0,
     groups: '',
     gameId: '',
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
     apiKey: '',
-    expires: 36000,
+    expires: 3600000,
     member: null,
     itemsPerPage: 10,
     layout: {
@@ -701,7 +701,7 @@ export const LbWidget = function (options) {
       const contests = json.data;
       if (contests.length) {
         contests.forEach(contest => {
-          if (contest.statusCode === 25 && this.settings.competition.activeContest === null) {
+          if (contest.statusCode < 30 && this.settings.competition.activeContest === null) {
             this.settings.competition.activeContest = contest;
             this.settings.competition.activeContestId = contest.id;
 
@@ -2232,6 +2232,17 @@ export const LbWidget = function (options) {
     }
   };
 
+  this.initApiClientStomp = async function () {
+    this.settings.authToken = null;
+
+    await this.generateUserToken();
+
+    if (this.settings.authToken) {
+      this.apiClientStomp = ApiClientStomp.instance;
+      await this.apiClientStomp.connect({ token: this.settings.authToken });
+    }
+  };
+
   this.generateUserToken = async function () {
     const memberTokenRequest = {
       member: this.settings.memberRefId,
@@ -2266,15 +2277,11 @@ export const LbWidget = function (options) {
    * @return {undefined}
    */
   this.init = async function () {
-    await this.generateUserToken();
+    await this.initApiClientStomp();
 
-    setInterval(() => {
-      this.generateUserToken();
+    setInterval(async () => {
+      await this.initApiClientStomp();
     }, this.settings.expires);
-
-    this.apiClientStomp = ApiClientStomp.instance;
-
-    await this.apiClientStomp.connect({ token: this.settings.authToken });
 
     this.loadStylesheet(() => {
       this.applyAppearance();

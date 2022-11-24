@@ -1171,27 +1171,27 @@ export const MainWidget = function (options) {
 
   this.updateLeaderboardTime = function () {
     var _this = this;
-    var diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledStart).diff(moment());
+    var diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledStartDate).diff(moment());
     var date = _this.settings.lbWidget.settings.translation.miniLeaderboard.startsIn + ': ' + _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
     if (_this.settings.leaderboard.timerInterval) {
       clearTimeout(_this.settings.leaderboard.timerInterval);
     }
 
-    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
+    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 15) {
       date = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 1) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 20) {
       date = _this.settings.lbWidget.settings.translation.tournaments.starting;
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 2) {
-      diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 25) {
+      diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEndDate).diff(moment());
       date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
       if (diff <= 0) {
         date = _this.settings.lbWidget.settings.translation.tournaments.finishing;
       }
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 30) {
       date = _this.settings.lbWidget.settings.translation.tournaments.finishing;
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 4) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 35) {
       date = _this.settings.lbWidget.settings.translation.tournaments.finished;
     }
 
