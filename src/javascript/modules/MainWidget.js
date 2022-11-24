@@ -1712,8 +1712,11 @@ export const MainWidget = function (options) {
     progressionWrapper.appendChild(progressionCont);
 
     if (Array.isArray(ach.constraints) && ach.constraints.includes('optinRequiredForEntrants')) {
-      progressionWrapper.appendChild(enterButton);
-      progressionWrapper.appendChild(leaveButton);
+      if (ach.optInStatus && ach.optInStatus === 'Entrant') {
+        progressionWrapper.appendChild(leaveButton);
+      } else {
+        progressionWrapper.appendChild(enterButton);
+      }
       addClass(listItem, 'cl-ach-list-item--notentered');
     }
 
@@ -1786,9 +1789,16 @@ export const MainWidget = function (options) {
     console.warn('main widget memberAchievementOptInStatus', memberAchievementOptInStatus);
 
     if (optinRequiredForEntrants) {
-      optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.enter;
-      removeClass(optIn, 'cl-disabled');
-      optIn.parentNode.style.display = 'block';
+      if (memberAchievementOptInStatus.length && memberAchievementOptInStatus[0].status === 'Entrant') {
+        optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.leave;
+        removeClass(optIn, 'cl-disabled');
+        addClass(optIn, 'leave-achievement');
+        optIn.parentNode.style.display = 'block';
+      } else {
+        optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.enter;
+        removeClass(optIn, 'cl-disabled');
+        optIn.parentNode.style.display = 'block';
+      }
     } else {
       addClass(optIn, 'cl-disabled');
       optIn.parentNode.style.display = 'none';

@@ -884,14 +884,26 @@ export const LbWidget = function (options) {
     await achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
       _this.settings.achievements.list = json.data;
       _this.settings.achievements.totalCount = json.meta.totalRecordsFound || 0;
-      const optInIds = json.data.map(a => {
-        if (a.constraints && a.constraints.includes('optinRequiredForEntrants')) {
-          return a.id;
-        }
-      });
+      const optInAchievements = json.data.filter(a => a.constraints && a.constraints.includes('optinRequiredForEntrants'));
+      let optInIds = [];
+      if (optInAchievements.length) {
+        optInIds = optInAchievements.map(a => {
+          if (a.constraints && a.constraints.includes('optinRequiredForEntrants')) {
+            return a.id;
+          }
+        });
+      }
 
       if (optInIds.length) {
         const statuses = await _this.getMemberAchievementsOptInStatuses(optInIds);
+        if (statuses.length) {
+          statuses.forEach(s => {
+            const idx = _this.settings.achievements.list.findIndex(a => a.id === s.entityId);
+            if (idx !== -1) {
+              _this.settings.achievements.list[idx].optInStatus = s.status;
+            }
+          });
+        }
         console.warn('getMemberAchievementsOptInStatuses statuses:', statuses);
       }
 
@@ -1872,11 +1884,19 @@ export const LbWidget = function (options) {
       if (_this.settings.achievements.activeAchievementId) {
         const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
 
-        const optInRequest = ManageOptinRequest.constructFromObject({
+        let optInRequest = ManageOptinRequest.constructFromObject({
           entityId: _this.settings.achievements.activeAchievementId,
           entityType: 'Achievement',
           action: 'join'
         }, null);
+
+        if (hasClass(el, 'leave-achievement')) {
+          optInRequest = ManageOptinRequest.constructFromObject({
+            entityId: _this.settings.achievements.activeAchievementId,
+            entityType: 'Achievement',
+            action: 'leave'
+          }, null);
+        }
 
         await optInApiWsClient.manageOptin(optInRequest, (json) => {
           _this.settings.mainWidget.hideAchievementDetails(
@@ -1895,6 +1915,8 @@ export const LbWidget = function (options) {
         entityType: 'Achievement',
         action: 'join'
       }, null);
+
+      console.warn('optInRequest:', optInRequest);
 
       await optInApiWsClient.manageOptin(optInRequest, (json) => {
         console.warn('manageOptin data:', json.data);
@@ -2125,7 +2147,7 @@ export const LbWidget = function (options) {
 
     return new Promise((resolve, reject) => {
       optInApiWsClient.optInStates(optInStatesRequest, (json) => {
-        resolve(json);
+        resolve(json.data);
       });
     });
   };
@@ -2150,7 +2172,7 @@ export const LbWidget = function (options) {
 
     return new Promise((resolve, reject) => {
       optInApiWsClient.optInStates(optInStatesRequest, (json) => {
-        resolve(json);
+        resolve(json.data);
       });
     });
   };
