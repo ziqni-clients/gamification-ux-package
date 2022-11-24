@@ -778,57 +778,41 @@ export const LbWidget = function (options) {
         console.warn('subscribeToLeaderboard Response json:', json);
       });
 
-      var _this = this;
-      var url = _this.settings.uri.contestLeaderboard.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeContestId);
-      var filters = [
-        '_limit=' + count
-      ];
-
-      if (_this.settings.leaderboard.miniScoreBoard.enableRankings) {
-        filters.push('rankings=' + _this.settings.leaderboard.miniScoreBoard.rankingsCount);
-      }
-
-      if (typeof _this.settings.memberId === 'string' && _this.settings.memberId.length > 0) {
-        filters.push('memberId=' + _this.settings.memberId);
-      }
-
-      filters = _this.settings.partialFunctions.uri.leaderboardParameters(filters);
-
-      _this.settings.globalAjax.abort().getData({
-        type: 'GET',
-        url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-        headers: {
-          'X-API-KEY': _this.settings.apiKey
-        },
-        success: function (response, dataObj, xhr) {
-          if (xhr.status === 200) {
-            var json = JSON.parse(response);
-
-            // if(
-            //   typeof _this.settings.loadLeaderboardHistory[_this.settings.competition.activeContestId] === "undefined"
-            //   ||
-            //   (
-            //     typeof _this.settings.loadLeaderboardHistory[_this.settings.competition.activeContestId] !== "undefined"
-            //     &&
-            //     _this.settings.loadLeaderboardHistory[_this.settings.competition.activeContestId] !== data
-            //   )
-            // ) {
-            //   _this.settings.loadLeaderboardHistory[_this.settings.competition.activeContestId] = {
-            //     changed: true,
-            //     data: JSON.stringify(json.data)
-            //   };
-            // }
-
-            _this.settings.partialFunctions.leaderboardDataResponseParser(json.data, function (lbData) {
-              _this.settings.leaderboard.leaderboardData = lbData;
-
-              callback(lbData);
-            });
-          } else {
-            _this.log('failed to getLeaderboardData ' + response);
-          }
-        }
-      });
+      // var _this = this;
+      // var url = _this.settings.uri.contestLeaderboard.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeContestId);
+      // var filters = [
+      //   '_limit=' + count
+      // ];
+      //
+      // if (_this.settings.leaderboard.miniScoreBoard.enableRankings) {
+      //   filters.push('rankings=' + _this.settings.leaderboard.miniScoreBoard.rankingsCount);
+      // }
+      //
+      // if (typeof _this.settings.memberId === 'string' && _this.settings.memberId.length > 0) {
+      //   filters.push('memberId=' + _this.settings.memberId);
+      // }
+      //
+      // filters = _this.settings.partialFunctions.uri.leaderboardParameters(filters);
+      //
+      // _this.settings.globalAjax.abort().getData({
+      //   type: 'GET',
+      //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
+      //   headers: {
+      //     'X-API-KEY': _this.settings.apiKey
+      //   },
+      //   success: function (response, dataObj, xhr) {
+      //     if (xhr.status === 200) {
+      //       var json = JSON.parse(response);
+      //       _this.settings.partialFunctions.leaderboardDataResponseParser(json.data, function (lbData) {
+      //         _this.settings.leaderboard.leaderboardData = lbData;
+      //
+      //         callback(lbData);
+      //       });
+      //     } else {
+      //       _this.log('failed to getLeaderboardData ' + response);
+      //     }
+      //   }
+      // });
     } else {
       callback();
     }
