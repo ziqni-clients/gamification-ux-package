@@ -1115,37 +1115,38 @@ export const LbWidget = function (options) {
     });
   };
 
-  var checkForMemberAchievementsAjax = new cLabs.Ajax();
+  // var checkForMemberAchievementsAjax = new cLabs.Ajax();
   this.checkForMemberAchievementsIssued = function (callback) {
-    var _this = this;
-    var url = _this.settings.uri.achievementsIssued.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
-
-    checkForMemberAchievementsAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url,
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          var json = JSON.parse(response);
-
-          _this.settings.partialFunctions.issuedAchievementsDataResponseParser(json, function (issuedAchievementsData) {
-            var idList = [];
-
-            if (typeof issuedAchievementsData.aggregations !== 'undefined' && issuedAchievementsData.aggregations.length > 0) {
-              mapObject(issuedAchievementsData.aggregations[0].items, function (item) {
-                idList.push(item.value);
-              });
-            }
-
-            if (typeof callback === 'function') callback(idList);
-          });
-        } else {
-          _this.log('failed to checkForMemberAchievementsIssued ' + response);
-        }
-      }
-    });
+    console.log('checkForMemberAchievementsIssued currently unavailable');
+    // var _this = this;
+    // var url = _this.settings.uri.achievementsIssued.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
+    //
+    // checkForMemberAchievementsAjax.abort().getData({
+    //   type: 'GET',
+    //   url: _this.settings.uri.gatewayDomain + url,
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   success: function (response, dataObj, xhr) {
+    //     if (xhr.status === 200) {
+    //       var json = JSON.parse(response);
+    //
+    //       _this.settings.partialFunctions.issuedAchievementsDataResponseParser(json, function (issuedAchievementsData) {
+    //         var idList = [];
+    //
+    //         if (typeof issuedAchievementsData.aggregations !== 'undefined' && issuedAchievementsData.aggregations.length > 0) {
+    //           mapObject(issuedAchievementsData.aggregations[0].items, function (item) {
+    //             idList.push(item.value);
+    //           });
+    //         }
+    //
+    //         if (typeof callback === 'function') callback(idList);
+    //       });
+    //     } else {
+    //       _this.log('failed to checkForMemberAchievementsIssued ' + response);
+    //     }
+    //   }
+    // });
   };
 
   var checkForMemberAchievementsProgressionAjax = new cLabs.Ajax();
