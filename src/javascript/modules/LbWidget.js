@@ -209,7 +209,7 @@ export const LbWidget = function (options) {
       // achievement: '/api/v1/:space/achievements/:id',
       // achievements: '/api/v1/:space/achievements/members/reference/:id',
       achievementsProgression: '/api/v1/:space/members/reference/:id/achievements',
-      achievementsIssued: '/api/v1/:space/members/reference/:id/achievements/issued',
+      // achievementsIssued: '/api/v1/:space/members/reference/:id/achievements/issued',
       // /api/v1/:space/members/reference/:id/competition/:competitionId
 
       // messages: '/api/v1/:space/members/reference/:id/messages',
