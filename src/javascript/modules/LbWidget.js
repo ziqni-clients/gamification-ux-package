@@ -68,7 +68,7 @@ export const LbWidget = function (options) {
     notifications: null,
     miniScoreBoard: null,
     canvasAnimation: null,
-    enableNotifications: true,
+    enableNotifications: false,
     mainWidget: null,
     globalAjax: new cLabs.Ajax(),
     checkAjax: new cLabs.Ajax(),
@@ -204,7 +204,7 @@ export const LbWidget = function (options) {
 
       // competitions: '/api/v1/:space/competitions',
       // competitionById: '/api/v1/:space/competitions/:id',
-      contestLeaderboard: '/api/v1/:space/contests/:id/leaderboard',
+      // contestLeaderboard: '/api/v1/:space/contests/:id/leaderboard',
 
       // achievement: '/api/v1/:space/achievements/:id',
       // achievements: '/api/v1/:space/achievements/members/reference/:id',
