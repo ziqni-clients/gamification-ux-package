@@ -715,7 +715,7 @@ export const LbWidget = function (options) {
       if (typeof callback === 'function') {
         callback();
       }
-      this.settings.mainWidget.leaderboardDetailsUpdate();
+      // this.settings.mainWidget.leaderboardDetailsUpdate();
     });
 
     // if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
