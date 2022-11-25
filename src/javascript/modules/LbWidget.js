@@ -372,16 +372,7 @@ export const LbWidget = function (options) {
    */
   // const competitionCheckAjax = new cLabs.Ajax();
 
-  this.checkForAvailableCompetitions = async function (callback, ajaxInstance) {
-    const _this = this;
-    // const url = (_this.settings.memberId.length === 0) ? (
-    //   _this.settings.uri.competitions.replace(':space', _this.settings.spaceName)
-    // ) : (
-    //   _this.settings.uri.memberCompetitions.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId)
-    // );
-
-    const competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
-
+  this.checkForAvailableCompetitions = async function (callback) {
     const readyCompetitionRequest = CompetitionRequest.constructFromObject({
       competitionFilter: {
         statusCode: {
@@ -427,17 +418,9 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    await competitionsApiWsClient.getCompetitions(readyCompetitionRequest, (json) => {
-      _this.settings.tournaments.readyCompetitions = json.data ?? [];
-    });
-
-    await competitionsApiWsClient.getCompetitions(activeCompetitionRequest, (json) => {
-      _this.settings.tournaments.activeCompetitions = json.data ?? [];
-    });
-
-    await competitionsApiWsClient.getCompetitions(finishedCompetitionRequest, (json) => {
-      _this.settings.tournaments.finishedCompetitions = json.data ?? [];
-    });
+    this.settings.tournaments.readyCompetitions = await this.getCompetitions(readyCompetitionRequest);
+    this.settings.tournaments.activeCompetitions = await this.getCompetitions(activeCompetitionRequest);
+    this.settings.tournaments.finishedCompetitions = await this.getCompetitions(finishedCompetitionRequest);
 
     if (typeof callback === 'function') {
       callback();
@@ -495,6 +478,15 @@ export const LbWidget = function (options) {
     //     }
     //   }
     // });
+  };
+
+  this.getCompetitions = async (competitionRequest) => {
+    const competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
+    return new Promise((resolve, reject) => {
+      competitionsApiWsClient.getCompetitions(competitionRequest, (json) => {
+        resolve(json.data);
+      });
+    });
   };
 
   /**
@@ -563,9 +555,9 @@ export const LbWidget = function (options) {
   // };
 
   this.prepareActiveCompetition = function (callback) {
-    var _this = this;
-    var activeCompetition = null;
-    var activeCompetitionId = null;
+    const _this = this;
+    let activeCompetition = null;
+    let activeCompetitionId = null;
 
     if (_this.settings.tournaments.activeCompetitionId !== null) {
       mapObject(_this.settings.tournaments.activeCompetitions, function (comp) {
@@ -676,8 +668,6 @@ export const LbWidget = function (options) {
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
 
-    const contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
-
     const contestRequest = ContestRequest.constructFromObject({
       contestFilter: {
         productIds: [],
@@ -697,26 +687,30 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    await contestsApiWsClient.getContests(contestRequest, (json) => {
-      const contests = json.data;
-      if (contests.length) {
-        contests.forEach(contest => {
-          if (contest.statusCode < 30 && this.settings.competition.activeContest === null) {
-            this.settings.competition.activeContest = contest;
-            this.settings.competition.activeContestId = contest.id;
+    const contests = await this.getContests(contestRequest);
 
-            if (typeof this.settings.competition.activeContest.rewards === 'undefined') {
-              this.settings.competition.activeContest.rewards = [];
-            }
+    if (contests.length) {
+      contests.forEach(contest => {
+        if (contest.statusCode < 30 && this.settings.competition.activeContest === null) {
+          this.settings.competition.activeContest = contest;
+          this.settings.competition.activeContestId = contest.id;
+
+          if (typeof this.settings.competition.activeContest.rewards === 'undefined') {
+            this.settings.competition.activeContest.rewards = [];
           }
-        });
-      }
+        }
+      });
+    }
 
-      if (typeof callback === 'function') {
-        callback();
-      }
-      // this.settings.mainWidget.leaderboardDetailsUpdate();
-    });
+    if (typeof callback === 'function') {
+      callback();
+    }
+
+    this.settings.mainWidget.leaderboardDetailsUpdate();
+
+    // if (isLeaderboardUpdate) {
+    //   this.settings.mainWidget.leaderboardDetailsUpdate();
+    // }
 
     // if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
     //   _this.settings.partialFunctions.activeContestDataResponseParser(json.data.contests, function (contests) {
@@ -759,6 +753,15 @@ export const LbWidget = function (options) {
     //     });
     //   });
     // }
+  };
+
+  this.getContests = async (contestRequest) => {
+    const contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
+    return new Promise((resolve, reject) => {
+      contestsApiWsClient.getContests(contestRequest, (json) => {
+        resolve(json.data);
+      });
+    });
   };
 
   this.getLeaderboardData = async function (count, callback) {
@@ -1454,7 +1457,6 @@ export const LbWidget = function (options) {
 
     _this.checkForAvailableCompetitions(function () {
       _this.updateLeaderboardNavigationCounts();
-
       _this.prepareActiveCompetition(function () {
         var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
 
@@ -1480,7 +1482,9 @@ export const LbWidget = function (options) {
               }
             });
           } else {
-            if (_this.settings.miniScoreBoard.settings.active) _this.settings.miniScoreBoard.loadScoreBoard();
+            if (_this.settings.miniScoreBoard.settings.active) {
+              _this.settings.miniScoreBoard.loadScoreBoard();
+            }
             if (_this.settings.mainWidget.settings.active) {
               _this.getLeaderboardData(count, function (data) {
                 _this.settings.mainWidget.loadLeaderboard();

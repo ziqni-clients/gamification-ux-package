@@ -111,6 +111,10 @@ export const MiniScoreBoard = function (options) {
     var dateObj = '';
     var inverse = false;
 
+    // readyCompetitions: [], // statusCode 3
+    //   activeCompetitions: [], // statusCode 5
+    //   finishedCompetitions: [] // statusCode 7
+    // Unknown = 0; Draft = 5; Preparing = 10; Ready = 15; Starting = 20; Active = 25; Finishing = 30; Finished = 35; Template = 100; Cancelling = 110; Cancelled = 115; Deleting = 120; Deleted = 125
     if (_this.settings.lbWidget.settings.competition.activeContest !== null) {
       var startDate = _this.settings.lbWidget.settings.competition.activeContest.scheduledStart;
       if (typeof _this.settings.lbWidget.settings.competition.activeContest.actualStart !== 'undefined') {
@@ -123,14 +127,14 @@ export const MiniScoreBoard = function (options) {
       dateObj = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
       inverse = false;
 
-      if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
+      if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode < 25) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
         date = '';
-      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 1) {
+      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 20) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
         date = '';
-      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 2) {
-        diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
+      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 25) {
+        diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEndDate).diff(moment());
         dateObj = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
         label = '&nbsp;';
         date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
@@ -139,11 +143,11 @@ export const MiniScoreBoard = function (options) {
           date = '';
         }
         inverse = true;
-      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
+      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 30) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
         date = '';
         inverse = true;
-      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 4) {
+      } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 35) {
         label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finished;
         date = '';
         inverse = true;
@@ -771,22 +775,28 @@ export const MiniScoreBoard = function (options) {
   this.loadInfoArea = function (callback) {
     var _this = this;
 
-    if (_this.settings.active && _this.settings.lbWidget.settings.competition.activeCompetition !== null && _this.settings.lbWidget.settings.competition.activeCompetition.statusCode < 7) {
-      if (typeof _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired === 'boolean' && _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired && typeof _this.settings.lbWidget.settings.competition.activeCompetition.optin === 'boolean' && !_this.settings.lbWidget.settings.competition.activeCompetition.optin) {
-        _this.layoutRequiresOptIn();
-        callback();
-      } else if (_this.settings.lbWidget.settings.competition.activeContest !== null && _this.settings.lbWidget.settings.competition.activeContest.strategy.type === 'SumBest') {
-        _this.layoutSumBestOf();
-        callback();
-      } else if (_this.settings.lbWidget.settings.competition.activeContest !== null && _this.settings.lbWidget.settings.competition.activeContest.strategy.type === 'FirstTo') {
-        _this.layoutFirstToOrEmpty(_this.settings.lbWidget.settings.competition.activeContest.strategy);
-        callback();
-      } else if (_this.settings.lbWidget.settings.competition.activeContestId !== null) {
-        _this.layoutDefaultOrEmpty();
-        callback();
-      } else {
-        _this.layoutDefaultOrEmpty();
-      }
+    // Strategy types: TotalCumulative, SumBest, LimitedTo, FirstTo
+    if (_this.settings.active && _this.settings.lbWidget.settings.competition.activeCompetition !== null && _this.settings.lbWidget.settings.competition.activeCompetition.statusCode < 45) {
+      // temp. while strategies null
+      _this.layoutDefaultOrEmpty();
+      // if (typeof _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired === 'boolean' && _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired && typeof _this.settings.lbWidget.settings.competition.activeCompetition.optin === 'boolean' && !_this.settings.lbWidget.settings.competition.activeCompetition.optin) {
+      //   _this.layoutRequiresOptIn();
+      //   callback();
+      // } else if (
+      //   _this.settings.lbWidget.settings.competition.activeContest !== null &&
+      //   _this.settings.lbWidget.settings.competition.activeContest.strategies.strategyType === 'SumBest'
+      // ) {
+      //   _this.layoutSumBestOf();
+      //   callback();
+      // } else if (_this.settings.lbWidget.settings.competition.activeContest !== null && _this.settings.lbWidget.settings.competition.activeContest.strategies.strategyType === 'FirstTo') {
+      //   _this.layoutFirstToOrEmpty(_this.settings.lbWidget.settings.competition.activeContest.strategies);
+      //   callback();
+      // } else if (_this.settings.lbWidget.settings.competition.activeContestId !== null) {
+      //   _this.layoutDefaultOrEmpty();
+      //   callback();
+      // } else {
+      //   _this.layoutDefaultOrEmpty();
+      // }
     } else {
       _this.clearAll();
     }
