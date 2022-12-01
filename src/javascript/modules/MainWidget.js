@@ -1223,7 +1223,7 @@ export const MainWidget = function (options) {
   this.extractImage = function (body, imageContainer, isBodyVirtualOpt) {
     const _this = this;
     const activeImageContainer = closest(body, '.cl-main-section-image-banner-active');
-    var imageFound = false;
+    let imageFound = false;
     const isBodyVirtual = (typeof isBodyVirtualOpt === 'boolean') ? isBodyVirtualOpt : false;
 
     if (_this.settings.lbWidget.settings.competition.extractImageHeader) {
@@ -1237,6 +1237,19 @@ export const MainWidget = function (options) {
           remove(img);
         }
       });
+      if (!imageFound) {
+        const urlRegex = (/(https?:\/\/[^ ]*\.(?:gif|png|jpg|jpeg))/i);
+        if (body.innerText) {
+          const url = body.innerText.match(urlRegex);
+          if (url && url.length) {
+            const newImg = document.createElement('img');
+            newImg.setAttribute('src', url[0]);
+            addClass(newImg, 'cl-main-widget-lb-details-image');
+            imageContainer.appendChild(newImg);
+            body.innerHTML = body.innerHTML.replace(url[0], '');
+          }
+        }
+      }
     }
 
     if (!imageFound && activeImageContainer !== null) {
@@ -1792,8 +1805,6 @@ export const MainWidget = function (options) {
 
     const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus(data.id);
 
-    console.warn('main widget memberAchievementOptInStatus', memberAchievementOptInStatus);
-
     if (optinRequiredForEntrants) {
       if (memberAchievementOptInStatus.length && memberAchievementOptInStatus[0].status === 'Entrant') {
         optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.leave;
@@ -2085,12 +2096,29 @@ export const MainWidget = function (options) {
     return listItem;
   };
 
-  this.rewardsListLayout = function (rewards, availableRewards, expiredRewards) {
-    var _this = this;
-    var rewardList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.rewards.containerClass + ' .cl-main-widget-reward-list-body-res');
+  this.rewardsListLayout = function (pageNumber, rewards, availableRewards, expiredRewards) {
+    const _this = this;
+    const rewardList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.rewards.containerClass + ' .cl-main-widget-reward-list-body-res');
+    const totalCount = _this.settings.lbWidget.settings.rewards.totalCount;
+    const itemsPerPage = 10;
+    let paginator = query(rewardList, '.paginator');
 
-    var accordionObj = _this.accordionStyle(_this.settings.rewardsSection.accordionLayout, function (accordionSection, listContainer, topEntryContainer, layout) {
-      var rewardData = _this.settings.lbWidget.settings.rewards[layout.type];
+    if (!paginator && totalCount > itemsPerPage) {
+      const pagesCount = Math.ceil(totalCount / itemsPerPage);
+      paginator = document.createElement('div');
+      paginator.setAttribute('class', 'paginator');
+      addClass(paginator, 'accordion');
+
+      let page = '';
+
+      for (let i = 0; i < pagesCount; i++) {
+        page += '<span class="paginator-item" data-page=' + (i + 1) + '\>' + (i + 1) + '</span>';
+      }
+      paginator.innerHTML = page;
+    }
+
+    const accordionObj = _this.accordionStyle(_this.settings.rewardsSection.accordionLayout, function (accordionSection, listContainer, topEntryContainer, layout, paginator) {
+      const rewardData = _this.settings.lbWidget.settings.rewards[layout.type];
 
       if (typeof rewardData !== 'undefined') {
         if (rewardData.length === 0) {
@@ -2112,6 +2140,24 @@ export const MainWidget = function (options) {
 
     rewardList.innerHTML = '';
     rewardList.appendChild(accordionObj);
+
+    if (paginator) {
+      const paginatorItems = query(paginator, '.paginator-item');
+      paginatorItems.forEach(item => {
+        removeClass(item, 'active');
+        if (Number(item.dataset.page) === Number(pageNumber)) {
+          addClass(item, 'active');
+        }
+      });
+
+      const availableRewards = query(rewardList, '.cl-accordion.availableRewards');
+      if (availableRewards) {
+        const availableRewardsList = query(availableRewards, '.cl-accordion-list');
+        if (availableRewardsList) {
+          availableRewardsList.appendChild(paginator);
+        }
+      }
+    }
 
     // mapObject(rewardData, function(rew){
     //   if( query(rewardList, ".cl-reward-" + rew.id) === null ) {
@@ -2139,7 +2185,7 @@ export const MainWidget = function (options) {
 
     _this.settings.lbWidget.checkForAvailableRewards(pageNumber, function (rewards, availableRewards, expiredRewards) {
       _this.settings.lbWidget.updateRewardsNavigationCounts();
-      _this.rewardsListLayout(rewards, availableRewards, expiredRewards);
+      _this.rewardsListLayout(pageNumber, rewards, availableRewards, expiredRewards);
 
       if (typeof callback === 'function') {
         callback();

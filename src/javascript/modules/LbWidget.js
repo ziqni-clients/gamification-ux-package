@@ -41,8 +41,7 @@ import {
   RewardsApiWs,
   LeaderboardApiWs,
   LeaderboardSubscriptionRequest,
-  MessagesApiWs,
-  MessageRequest
+  MessagesApiWs
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -845,7 +844,7 @@ export const LbWidget = function (options) {
 
     if (_this.settings.mainWidget.settings.navigation !== null) {
       var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.rewards.navigationClass + ' .cl-main-navigation-item-count');
-      menuItemCount.innerHTML = _this.settings.rewards.rewards.totalCount;
+      menuItemCount.innerHTML = _this.settings.rewards.totalCount;
     }
   };
 
@@ -908,7 +907,6 @@ export const LbWidget = function (options) {
             }
           });
         }
-        console.warn('getMemberAchievementsOptInStatuses statuses:', statuses);
       }
 
       if (typeof callback === 'function') callback(_this.settings.achievements.list);
@@ -1081,9 +1079,14 @@ export const LbWidget = function (options) {
   this.getMessage = async function (messageId, callback) {
     const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
 
-    const messageRequest = MessageRequest.constructFromObject({
-      id: messageId
-    });
+    const messageRequest = {
+      messageFilter: {
+        ids: [messageId],
+        messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
+        skip: 0,
+        limit: 20
+      }
+    };
 
     await messagesApiWsClient.getMessages(messageRequest, (json) => {
       if (json.data.length) {
@@ -1204,14 +1207,11 @@ export const LbWidget = function (options) {
       skip: (pageNumber - 1) * 10
     };
 
-    console.warn('rewardRequest:', rewardRequest);
-
     await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
       this.settings.rewards.rewards = json.data ?? [];
       this.settings.rewards.availableRewards = json.data ?? [];
       this.settings.rewards.expiredRewards = [];
-      console.warn('getRewards json:', json);
-      this.settings.rewards.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+      this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
       if (typeof callback === 'function') {
         callback(
           this.settings.rewards.rewards,
@@ -1339,17 +1339,14 @@ export const LbWidget = function (options) {
     const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
     const messageRequest = {
       messageFilter: {
-        messageType: 'Notification', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
+        messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
         skip: 0,
         limit: 20
       }
     };
 
-    console.warn('messageRequest:', messageRequest);
-
     await messagesApiWsClient.getMessages(messageRequest, (json) => {
       this.settings.messages.messages = json.data ?? [];
-      console.warn('getMessages json:', json);
       if (typeof callback === 'function') {
         callback(this.settings.messages.messages);
       }
@@ -1933,8 +1930,6 @@ export const LbWidget = function (options) {
         action: 'join'
       }, null);
 
-      console.warn('optInRequest:', optInRequest);
-
       await optInApiWsClient.manageOptin(optInRequest, (json) => {
         console.warn('manageOptin data:', json.data);
       });
@@ -1991,6 +1986,9 @@ export const LbWidget = function (options) {
       if (el.closest('.cl-main-widget-ach-list-body-res')) {
         _this.settings.mainWidget.loadAchievements(el.dataset.page);
       }
+      if (el.closest('.cl-main-widget-reward-list-body-res')) {
+        _this.settings.mainWidget.loadRewards(el.dataset.page);
+      }
 
       // load achievement details
     } else if (hasClass(el, 'cl-ach-list-more')) {
@@ -2039,7 +2037,7 @@ export const LbWidget = function (options) {
     } else if (hasClass(el, 'cl-main-widget-reward-claim-btn')) {
       _this.claimReward(el.dataset.id, function (data) {
         if (data.data.claimed) {
-          _this.settings.mainWidget.loadRewards();
+          _this.settings.mainWidget.loadRewards(1);
 
           addClass(el, 'cl-claimed');
           el.innerHTML = _this.settings.translation.rewards.claimed;
@@ -2160,8 +2158,6 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    console.warn('optInStatesRequest:', optInStatesRequest);
-
     return new Promise((resolve, reject) => {
       optInApiWsClient.optInStates(optInStatesRequest, (json) => {
         resolve(json.data);
@@ -2184,8 +2180,6 @@ export const LbWidget = function (options) {
         limit: 1
       }
     }, null);
-
-    console.warn('optInStatesRequest:', optInStatesRequest);
 
     return new Promise((resolve, reject) => {
       optInApiWsClient.optInStates(optInStatesRequest, (json) => {
@@ -2286,8 +2280,6 @@ export const LbWidget = function (options) {
     });
 
     const body = await response.json();
-
-    console.warn('token:', body.data.jwtToken);
 
     if (body.data && body.data.jwtToken) {
       this.settings.authToken = body.data.jwtToken;
