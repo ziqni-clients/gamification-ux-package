@@ -2134,10 +2134,10 @@ export const MainWidget = function (options) {
     });
   };
 
-  this.loadRewards = function (callback) {
+  this.loadRewards = function (pageNumber, callback) {
     var _this = this;
 
-    _this.settings.lbWidget.checkForAvailableRewards(function (rewards, availableRewards, expiredRewards) {
+    _this.settings.lbWidget.checkForAvailableRewards(pageNumber, function (rewards, availableRewards, expiredRewards) {
       _this.settings.lbWidget.updateRewardsNavigationCounts();
       _this.rewardsListLayout(rewards, availableRewards, expiredRewards);
 
@@ -2227,7 +2227,7 @@ export const MainWidget = function (options) {
                 _this.settings.navigationSwitchInProgress = false;
               });
             } else if (hasClass(target, 'cl-main-widget-navigation-rewards-icon')) {
-              _this.loadRewards(function () {
+              _this.loadRewards(1, function () {
                 var rewardsContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.rewards.containerClass);
 
                 rewardsContainer.style.display = 'block';

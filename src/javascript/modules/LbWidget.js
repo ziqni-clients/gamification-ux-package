@@ -84,7 +84,7 @@ export const LbWidget = function (options) {
     gameId: '',
     enforceGameLookup: false, // tournament lookup will include/exclude game only requests
     apiKey: '',
-    expires: 3600000,
+    expires: 36000000,
     member: null,
     itemsPerPage: 10,
     layout: {
@@ -122,6 +122,7 @@ export const LbWidget = function (options) {
     rewards: {
       availableRewards: [],
       rewards: [],
+      totalCount: 0,
       expiredRewards: [],
       rewardFormatter: function (reward) {
         let defaultRewardValue = Number.isInteger(reward.rewardValue) ? reward.rewardValue : reward.rewardValue.toFixed(6);
@@ -844,7 +845,7 @@ export const LbWidget = function (options) {
 
     if (_this.settings.mainWidget.settings.navigation !== null) {
       var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.rewards.navigationClass + ' .cl-main-navigation-item-count');
-      menuItemCount.innerHTML = _this.settings.rewards.availableRewards.length;
+      menuItemCount.innerHTML = _this.settings.rewards.rewards.totalCount;
     }
   };
 
@@ -1191,7 +1192,7 @@ export const LbWidget = function (options) {
     });
   };
 
-  this.checkForAvailableRewards = async function (callback) {
+  this.checkForAvailableRewards = async function (pageNumber, callback) {
     const rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
 
     const rewardRequest = {
@@ -1199,14 +1200,18 @@ export const LbWidget = function (options) {
         entityType: 'Competition',
         entityIds: [this.settings.competition.activeCompetitionId]
       }],
-      limit: 20,
-      skip: 0
+      limit: 10,
+      skip: (pageNumber - 1) * 10
     };
+
+    console.warn('rewardRequest:', rewardRequest);
 
     await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
       this.settings.rewards.rewards = json.data ?? [];
       this.settings.rewards.availableRewards = json.data ?? [];
       this.settings.rewards.expiredRewards = [];
+      console.warn('getRewards json:', json);
+      this.settings.rewards.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
       if (typeof callback === 'function') {
         callback(
           this.settings.rewards.rewards,
@@ -1332,11 +1337,19 @@ export const LbWidget = function (options) {
   // var checkForAvailableMessagesAjax = new cLabs.Ajax();
   this.checkForAvailableMessages = async function (callback) {
     const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
+    const messageRequest = {
+      messageFilter: {
+        messageType: 'Notification', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
+        skip: 0,
+        limit: 20
+      }
+    };
 
-    const messageRequest = MessageRequest.constructFromObject({});
+    console.warn('messageRequest:', messageRequest);
 
     await messagesApiWsClient.getMessages(messageRequest, (json) => {
-      this.settings.messages.messages = json.data;
+      this.settings.messages.messages = json.data ?? [];
+      console.warn('getMessages json:', json);
       if (typeof callback === 'function') {
         callback(this.settings.messages.messages);
       }
@@ -1505,7 +1518,7 @@ export const LbWidget = function (options) {
             callback();
           }
         }
-        _this.checkForAvailableRewards(function () {
+        _this.checkForAvailableRewards(1, function () {
           _this.updateRewardsNavigationCounts();
         });
       });
@@ -1764,7 +1777,7 @@ export const LbWidget = function (options) {
 
           // load initial available reward data
           if (_this.settings.navigation.rewards.enable) {
-            _this.checkForAvailableRewards(function () {
+            _this.checkForAvailableRewards(1, function () {
               _this.updateRewardsNavigationCounts();
             });
           }
@@ -2273,6 +2286,8 @@ export const LbWidget = function (options) {
     });
 
     const body = await response.json();
+
+    console.warn('token:', body.data.jwtToken);
 
     if (body.data && body.data.jwtToken) {
       this.settings.authToken = body.data.jwtToken;
