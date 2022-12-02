@@ -771,14 +771,17 @@ export const LbWidget = function (options) {
         entityId: this.settings.competition.activeContestId,
         action: 'Subscribe',
         leaderboardFilter: {
-          topRanksToInclude: 10
+          topRanksToInclude: 10,
+          ranksAboveToInclude: 10,
+          ranksBelowToInclude: 10
         }
       });
 
-      console.warn('leaderboardSubscriptionRequest:', leaderboardSubscriptionRequest);
-
       await leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, async (json) => {
-        console.warn('subscribeToLeaderboard Response json:', json);
+        if (json.data && json.data.leaderboardEntries) {
+          this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
+          callback(json.data.leaderboardEntries);
+        }
       });
 
       // var _this = this;
@@ -1196,30 +1199,43 @@ export const LbWidget = function (options) {
   };
 
   this.checkForAvailableRewards = async function (pageNumber, callback) {
-    const rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
+    this.settings.rewards.rewards = [];
+    this.settings.rewards.availableRewards = [];
+    this.settings.rewards.expiredRewards = [];
+    this.settings.rewards.totalCount = 0;
 
-    const rewardRequest = {
-      entityFilter: [{
-        entityType: 'Competition',
-        entityIds: [this.settings.competition.activeCompetitionId]
-      }],
-      limit: 10,
-      skip: (pageNumber - 1) * 10
-    };
+    if (this.settings.competition.activeContestId) {
+      const rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
 
-    await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
-      this.settings.rewards.rewards = json.data ?? [];
-      this.settings.rewards.availableRewards = json.data ?? [];
-      this.settings.rewards.expiredRewards = [];
-      this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
-      if (typeof callback === 'function') {
-        callback(
-          this.settings.rewards.rewards,
-          this.settings.rewards.availableRewards,
-          this.settings.rewards.expiredRewards
-        );
-      }
-    });
+      const rewardRequest = {
+        entityFilter: [{
+          entityType: 'Contest',
+          entityIds: [this.settings.competition.activeContestId]
+        }],
+        limit: 10,
+        skip: (pageNumber - 1) * 10
+      };
+
+      await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
+        this.settings.rewards.rewards = json.data ?? [];
+        this.settings.rewards.availableRewards = json.data ?? [];
+        this.settings.rewards.expiredRewards = [];
+        this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+        if (typeof callback === 'function') {
+          callback(
+            this.settings.rewards.rewards,
+            this.settings.rewards.availableRewards,
+            this.settings.rewards.expiredRewards
+          );
+        }
+      });
+    } else if (typeof callback === 'function') {
+      callback(
+        this.settings.rewards.rewards,
+        this.settings.rewards.availableRewards,
+        this.settings.rewards.expiredRewards
+      );
+    }
 
     // var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
     // var claimedFilters = [

@@ -961,7 +961,7 @@ export const MainWidget = function (options) {
       topResults.push({
         name: '--',
         rank: rank,
-        points: '--',
+        score: '--',
         memberId: '',
         memberRefId: ''
       });
@@ -973,7 +973,7 @@ export const MainWidget = function (options) {
       remainingResults.push({
         name: '--',
         rank: rank,
-        points: '--',
+        score: '--',
         memberId: '',
         memberRefId: ''
       });
@@ -1004,16 +1004,28 @@ export const MainWidget = function (options) {
     });
 
     mapObject(topResults, function (lb) {
+      let memberId = '';
+      let memberNames = '';
+      let memberLbName = '';
+      if (lb.members && lb.members.length) {
+        memberId = lb.members[0].memberId;
+        memberNames = lb.members.map((m) => m.name);
+        memberLbName = memberNames.join();
+      } else {
+        memberId = lb.memberId;
+        memberLbName = lb.name;
+      }
       var count = 0;
-      var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
+      var icon = _this.settings.lbWidget.populateIdenticonBase64Image(memberId);
       var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
-      var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : lb.name;
+
+      var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : memberLbName;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
       var growthIcon = "<span class='cl-growth-icon cl-growth-" + growthType + "'></span>";
-      var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lb.points);
+      var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lb.score);
 
       if (rankCheck.indexOf(lb.rank) !== -1) {
         for (var rc = 0; rc < rankCheck.length; rc++) {
@@ -1089,16 +1101,27 @@ export const MainWidget = function (options) {
     });
 
     mapObject(remainingResults, function (lb) {
+      let memberId = '';
+      let memberNames = '';
+      let memberLbName = '';
+      if (lb.members && lb.members.length) {
+        memberId = lb.members[0].memberId;
+        memberNames = lb.members.map((m) => m.name);
+        memberLbName = memberNames.join();
+      } else {
+        memberId = lb.memberId;
+        memberLbName = lb.name;
+      }
       var count = 0;
-      var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
+      var icon = _this.settings.lbWidget.populateIdenticonBase64Image(memberId);
       var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
-      var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : lb.name;
+      var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : memberLbName;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
       var growthIcon = "<span class='cl-growth-icon cl-growth-" + growthType + "'></span>";
-      var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lb.points);
+      var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lb.score);
 
       if (rankCheck.indexOf(lb.rank) !== -1) {
         for (var rc = 0; rc < rankCheck.length; rc++) {
