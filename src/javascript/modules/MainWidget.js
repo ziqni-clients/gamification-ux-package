@@ -1071,9 +1071,13 @@ export const MainWidget = function (options) {
 
     if (typeof _this.settings.lbWidget.settings.competition.activeContest !== 'undefined' && _this.settings.lbWidget.settings.competition.activeContest !== null) {
       mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
-        if (reward.rewardRank instanceof Array && reward.rewardRank.indexOf(rank) !== -1) {
+        console.warn('getReward mapObject reward:', reward);
+        if (reward.rewardRank.indexOf(rank) !== -1) {
           rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
         }
+        // if (reward.rewardRank instanceof Array && reward.rewardRank.indexOf(rank) !== -1) {
+        //   rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
+        // }
       });
     }
 

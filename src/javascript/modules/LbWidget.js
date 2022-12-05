@@ -554,7 +554,7 @@ export const LbWidget = function (options) {
   //   });
   // };
 
-  this.prepareActiveCompetition = function (callback) {
+  this.prepareActiveCompetition = async function (callback) {
     const _this = this;
     let activeCompetition = null;
     let activeCompetitionId = null;
@@ -600,8 +600,8 @@ export const LbWidget = function (options) {
       }
 
       if (activeCompetitionId !== null) {
-        _this.loadActiveCompetition(function (json) {
-          _this.setActiveCompetition(json, callback);
+        _this.loadActiveCompetition(async function (json) {
+          await _this.setActiveCompetition(json, callback);
         });
       } else if (typeof callback === 'function') {
         callback();
@@ -1221,6 +1221,7 @@ export const LbWidget = function (options) {
         this.settings.rewards.availableRewards = json.data ?? [];
         this.settings.rewards.expiredRewards = [];
         this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+        this.settings.competition.activeContest.rewards = json.data;
         if (typeof callback === 'function') {
           callback(
             this.settings.rewards.rewards,
@@ -1481,9 +1482,9 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.competition.refreshInterval);
     }
 
-    _this.checkForAvailableCompetitions(function () {
+    _this.checkForAvailableCompetitions(async function () {
       _this.updateLeaderboardNavigationCounts();
-      _this.prepareActiveCompetition(function () {
+      await _this.prepareActiveCompetition(function () {
         var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
 
         // clear to not clash with LB refresh that could happen at same time
