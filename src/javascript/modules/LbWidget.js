@@ -144,7 +144,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 3000,
+      refreshIntervalMillis: 100000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -780,8 +780,10 @@ export const LbWidget = function (options) {
       await leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, async (json) => {
         if (json.data && json.data.leaderboardEntries) {
           this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
-          callback(json.data.leaderboardEntries);
+        } else {
+          this.settings.leaderboard.leaderboardData = [];
         }
+        callback(this.settings.leaderboard.leaderboardData);
       });
 
       // var _this = this;
