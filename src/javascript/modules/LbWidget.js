@@ -1221,7 +1221,9 @@ export const LbWidget = function (options) {
         this.settings.rewards.availableRewards = json.data ?? [];
         this.settings.rewards.expiredRewards = [];
         this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
-        this.settings.competition.activeContest.rewards = json.data;
+        if (this.settings.competition.activeContest && json.data) {
+          this.settings.competition.activeContest.rewards = json.data;
+        }
         if (typeof callback === 'function') {
           callback(
             this.settings.rewards.rewards,
