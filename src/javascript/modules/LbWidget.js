@@ -193,14 +193,14 @@ export const LbWidget = function (options) {
       }
     },
     apiWs: {
-      AchievementsApiWsClient: null,
+      achievementsApiWsClient: null,
       leaderboardApiWsClient: null,
-      CompetitionsApiWsClient: null,
-      ContestsApiWsClient: null,
-      MembersApiWsClient: null,
-      OptInApiWsClient: null,
-      RewardsApiWsClient: null,
-      MessagesApiWsClient: null
+      competitionsApiWsClient: null,
+      contestsApiWsClient: null,
+      membersApiWsClient: null,
+      optInApiWsClient: null,
+      rewardsApiWsClient: null,
+      messagesApiWsClient: null
     },
     uri: {
       gatewayDomain: cLabs.api.url,
@@ -885,8 +885,8 @@ export const LbWidget = function (options) {
   this.checkForAvailableAchievements = async function (pageNumber, callback) {
     const _this = this;
 
-    if (!this.settings.apiWs.AchievementsApiWsClient) {
-      this.settings.apiWs.AchievementsApiWsClient = new AchievementsApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.achievementsApiWsClient) {
+      this.settings.apiWs.achievementsApiWsClient = new AchievementsApiWs(this.apiClientStomp);
     }
 
     const achievementRequest = AchievementRequest.constructFromObject({
@@ -910,7 +910,7 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    await this.settings.apiWs.AchievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
+    await this.settings.apiWs.achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
       _this.settings.achievements.list = json.data;
       _this.settings.achievements.totalCount = json.meta.totalRecordsFound || 0;
       const optInAchievements = json.data.filter(a => a.constraints && a.constraints.includes('optinRequiredForEntrants'));
