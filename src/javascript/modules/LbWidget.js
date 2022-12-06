@@ -32,7 +32,6 @@ import {
   CompetitionsApiWs,
   ContestRequest,
   ContestsApiWs,
-  EntityChangesApiWs,
   ManageOptinRequest,
   MemberRequest,
   MembersApiWs,
@@ -192,6 +191,16 @@ export const LbWidget = function (options) {
         containerClass: 'cl-main-widget-section-inbox',
         order: 4
       }
+    },
+    apiWs: {
+      achievementsApiWsClient: null,
+      leaderboardApiWsClient: null,
+      competitionsApiWsClient: null,
+      contestsApiWsClient: null,
+      membersApiWsClient: null,
+      optInApiWsClient: null,
+      rewardsApiWsClient: null,
+      messagesApiWsClient: null
     },
     uri: {
       gatewayDomain: cLabs.api.url,
@@ -481,9 +490,11 @@ export const LbWidget = function (options) {
   };
 
   this.getCompetitions = async (competitionRequest) => {
-    const competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.competitionsApiWsClient) {
+      this.settings.apiWs.competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
+    }
     return new Promise((resolve, reject) => {
-      competitionsApiWsClient.getCompetitions(competitionRequest, (json) => {
+      this.settings.apiWs.competitionsApiWsClient.getCompetitions(competitionRequest, (json) => {
         resolve(json.data);
       });
     });
@@ -756,9 +767,11 @@ export const LbWidget = function (options) {
   };
 
   this.getContests = async (contestRequest) => {
-    const contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.contestsApiWsClient) {
+      this.settings.apiWs.contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
+    }
     return new Promise((resolve, reject) => {
-      contestsApiWsClient.getContests(contestRequest, (json) => {
+      this.settings.apiWs.contestsApiWsClient.getContests(contestRequest, (json) => {
         resolve(json.data);
       });
     });
@@ -766,7 +779,10 @@ export const LbWidget = function (options) {
 
   this.getLeaderboardData = async function (count, callback) {
     if (this.settings.competition.activeContestId !== null) {
-      const leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
+      if (!this.settings.apiWs.leaderboardApiWsClient) {
+        this.settings.apiWs.leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
+      }
+
       const leaderboardSubscriptionRequest = LeaderboardSubscriptionRequest.constructFromObject({
         entityId: this.settings.competition.activeContestId,
         action: 'Subscribe',
@@ -777,14 +793,17 @@ export const LbWidget = function (options) {
         }
       });
 
-      await leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, async (json) => {
-        if (json.data && json.data.leaderboardEntries) {
-          this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
-        } else {
-          this.settings.leaderboard.leaderboardData = [];
+      await this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(
+        leaderboardSubscriptionRequest,
+        async (json) => {
+          if (json.data && json.data.leaderboardEntries) {
+            this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
+          } else {
+            this.settings.leaderboard.leaderboardData = [];
+          }
+          callback(this.settings.leaderboard.leaderboardData);
         }
-        callback(this.settings.leaderboard.leaderboardData);
-      });
+      );
 
       // var _this = this;
       // var url = _this.settings.uri.contestLeaderboard.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeContestId);
@@ -866,7 +885,9 @@ export const LbWidget = function (options) {
   this.checkForAvailableAchievements = async function (pageNumber, callback) {
     const _this = this;
 
-    const achievementsApiWsClient = new AchievementsApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.achievementsApiWsClient) {
+      this.settings.apiWs.achievementsApiWsClient = new AchievementsApiWs(this.apiClientStomp);
+    }
 
     const achievementRequest = AchievementRequest.constructFromObject({
       achievementFilter: {
@@ -889,7 +910,7 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    await achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
+    await this.settings.apiWs.achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
       _this.settings.achievements.list = json.data;
       _this.settings.achievements.totalCount = json.meta.totalRecordsFound || 0;
       const optInAchievements = json.data.filter(a => a.constraints && a.constraints.includes('optinRequiredForEntrants'));
@@ -1082,7 +1103,9 @@ export const LbWidget = function (options) {
   };
 
   this.getMessage = async function (messageId, callback) {
-    const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.messagesApiWsClient) {
+      this.settings.apiWs.messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
+    }
 
     const messageRequest = {
       messageFilter: {
@@ -1093,7 +1116,7 @@ export const LbWidget = function (options) {
       }
     };
 
-    await messagesApiWsClient.getMessages(messageRequest, (json) => {
+    await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
       if (json.data.length) {
         if (typeof callback === 'function') {
           callback(json.data[0]);
@@ -1207,7 +1230,9 @@ export const LbWidget = function (options) {
     this.settings.rewards.totalCount = 0;
 
     if (this.settings.competition.activeContestId) {
-      const rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
+      if (!this.settings.apiWs.rewardsApiWsClient) {
+        this.settings.apiWs.rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
+      }
 
       const rewardRequest = {
         entityFilter: [{
@@ -1218,7 +1243,7 @@ export const LbWidget = function (options) {
         skip: (pageNumber - 1) * 10
       };
 
-      await rewardsApiWsClient.getRewards(rewardRequest, (json) => {
+      await this.settings.apiWs.rewardsApiWsClient.getRewards(rewardRequest, (json) => {
         this.settings.rewards.rewards = json.data ?? [];
         this.settings.rewards.availableRewards = json.data ?? [];
         this.settings.rewards.expiredRewards = [];
@@ -1357,7 +1382,9 @@ export const LbWidget = function (options) {
 
   // var checkForAvailableMessagesAjax = new cLabs.Ajax();
   this.checkForAvailableMessages = async function (callback) {
-    const messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.messagesApiWsClient) {
+      this.settings.apiWs.messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
+    }
     const messageRequest = {
       messageFilter: {
         messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
@@ -1366,7 +1393,7 @@ export const LbWidget = function (options) {
       }
     };
 
-    await messagesApiWsClient.getMessages(messageRequest, (json) => {
+    await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
       this.settings.messages.messages = json.data ?? [];
       if (typeof callback === 'function') {
         callback(this.settings.messages.messages);
@@ -1622,9 +1649,10 @@ export const LbWidget = function (options) {
   };
 
   this.loadMember = async function (callback) {
-    const _this = this;
+    if (!this.settings.apiWs.membersApiWsClient) {
+      this.settings.apiWs.membersApiWsClient = new MembersApiWs(this.apiClientStomp);
+    }
 
-    const membersApiWsClient = new MembersApiWs(this.apiClientStomp);
     const memberRequest = MemberRequest.constructFromObject({
       includeFields: [
         'id',
@@ -1640,20 +1668,10 @@ export const LbWidget = function (options) {
       includeMetaDataFields: []
     }, null);
 
-    await membersApiWsClient.getMember(memberRequest, (json) => {
-      _this.settings.member = json.data;
+    await this.settings.apiWs.membersApiWsClient.getMember(memberRequest, (json) => {
+      this.settings.member = json.data;
       callback(json.data);
     });
-
-    const apiWsClient = new EntityChangesApiWs(this.apiClientStomp);
-    const entityChangeSubscriptionRequest = {
-      entityType: 'Competition',
-      action: 'Subscribe',
-      constraints: [],
-      callback: ''
-    };
-
-    apiWsClient.manageEntityChangeSubscription(entityChangeSubscriptionRequest, (data) => { console.log('Competition callback data 2', data); });
 
     // _this.settings.globalAjax.abort().getData({
     //   type: 'GET',
@@ -1937,7 +1955,9 @@ export const LbWidget = function (options) {
       // Achievement details opt-in action
     } else if (hasClass(el, 'cl-main-widget-ach-details-optin-action')) {
       if (_this.settings.achievements.activeAchievementId) {
-        const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+        if (!this.settings.apiWs.optInApiWsClient) {
+          this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+        }
 
         let optInRequest = ManageOptinRequest.constructFromObject({
           entityId: _this.settings.achievements.activeAchievementId,
@@ -1953,7 +1973,7 @@ export const LbWidget = function (options) {
           }, null);
         }
 
-        await optInApiWsClient.manageOptin(optInRequest, (json) => {
+        await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
           _this.settings.mainWidget.hideAchievementDetails(
             _this.checkForAvailableAchievements(1)
           );
@@ -1963,7 +1983,9 @@ export const LbWidget = function (options) {
       // Achievement list opt-in action
     } else if (hasClass(el, 'cl-ach-list-enter')) {
       const activeAchievementId = el.dataset.id;
-      const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+      if (!this.settings.apiWs.optInApiWsClient) {
+        this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+      }
 
       const optInRequest = ManageOptinRequest.constructFromObject({
         entityId: activeAchievementId,
@@ -1971,14 +1993,16 @@ export const LbWidget = function (options) {
         action: 'join'
       }, null);
 
-      await optInApiWsClient.manageOptin(optInRequest, (json) => {
+      await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
         console.warn('manageOptin data:', json.data);
       });
 
       // Achievement list leave action
     } else if (hasClass(el, 'cl-ach-list-leave')) {
       const activeAchievementId = el.dataset.id;
-      const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+      if (!this.settings.apiWs.optInApiWsClient) {
+        this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+      }
 
       const optInRequest = ManageOptinRequest.constructFromObject({
         entityId: activeAchievementId,
@@ -1986,7 +2010,7 @@ export const LbWidget = function (options) {
         action: 'leave'
       }, null);
 
-      await optInApiWsClient.manageOptin(optInRequest, (json) => {
+      await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
         console.warn('manageOptin data:', json.data);
       });
 
@@ -2184,7 +2208,9 @@ export const LbWidget = function (options) {
   };
 
   this.getMemberAchievementOptInStatus = async function (achievementId) {
-    const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.optInApiWsClient) {
+      this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+    }
 
     const optInStatesRequest = OptInStatesRequest.constructFromObject({
       optinStatesFilter: {
@@ -2200,14 +2226,16 @@ export const LbWidget = function (options) {
     }, null);
 
     return new Promise((resolve, reject) => {
-      optInApiWsClient.optInStates(optInStatesRequest, (json) => {
+      this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
         resolve(json.data);
       });
     });
   };
 
   this.getMemberAchievementsOptInStatuses = async function (achievementIds) {
-    const optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+    if (!this.settings.apiWs.optInApiWsClient) {
+      this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+    }
 
     const optInStatesRequest = OptInStatesRequest.constructFromObject({
       optinStatesFilter: {
@@ -2223,7 +2251,7 @@ export const LbWidget = function (options) {
     }, null);
 
     return new Promise((resolve, reject) => {
-      optInApiWsClient.optInStates(optInStatesRequest, (json) => {
+      this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
         resolve(json.data);
       });
     });
