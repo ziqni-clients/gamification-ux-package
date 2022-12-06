@@ -144,7 +144,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 100000,
+      refreshIntervalMillis: 3000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
