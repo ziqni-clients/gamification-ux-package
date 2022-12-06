@@ -144,7 +144,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 3000000,
+      refreshIntervalMillis: 3000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -777,11 +777,8 @@ export const LbWidget = function (options) {
         }
       });
 
-      console.warn('leaderboardSubscriptionRequest:', leaderboardSubscriptionRequest);
-
       await leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, async (json) => {
         if (json.data && json.data.leaderboardEntries) {
-          console.warn('subscribeToLeaderboard response:', json);
           this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
           callback(json.data.leaderboardEntries);
         }
@@ -1464,9 +1461,29 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.leaderboard.refreshLbDataInterval);
     }
 
+    // if (
+    //   (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optinRequired === 'boolean' && !_this.settings.competition.activeCompetition.optinRequired) ||
+    //   (typeof _this.settings.competition.activeCompetition.optin === 'boolean' && _this.settings.competition.activeCompetition.optin)
+    // ) {
+    //   console.warn('leaderboardDataRefresh:');
+    //   var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
+    //   _this.getLeaderboardData(count, function (data) {
+    //     if (_this.settings.miniScoreBoard.settings.active) _this.settings.miniScoreBoard.loadScoreBoard();
+    //     if (_this.settings.mainWidget.settings.active) _this.settings.mainWidget.loadLeaderboard();
+    //   });
+    // }
     if (
-      (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optinRequired === 'boolean' && !_this.settings.competition.activeCompetition.optinRequired) ||
-      (typeof _this.settings.competition.activeCompetition.optin === 'boolean' && _this.settings.competition.activeCompetition.optin)
+      (
+        _this.settings.competition.activeCompetition !== null &&
+        (
+          !_this.settings.competition.activeCompetition.constraints ||
+          !_this.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
+        )
+      ) ||
+      (
+        typeof _this.settings.competition.activeCompetition.optin === 'boolean' &&
+        _this.settings.competition.activeCompetition.optin
+      )
     ) {
       var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
       _this.getLeaderboardData(count, function (data) {

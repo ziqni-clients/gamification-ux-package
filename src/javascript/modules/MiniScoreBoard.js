@@ -357,7 +357,6 @@ export const MiniScoreBoard = function (options) {
   };
 
   this.layoutDefaultOrEmptySingleRow = function (lbEntry) {
-    console.warn('layoutDefaultOrEmptySingleRow:', lbEntry);
     var _this = this;
     var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.members[0].memberId);
     var lbWrapper = _this.layoutDefaultOrEmptyEntry();

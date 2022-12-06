@@ -1502,6 +1502,10 @@ export const MainWidget = function (options) {
       member = query(_this.settings.leaderboard.topResults, '.cl-lb-member-row');
     }
 
+    if (Array.isArray(member)) {
+      member = member[0];
+    }
+
     if (area !== null && member !== null) {
       area.innerHTML = member.innerHTML;
     }
