@@ -1126,7 +1126,7 @@ export const MainWidget = function (options) {
       }
       var count = 0;
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(memberId);
-      var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      const memberFound = lb.members && lb.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1;
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : memberLbName;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
@@ -1524,6 +1524,9 @@ export const MainWidget = function (options) {
   };
 
   this.isElementVisibleInView = function (el, container) {
+    if (Array.isArray(el)) {
+      el = el[0];
+    }
     var position = el.getBoundingClientRect();
     var elemContainer = container.getBoundingClientRect();
     var elemTop = position.top;
