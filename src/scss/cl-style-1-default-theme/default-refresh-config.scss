@@ -106,7 +106,7 @@ $prev-btn-icon-bg: url(../../images/prev-btn-icon-grey.svg);
   --lb3-tournament-container-text-size: 12px;
   --lb3-tournament-container-height: 28px;
   --lb3-tournament-container-line-height: 28px;
-  --lb3-tournament-description-close-arrow-up-color: #ffffff;
+  --lb3-tournament-description-close-arrow-up-color: var(--primary-border-color);
   --lb3-tournament-description-close-background: var(--primary-color);
 
   --lb3-tournament-lb-place-font-color: var(--primary-font-color);
