@@ -312,7 +312,7 @@ export const MiniScoreBoard = function (options) {
     }
 
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
-      if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId)) {
+      if (lbEntry.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1) {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-default-results-list');
         scoreArea.innerHTML = '';
 
@@ -358,11 +358,11 @@ export const MiniScoreBoard = function (options) {
 
   this.layoutDefaultOrEmptySingleRow = function (lbEntry) {
     var _this = this;
-    var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.memberId);
+    var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.members[0].memberId);
     var lbWrapper = _this.layoutDefaultOrEmptyEntry();
     var img = query(lbWrapper, '.cl-widget-ms-default-mem-img');
     var selfMember = ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId));
-    var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.points);
+    var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.score);
 
     img.src = icon;
     img.alt = '';

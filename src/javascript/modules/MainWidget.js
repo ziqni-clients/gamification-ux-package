@@ -1071,8 +1071,20 @@ export const MainWidget = function (options) {
 
     if (typeof _this.settings.lbWidget.settings.competition.activeContest !== 'undefined' && _this.settings.lbWidget.settings.competition.activeContest !== null) {
       mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
-        if (reward.rewardRank instanceof Array && reward.rewardRank.indexOf(rank) !== -1) {
+        if (reward.rewardRank.indexOf(rank) !== -1) {
           rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
+        } else if (reward.rewardRank.indexOf('-') !== -1) {
+          const rewardRankArr = reward.rewardRank.split(',');
+          rewardRankArr.forEach(r => {
+            const idx = r.indexOf('-');
+            if (idx !== -1) {
+              const start = parseInt(r);
+              const end = parseInt(r.substring(idx + 1));
+              if (rank > start && rank < end) {
+                rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
+              }
+            }
+          });
         }
       });
     }
@@ -1114,7 +1126,7 @@ export const MainWidget = function (options) {
       }
       var count = 0;
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(memberId);
-      var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      const memberFound = lb.members && lb.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1;
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : memberLbName;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
@@ -1490,6 +1502,10 @@ export const MainWidget = function (options) {
       member = query(_this.settings.leaderboard.topResults, '.cl-lb-member-row');
     }
 
+    if (Array.isArray(member)) {
+      member = member[0];
+    }
+
     if (area !== null && member !== null) {
       area.innerHTML = member.innerHTML;
     }
@@ -1512,6 +1528,9 @@ export const MainWidget = function (options) {
   };
 
   this.isElementVisibleInView = function (el, container) {
+    if (Array.isArray(el)) {
+      el = el[0];
+    }
     var position = el.getBoundingClientRect();
     var elemContainer = container.getBoundingClientRect();
     var elemTop = position.top;

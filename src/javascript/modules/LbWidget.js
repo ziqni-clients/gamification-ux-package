@@ -144,7 +144,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 3000000,
+      refreshIntervalMillis: 3000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -554,7 +554,7 @@ export const LbWidget = function (options) {
   //   });
   // };
 
-  this.prepareActiveCompetition = function (callback) {
+  this.prepareActiveCompetition = async function (callback) {
     const _this = this;
     let activeCompetition = null;
     let activeCompetitionId = null;
@@ -600,8 +600,8 @@ export const LbWidget = function (options) {
       }
 
       if (activeCompetitionId !== null) {
-        _this.loadActiveCompetition(function (json) {
-          _this.setActiveCompetition(json, callback);
+        _this.loadActiveCompetition(async function (json) {
+          await _this.setActiveCompetition(json, callback);
         });
       } else if (typeof callback === 'function') {
         callback();
@@ -1221,6 +1221,9 @@ export const LbWidget = function (options) {
         this.settings.rewards.availableRewards = json.data ?? [];
         this.settings.rewards.expiredRewards = [];
         this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+        if (this.settings.competition.activeContest && json.data) {
+          this.settings.competition.activeContest.rewards = json.data;
+        }
         if (typeof callback === 'function') {
           callback(
             this.settings.rewards.rewards,
@@ -1458,9 +1461,29 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.leaderboard.refreshLbDataInterval);
     }
 
+    // if (
+    //   (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optinRequired === 'boolean' && !_this.settings.competition.activeCompetition.optinRequired) ||
+    //   (typeof _this.settings.competition.activeCompetition.optin === 'boolean' && _this.settings.competition.activeCompetition.optin)
+    // ) {
+    //   console.warn('leaderboardDataRefresh:');
+    //   var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
+    //   _this.getLeaderboardData(count, function (data) {
+    //     if (_this.settings.miniScoreBoard.settings.active) _this.settings.miniScoreBoard.loadScoreBoard();
+    //     if (_this.settings.mainWidget.settings.active) _this.settings.mainWidget.loadLeaderboard();
+    //   });
+    // }
     if (
-      (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optinRequired === 'boolean' && !_this.settings.competition.activeCompetition.optinRequired) ||
-      (typeof _this.settings.competition.activeCompetition.optin === 'boolean' && _this.settings.competition.activeCompetition.optin)
+      (
+        _this.settings.competition.activeCompetition !== null &&
+        (
+          !_this.settings.competition.activeCompetition.constraints ||
+          !_this.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
+        )
+      ) ||
+      (
+        typeof _this.settings.competition.activeCompetition.optin === 'boolean' &&
+        _this.settings.competition.activeCompetition.optin
+      )
     ) {
       var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
       _this.getLeaderboardData(count, function (data) {
@@ -1481,9 +1504,9 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.competition.refreshInterval);
     }
 
-    _this.checkForAvailableCompetitions(function () {
+    _this.checkForAvailableCompetitions(async function () {
       _this.updateLeaderboardNavigationCounts();
-      _this.prepareActiveCompetition(function () {
+      await _this.prepareActiveCompetition(function () {
         var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
 
         // clear to not clash with LB refresh that could happen at same time
