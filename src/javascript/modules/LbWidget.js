@@ -777,8 +777,11 @@ export const LbWidget = function (options) {
         }
       });
 
+      console.warn('leaderboardSubscriptionRequest:', leaderboardSubscriptionRequest);
+
       await leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, async (json) => {
         if (json.data && json.data.leaderboardEntries) {
+          console.warn('subscribeToLeaderboard response:', json);
           this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
           callback(json.data.leaderboardEntries);
         }
