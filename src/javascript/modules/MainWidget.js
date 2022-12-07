@@ -1267,6 +1267,7 @@ export const MainWidget = function (options) {
           imageFound = true;
           var newImg = img.cloneNode(true);
           addClass(newImg, 'cl-main-widget-lb-details-image');
+          imageContainer.innerHTML = '';
           imageContainer.appendChild(newImg);
 
           remove(img);
@@ -1277,11 +1278,24 @@ export const MainWidget = function (options) {
         if (body.innerText) {
           const url = body.innerText.match(urlRegex);
           if (url && url.length) {
-            const newImg = document.createElement('img');
-            newImg.setAttribute('src', url[0]);
-            addClass(newImg, 'cl-main-widget-lb-details-image');
-            imageContainer.appendChild(newImg);
+            const currentImg = imageContainer.getElementsByTagName('img');
+            let currentImgSrc = '';
+
+            if (currentImg.length) {
+              currentImgSrc = currentImg[0].src;
+            }
+
+            if (url[0] !== currentImgSrc) {
+              const newImg = document.createElement('img');
+              newImg.setAttribute('src', url[0]);
+              addClass(newImg, 'cl-main-widget-lb-details-image');
+              imageContainer.appendChild(newImg);
+            }
+
             body.innerHTML = body.innerHTML.replace(url[0], '');
+            imageFound = true;
+          } else {
+            imageContainer.innerHTML = '';
           }
         }
       }
@@ -1306,16 +1320,16 @@ export const MainWidget = function (options) {
     }
 
     if (_this.settings.lbWidget.settings.leaderboard.layoutSettings.imageBanner) {
-      var image = query(_this.settings.section, '.cl-main-widget-lb-details-image-container');
-      image.innerHTML = '';
+      var imageContainer = query(_this.settings.section, '.cl-main-widget-lb-details-image-container');
+      // imageContainer.innerHTML = '';
 
       if (body === null) {
         body = document.createElement('div');
         body.innerHTML = _this.getActiveCompetitionDescription();
 
-        _this.extractImage(body, image, true);
+        _this.extractImage(body, imageContainer, true);
       } else {
-        _this.extractImage(body, image, false);
+        _this.extractImage(body, imageContainer, false);
       }
     }
 
