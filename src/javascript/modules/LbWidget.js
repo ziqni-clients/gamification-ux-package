@@ -1601,8 +1601,12 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.leaderboard.refreshInterval);
     }
 
-    _this.settings.miniScoreBoard.clearAll();
-    _this.settings.mainWidget.clearAll();
+    if (_this.settings.miniScoreBoard) {
+      _this.settings.miniScoreBoard.clearAll();
+    }
+    if (_this.settings.mainWidget) {
+      _this.settings.mainWidget.clearAll();
+    }
 
     if (typeof callback === 'function') {
       callback();
@@ -2269,6 +2273,9 @@ export const LbWidget = function (options) {
 
     _this.settings.mainWidget.hide();
     _this.settings.mainWidget.settings.preLoader.preLoaderActive = false;
+    this.stopActivity();
+    this.apiClientStomp.disconnect();
+    this.apiClientStomp = null;
   };
 
   var restartReloadInterval;
