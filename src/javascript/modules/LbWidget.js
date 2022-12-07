@@ -787,9 +787,9 @@ export const LbWidget = function (options) {
         entityId: this.settings.competition.activeContestId,
         action: 'Subscribe',
         leaderboardFilter: {
-          topRanksToInclude: 10,
-          ranksAboveToInclude: 10,
-          ranksBelowToInclude: 10
+          topRanksToInclude: count,
+          ranksAboveToInclude: 0,
+          ranksBelowToInclude: 0
         }
       });
 
