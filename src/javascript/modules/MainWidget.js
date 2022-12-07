@@ -1282,6 +1282,7 @@ export const MainWidget = function (options) {
             addClass(newImg, 'cl-main-widget-lb-details-image');
             imageContainer.appendChild(newImg);
             body.innerHTML = body.innerHTML.replace(url[0], '');
+            imageFound = true;
           }
         }
       }
