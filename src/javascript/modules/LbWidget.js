@@ -1441,26 +1441,42 @@ export const LbWidget = function (options) {
     // });
   };
 
-  var optInMemberAjax = new cLabs.Ajax();
-  this.optInMemberToActiveCompetition = function (callback) {
-    var _this = this;
-    var url = _this.settings.uri.memberCompetitionOptIn.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':competitionId', _this.settings.competition.activeCompetitionId);
+  this.optInMemberToActiveCompetition = async function (callback) {
+    if (!this.settings.apiWs.optInApiWsClient) {
+      this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+    }
 
-    optInMemberAjax.abort().getData({
-      type: 'GET',
-      url: _this.settings.uri.gatewayDomain + url,
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      success: function (response, dataObj, xhr) {
-        if (xhr.status === 200) {
-          callback();
-        } else {
-          _this.log('failed to optInMemberToActiveCompetition ' + response);
-        }
-      }
+    const optInRequest = ManageOptinRequest.constructFromObject({
+      entityId: this.settings.competition.activeCompetition.id,
+      entityType: 'Achievement',
+      action: 'join'
+    }, null);
+
+    await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+      console.warn('optInMemberToActiveCompetition json:', json);
     });
   };
+
+  // var optInMemberAjax = new cLabs.Ajax();
+  // this.optInMemberToActiveCompetition = function (callback) {
+  //   var _this = this;
+  //   var url = _this.settings.uri.memberCompetitionOptIn.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':competitionId', _this.settings.competition.activeCompetitionId);
+  //
+  //   optInMemberAjax.abort().getData({
+  //     type: 'GET',
+  //     url: _this.settings.uri.gatewayDomain + url,
+  //     headers: {
+  //       'X-API-KEY': _this.settings.apiKey
+  //     },
+  //     success: function (response, dataObj, xhr) {
+  //       if (xhr.status === 200) {
+  //         callback();
+  //       } else {
+  //         _this.log('failed to optInMemberToActiveCompetition ' + response);
+  //       }
+  //     }
+  //   });
+  // };
 
   var revalidationCount = 0;
   this.revalidateIfSuccessfullOptIn = function (callback) {
@@ -1904,28 +1920,30 @@ export const LbWidget = function (options) {
     if (hasClass(el, 'cl-widget-ms-optin-action') && !hasClass(el, 'checking')) {
       addClass(el, 'checking');
 
-      _this.optInMemberToActiveCompetition(function () {
-        _this.revalidateIfSuccessfullOptIn(function (competitionJson) {
-          _this.settings.competition.activeCompetition = competitionJson.data;
+      await this.optInMemberToActiveCompetition();
 
-          // extra action to load competition details on mini scoreboard opt-in - Product request
-          _this.deactivateCompetitionsAndLeaderboards(function () {
-            _this.settings.leaderboard.leaderboardData = [];
-            _this.settings.mainWidget.initLayout(function () {
-              _this.activeDataRefresh();
-
-              _this.settings.mainWidget.loadCompetitionDetails(function () {
-
-              });
-            });
-            setTimeout(function () {
-              _this.settings.miniScoreBoard.settings.container.style.display = 'none';
-            }, 200);
-          });
-
-          removeClass(el, 'checking');
-        });
-      });
+      // _this.optInMemberToActiveCompetition(function () {
+      //   _this.revalidateIfSuccessfullOptIn(function (competitionJson) {
+      //     _this.settings.competition.activeCompetition = competitionJson.data;
+      //
+      //     // extra action to load competition details on mini scoreboard opt-in - Product request
+      //     _this.deactivateCompetitionsAndLeaderboards(function () {
+      //       _this.settings.leaderboard.leaderboardData = [];
+      //       _this.settings.mainWidget.initLayout(function () {
+      //         _this.activeDataRefresh();
+      //
+      //         _this.settings.mainWidget.loadCompetitionDetails(function () {
+      //
+      //         });
+      //       });
+      //       setTimeout(function () {
+      //         _this.settings.miniScoreBoard.settings.container.style.display = 'none';
+      //       }, 200);
+      //     });
+      //
+      //     removeClass(el, 'checking');
+      //   });
+      // });
 
       // Leaderboard details opt-in action
     } else if (hasClass(el, 'cl-main-widget-lb-details-optin-action') && !hasClass(el, 'checking')) {
@@ -1944,17 +1962,19 @@ export const LbWidget = function (options) {
     } else if (hasClass(el, 'cl-main-widget-lb-optin-action') && !hasClass(el, 'checking')) {
       addClass(el, 'checking');
 
-      _this.optInMemberToActiveCompetition(function () {
-        _this.revalidateIfSuccessfullOptIn(function (competitionJson) {
-          _this.settings.competition.activeCompetition = competitionJson.data;
+      await this.optInMemberToActiveCompetition();
 
-          _this.settings.mainWidget.loadCompetitionDetails(function () {
-          });
-
-          removeClass(el, 'checking');
-          el.parentNode.style.display = 'none';
-        });
-      });
+      // _this.optInMemberToActiveCompetition(function () {
+      //   _this.revalidateIfSuccessfullOptIn(function (competitionJson) {
+      //     _this.settings.competition.activeCompetition = competitionJson.data;
+      //
+      //     _this.settings.mainWidget.loadCompetitionDetails(function () {
+      //     });
+      //
+      //     removeClass(el, 'checking');
+      //     el.parentNode.style.display = 'none';
+      //   });
+      // });
 
       // Achievement details opt-in action
     } else if (hasClass(el, 'cl-main-widget-ach-details-optin-action')) {
@@ -2209,6 +2229,31 @@ export const LbWidget = function (options) {
         _this.eventHandlers(el);
       });
     }
+  };
+
+  this.getCompetitionOptInStatus = async function (competitionId) {
+    if (!this.settings.apiWs.optInApiWsClient) {
+      this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
+    }
+
+    const optInStatesRequest = OptInStatesRequest.constructFromObject({
+      optinStatesFilter: {
+        entityTypes: ['Competition'],
+        ids: [competitionId],
+        statusCodes: {
+          gt: -5,
+          lt: 40
+        },
+        skip: 0,
+        limit: 1
+      }
+    }, null);
+
+    return new Promise((resolve, reject) => {
+      this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
+        resolve(json.data);
+      });
+    });
   };
 
   this.getMemberAchievementOptInStatus = async function (achievementId) {

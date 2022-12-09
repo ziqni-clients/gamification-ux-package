@@ -633,10 +633,10 @@ export const MiniScoreBoard = function (options) {
     var wrapperDomObj = _this.settings.infoContainer;
     var date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
-    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
+    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 15) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
       date = '';
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 1) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 20) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
       date = '';
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 2) {
@@ -648,10 +648,10 @@ export const MiniScoreBoard = function (options) {
         label = _this.settings.lbWidget.settings.translation.tournaments.finishing;
         date = '';
       }
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 30) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
       date = '';
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 4) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 35) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finished;
       date = '';
     }
@@ -772,13 +772,26 @@ export const MiniScoreBoard = function (options) {
     }, _this.settings.updateIntervalTime);
   };
 
-  this.loadInfoArea = function (callback) {
+  this.loadInfoArea = async function (callback) {
     var _this = this;
 
     // Strategy types: TotalCumulative, SumBest, LimitedTo, FirstTo
     if (_this.settings.active && _this.settings.lbWidget.settings.competition.activeCompetition !== null && _this.settings.lbWidget.settings.competition.activeCompetition.statusCode < 45) {
       // temp. while strategies null
-      _this.layoutDefaultOrEmpty();
+      if (
+        this.settings.lbWidget.settings.competition.activeCompetition.constraints &&
+        this.settings.lbWidget.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
+      ) {
+        const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus();
+        if (optInStatus.length && optInStatus[0].status === 'Entrant') {
+          _this.layoutDefaultOrEmpty();
+        } else {
+          _this.layoutRequiresOptIn();
+        }
+      } else {
+        _this.layoutDefaultOrEmpty();
+      }
+
       // if (typeof _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired === 'boolean' && _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired && typeof _this.settings.lbWidget.settings.competition.activeCompetition.optin === 'boolean' && !_this.settings.lbWidget.settings.competition.activeCompetition.optin) {
       //   _this.layoutRequiresOptIn();
       //   callback();
