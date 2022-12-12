@@ -319,35 +319,20 @@ export const MiniScoreBoard = function (options) {
         query(_this.settings.container, '.cl-widget-ms-default-date-label').innerHTML = label;
         query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = date;
 
-        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
-          mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings) {
+          mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbRankingEntry) {
             scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbRankingEntry));
           });
         } else {
           scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbEntry));
         }
-
-        // testLive = true;
-
-        //  var lastScore = query(_this.settings.container, ".cl-widget-ms-default-last-score").innerHTML,
-        //  highScore = query(_this.settings.container, ".cl-widget-ms-default-high-score").innerHTML,
-        //  rank = query(_this.settings.container, ".cl-widget-ms-default-rank-value"),
-        //  change = (lbEntry.change < 0) ? "down" : ( lbEntry.change > 0 ? "up" : "same" ),
-        //  rankValue = lbEntry.rank;
-        //
-        // if( lastScore !== String(lbEntry.points) && String(lbEntry.points) !== highScore ){
-        //  query(_this.settings.container, ".cl-widget-ms-default-last-score").innerHTML = highScore;
+        // if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
+        //   mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        //     scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbRankingEntry));
+        //   });
+        // } else {
+        //   scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbEntry));
         // }
-        //
-        // query(_this.settings.container, ".cl-widget-ms-default-high-score").innerHTML = lbEntry.points;
-        //
-        // removeClass(rank, "cl-ms-rank-up");
-        // removeClass(rank, "cl-ms-rank-down");
-        // removeClass(rank, "cl-ms-rank-same");
-        //
-        // addClass(rank, "cl-ms-rank-" + change);
-        //
-        // rank.innerHTML = rankValue;
       }
     });
 
@@ -361,7 +346,7 @@ export const MiniScoreBoard = function (options) {
     var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.members[0].memberId);
     var lbWrapper = _this.layoutDefaultOrEmptyEntry();
     var img = query(lbWrapper, '.cl-widget-ms-default-mem-img');
-    var selfMember = ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId));
+    const selfMember = lbEntry.members && lbEntry.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1;
     var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.score);
 
     img.src = icon;

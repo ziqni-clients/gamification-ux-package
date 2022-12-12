@@ -783,13 +783,21 @@ export const LbWidget = function (options) {
         this.settings.apiWs.leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
       }
 
+      let ranksAboveToInclude = 0;
+      let ranksBelowToInclude = 0;
+
+      if (this.settings.leaderboard.miniScoreBoard.enableRankings) {
+        ranksAboveToInclude = this.settings.leaderboard.miniScoreBoard.rankingsCount;
+        ranksBelowToInclude = this.settings.leaderboard.miniScoreBoard.rankingsCount;
+      }
+
       const leaderboardSubscriptionRequest = LeaderboardSubscriptionRequest.constructFromObject({
         entityId: this.settings.competition.activeContestId,
         action: 'Subscribe',
         leaderboardFilter: {
           topRanksToInclude: count,
-          ranksAboveToInclude: 0,
-          ranksBelowToInclude: 0
+          ranksAboveToInclude: ranksAboveToInclude,
+          ranksBelowToInclude: ranksBelowToInclude
         }
       });
 
