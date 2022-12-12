@@ -319,35 +319,20 @@ export const MiniScoreBoard = function (options) {
         query(_this.settings.container, '.cl-widget-ms-default-date-label').innerHTML = label;
         query(_this.settings.container, '.cl-widget-ms-default-date').innerHTML = date;
 
-        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
-          mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings) {
+          mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbRankingEntry) {
             scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbRankingEntry));
           });
         } else {
           scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbEntry));
         }
-
-        // testLive = true;
-
-        //  var lastScore = query(_this.settings.container, ".cl-widget-ms-default-last-score").innerHTML,
-        //  highScore = query(_this.settings.container, ".cl-widget-ms-default-high-score").innerHTML,
-        //  rank = query(_this.settings.container, ".cl-widget-ms-default-rank-value"),
-        //  change = (lbEntry.change < 0) ? "down" : ( lbEntry.change > 0 ? "up" : "same" ),
-        //  rankValue = lbEntry.rank;
-        //
-        // if( lastScore !== String(lbEntry.points) && String(lbEntry.points) !== highScore ){
-        //  query(_this.settings.container, ".cl-widget-ms-default-last-score").innerHTML = highScore;
+        // if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
+        //   mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        //     scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbRankingEntry));
+        //   });
+        // } else {
+        //   scoreArea.appendChild(_this.layoutDefaultOrEmptySingleRow(lbEntry));
         // }
-        //
-        // query(_this.settings.container, ".cl-widget-ms-default-high-score").innerHTML = lbEntry.points;
-        //
-        // removeClass(rank, "cl-ms-rank-up");
-        // removeClass(rank, "cl-ms-rank-down");
-        // removeClass(rank, "cl-ms-rank-same");
-        //
-        // addClass(rank, "cl-ms-rank-" + change);
-        //
-        // rank.innerHTML = rankValue;
       }
     });
 
@@ -361,7 +346,7 @@ export const MiniScoreBoard = function (options) {
     var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.members[0].memberId);
     var lbWrapper = _this.layoutDefaultOrEmptyEntry();
     var img = query(lbWrapper, '.cl-widget-ms-default-mem-img');
-    var selfMember = ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId));
+    const selfMember = lbEntry.members && lbEntry.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1;
     var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.score);
 
     img.src = icon;
@@ -633,10 +618,10 @@ export const MiniScoreBoard = function (options) {
     var wrapperDomObj = _this.settings.infoContainer;
     var date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
-    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 0) {
+    if (diff <= 0 && _this.settings.lbWidget.settings.competition.activeContest.statusCode === 15) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
       date = '';
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 1) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 20) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
       date = '';
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 2) {
@@ -648,10 +633,10 @@ export const MiniScoreBoard = function (options) {
         label = _this.settings.lbWidget.settings.translation.tournaments.finishing;
         date = '';
       }
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 3) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 30) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finishing;
       date = '';
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 4) {
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode >= 35) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.finished;
       date = '';
     }
@@ -772,13 +757,26 @@ export const MiniScoreBoard = function (options) {
     }, _this.settings.updateIntervalTime);
   };
 
-  this.loadInfoArea = function (callback) {
+  this.loadInfoArea = async function (callback) {
     var _this = this;
 
     // Strategy types: TotalCumulative, SumBest, LimitedTo, FirstTo
     if (_this.settings.active && _this.settings.lbWidget.settings.competition.activeCompetition !== null && _this.settings.lbWidget.settings.competition.activeCompetition.statusCode < 45) {
       // temp. while strategies null
-      _this.layoutDefaultOrEmpty();
+      if (
+        this.settings.lbWidget.settings.competition.activeCompetition.constraints &&
+        this.settings.lbWidget.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
+      ) {
+        const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus();
+        if (optInStatus.length && optInStatus[0].status === 'Entrant') {
+          _this.layoutDefaultOrEmpty();
+        } else {
+          _this.layoutRequiresOptIn();
+        }
+      } else {
+        _this.layoutDefaultOrEmpty();
+      }
+
       // if (typeof _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired === 'boolean' && _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired && typeof _this.settings.lbWidget.settings.competition.activeCompetition.optin === 'boolean' && !_this.settings.lbWidget.settings.competition.activeCompetition.optin) {
       //   _this.layoutRequiresOptIn();
       //   callback();

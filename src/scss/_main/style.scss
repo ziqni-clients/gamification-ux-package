@@ -109,7 +109,7 @@
   z-index: 1;
   width: 100%;
   margin: 5px 0 0 25px;
-  height: 50px;
+  min-height: 50px;
 }
 
 .cl-widget-ms-wrapper .cl-widget-ms-information-wrapper {
@@ -121,7 +121,7 @@
   border-radius: 10px 5px 5px 10px;
   color: var(--lb3-widget-text-color);
   padding: 0 10px 0 42px;
-  height: 50px;
+  min-height: 50px;
   transition: all 0.3s ease;
   position: relative;
   left: -10px;
@@ -169,6 +169,7 @@
 .cl-widget-ms-wrapper .cl-widget-ms-optin-wrapper {
   float: left;
   width: 100%;
+  padding: 0 0 6px 8px;
 }
 
 .cl-widget-ms-wrapper .cl-widget-ms-information-wrapper .time-ind {

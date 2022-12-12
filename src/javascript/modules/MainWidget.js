@@ -1352,16 +1352,22 @@ export const MainWidget = function (options) {
     if (typeof callback === 'function') callback();
   };
 
-  this.leaderboardOptInCheck = function () {
-    var _this = this;
-    var optIn = query(_this.settings.section, '.cl-main-widget-lb-optin-action');
+  this.leaderboardOptInCheck = async function () {
+    const optIn = query(this.settings.section, '.cl-main-widget-lb-optin-action');
 
-    if (typeof _this.settings.lbWidget.settings.competition.activeCompetition !== 'undefined' && _this.settings.lbWidget.settings.competition.activeCompetition !== null && typeof _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired === 'boolean' && _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired) {
-      if (typeof _this.settings.lbWidget.settings.competition.activeCompetition.optin === 'boolean' && !_this.settings.lbWidget.settings.competition.activeCompetition.optin) {
-        optIn.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
-        optIn.parentNode.style.display = 'block';
-      } else {
+    if (
+      typeof this.settings.lbWidget.settings.competition.activeCompetition !== 'undefined' &&
+      this.settings.lbWidget.settings.competition.activeCompetition !== null &&
+      this.settings.lbWidget.settings.competition.activeCompetition.constraints &&
+      this.settings.lbWidget.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
+    ) {
+      const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus();
+      console.warn('leaderboardOptInCheck optInStatus: ', optInStatus);
+      if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
+      } else {
+        optIn.innerHTML = this.settings.lbWidget.settings.translation.tournaments.enter;
+        optIn.parentNode.style.display = 'block';
       }
     } else {
       optIn.parentNode.style.display = 'none';
