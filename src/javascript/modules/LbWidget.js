@@ -40,7 +40,8 @@ import {
   RewardsApiWs,
   LeaderboardApiWs,
   LeaderboardSubscriptionRequest,
-  MessagesApiWs
+  MessagesApiWs,
+  CallbacksApiWs
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -143,7 +144,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 3000,
+      refreshIntervalMillis: 300000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -200,7 +201,8 @@ export const LbWidget = function (options) {
       membersApiWsClient: null,
       optInApiWsClient: null,
       rewardsApiWsClient: null,
-      messagesApiWsClient: null
+      messagesApiWsClient: null,
+      callbacksApiWsClient: null
     },
     uri: {
       gatewayDomain: cLabs.api.url,
@@ -382,6 +384,17 @@ export const LbWidget = function (options) {
   // const competitionCheckAjax = new cLabs.Ajax();
 
   this.checkForAvailableCompetitions = async function (callback) {
+    if (!this.settings.apiWs.callbacksApiWsClient) {
+      this.settings.apiWs.callbacksApiWsClient = new CallbacksApiWs(this.apiClientStomp);
+    }
+    this.settings.apiWs.callbacksApiWsClient.listCallbacks((json) => {
+      console.warn('listCallbacks json:', json);
+    });
+
+    this.apiClientStomp.sendSys('/queue/callbacks', { entityType: 'Message' }, (json) => {
+      console.warn('sendSys:', json);
+    });
+
     const readyCompetitionRequest = CompetitionRequest.constructFromObject({
       competitionFilter: {
         statusCode: {
@@ -1401,11 +1414,23 @@ export const LbWidget = function (options) {
       }
     };
 
+    const notificationRequest = {
+      messageFilter: {
+        messageType: 'Notification', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
+        skip: 0,
+        limit: 20
+      }
+    };
+
     await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
       this.settings.messages.messages = json.data ?? [];
       if (typeof callback === 'function') {
         callback(this.settings.messages.messages);
       }
+    });
+
+    await this.settings.apiWs.messagesApiWsClient.getMessages(notificationRequest, (json) => {
+      console.warn('notificationRequest json:', json);
     });
 
     // var _this = this;
