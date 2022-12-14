@@ -25,7 +25,7 @@ export const MiniScoreBoard = function (options) {
     overlayContainer: null,
     infoContainer: null,
     updateInterval: null,
-    updateIntervalTime: 1000,
+    updateIntervalTime: 3000,
     active: false,
     enableDragging: true,
     dragging: false,
@@ -447,12 +447,11 @@ export const MiniScoreBoard = function (options) {
     addClass(query(_this.settings.container, '.cl-widget-ms-first-to-date-wrapper'), 'cl-widget-ms-first-to-date-only');
 
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
-      if ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId)) {
+      if (lbEntry.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1) {
         var scoreArea = query(defaultDomObj, '.cl-widget-ms-first-to-results-list');
         scoreArea.innerHTML = '';
-
-        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings && typeof lbEntry.rankings !== 'undefined') {
-          mapObject(lbEntry.rankings, function (lbRankingEntry) {
+        if (_this.settings.lbWidget.settings.leaderboard.miniScoreBoard.enableRankings) {
+          mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbRankingEntry) {
             scoreArea.appendChild(_this.layoutFirstToOrEmptySingleRow(lbRankingEntry, strategy));
           });
         } else {
@@ -467,12 +466,12 @@ export const MiniScoreBoard = function (options) {
   };
 
   this.layoutFirstToOrEmptySingleRow = function (lbEntry, strategy) {
-    var _this = this;
-    var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.memberId);
-    var lbWrapper = _this.layoutFirstToOrEmptyEntry();
-    var img = query(lbWrapper, '.cl-widget-ms-first-to-mem-img');
-    var selfMember = ((lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId));
-    var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.points);
+    const _this = this;
+    const icon = _this.settings.lbWidget.populateIdenticonBase64Image(lbEntry.members[0].memberId);
+    const lbWrapper = _this.layoutFirstToOrEmptyEntry();
+    const img = query(lbWrapper, '.cl-widget-ms-first-to-mem-img');
+    const selfMember = lbEntry.members && lbEntry.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1;
+    const formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.score);
 
     if (selfMember) {
       addClass(lbWrapper, 'cl-widget-ms-first-to-mem-self');
@@ -578,15 +577,15 @@ export const MiniScoreBoard = function (options) {
     }
 
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lbEntry) {
-      if (lbEntry.memberRefId === _this.settings.lbWidget.settings.memberId || lbEntry.memberId === _this.settings.lbWidget.settings.memberId) {
+      if (lbEntry.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1) {
         var lastScore = query(_this.settings.container, '.cl-widget-ms-sum-best-last-score').innerHTML;
         var highScore = query(_this.settings.container, '.cl-widget-ms-sum-best-high-score').innerHTML;
         var rank = query(_this.settings.container, '.cl-widget-ms-sum-best-rank-value');
         var change = (lbEntry.change < 0) ? 'down' : (lbEntry.change > 0 ? 'up' : 'same');
         var rankValue = lbEntry.rank;
-        var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.points);
+        var formattedPoints = _this.settings.lbWidget.settings.leaderboard.pointsFormatter(lbEntry.score);
 
-        if (lastScore !== String(lbEntry.points) && String(lbEntry.points) !== highScore) {
+        if (lastScore !== String(lbEntry.score) && String(lbEntry.score) !== highScore) {
           query(_this.settings.container, '.cl-widget-ms-sum-best-last-score').innerHTML = highScore;
         }
 
@@ -762,7 +761,6 @@ export const MiniScoreBoard = function (options) {
 
     // Strategy types: TotalCumulative, SumBest, LimitedTo, FirstTo
     if (_this.settings.active && _this.settings.lbWidget.settings.competition.activeCompetition !== null && _this.settings.lbWidget.settings.competition.activeCompetition.statusCode < 45) {
-      // temp. while strategies null
       if (
         this.settings.lbWidget.settings.competition.activeCompetition.constraints &&
         this.settings.lbWidget.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
@@ -773,8 +771,22 @@ export const MiniScoreBoard = function (options) {
         } else {
           _this.layoutRequiresOptIn();
         }
+      } else if (
+        this.settings.lbWidget.settings.competition.activeContest &&
+        this.settings.lbWidget.settings.competition.activeContest.strategies.strategyType === 'SumBest'
+      ) {
+        _this.layoutSumBestOf();
+      } else if (
+        this.settings.lbWidget.settings.competition.activeContest &&
+        this.settings.lbWidget.settings.competition.activeContest.strategies.strategyType === 'FirstTo'
+      ) {
+        _this.layoutFirstToOrEmpty(_this.settings.lbWidget.settings.competition.activeContest.strategies);
       } else {
         _this.layoutDefaultOrEmpty();
+      }
+
+      if (typeof callback === 'function') {
+        callback();
       }
 
       // if (typeof _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired === 'boolean' && _this.settings.lbWidget.settings.competition.activeCompetition.optinRequired && typeof _this.settings.lbWidget.settings.competition.activeCompetition.optin === 'boolean' && !_this.settings.lbWidget.settings.competition.activeCompetition.optin) {

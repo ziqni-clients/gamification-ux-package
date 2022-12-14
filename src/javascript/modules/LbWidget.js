@@ -143,7 +143,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 300000,
+      refreshIntervalMillis: 3000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -416,7 +416,7 @@ export const LbWidget = function (options) {
       competitionFilter: {
         statusCode: {
           moreThan: 30,
-          lessThan: 40
+          lessThan: 50
         },
         sortBy: [{
           queryField: 'created',
@@ -678,6 +678,7 @@ export const LbWidget = function (options) {
   this.setActiveCompetition = async function (json, callback) {
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
+    this.settings.competition.activeContestId = null;
 
     const contestRequest = ContestRequest.constructFromObject({
       contestFilter: {
@@ -849,6 +850,7 @@ export const LbWidget = function (options) {
       //   }
       // });
     } else {
+      this.settings.leaderboard.leaderboardData = [];
       callback();
     }
   };
@@ -1172,7 +1174,7 @@ export const LbWidget = function (options) {
 
   // var checkForMemberAchievementsAjax = new cLabs.Ajax();
   this.checkForMemberAchievementsIssued = function (callback) {
-    console.log('checkForMemberAchievementsIssued currently unavailable');
+    console.warn('checkForMemberAchievementsIssued currently unavailable');
     // var _this = this;
     // var url = _this.settings.uri.achievementsIssued.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
     //
@@ -1401,23 +1403,11 @@ export const LbWidget = function (options) {
       }
     };
 
-    const notificationRequest = {
-      messageFilter: {
-        messageType: 'Notification', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
-        skip: 0,
-        limit: 20
-      }
-    };
-
     await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
       this.settings.messages.messages = json.data ?? [];
       if (typeof callback === 'function') {
         callback(this.settings.messages.messages);
       }
-    });
-
-    await this.settings.apiWs.messagesApiWsClient.getMessages(notificationRequest, (json) => {
-      console.warn('notificationRequest json:', json);
     });
 
     // var _this = this;
