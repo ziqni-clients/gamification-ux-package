@@ -416,7 +416,7 @@ export const LbWidget = function (options) {
       competitionFilter: {
         statusCode: {
           moreThan: 30,
-          lessThan: 40
+          lessThan: 50
         },
         sortBy: [{
           queryField: 'created',
@@ -678,6 +678,7 @@ export const LbWidget = function (options) {
   this.setActiveCompetition = async function (json, callback) {
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
+    this.settings.competition.activeContestId = null;
 
     const contestRequest = ContestRequest.constructFromObject({
       contestFilter: {
@@ -849,6 +850,7 @@ export const LbWidget = function (options) {
       //   }
       // });
     } else {
+      this.settings.leaderboard.leaderboardData = [];
       callback();
     }
   };
@@ -1172,7 +1174,7 @@ export const LbWidget = function (options) {
 
   // var checkForMemberAchievementsAjax = new cLabs.Ajax();
   this.checkForMemberAchievementsIssued = function (callback) {
-    console.log('checkForMemberAchievementsIssued currently unavailable');
+    console.warn('checkForMemberAchievementsIssued currently unavailable');
     // var _this = this;
     // var url = _this.settings.uri.achievementsIssued.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
     //
@@ -2387,6 +2389,10 @@ export const LbWidget = function (options) {
     if (this.settings.authToken) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
+      this.apiClientStomp.sendSys('', {}, (json, headers) => {
+        console.warn('sendSys headers:', headers);
+        console.warn('sendSys json:', json);
+      });
     }
   };
 

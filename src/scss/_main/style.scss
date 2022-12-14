@@ -121,7 +121,7 @@
   border-radius: 10px 5px 5px 10px;
   color: var(--lb3-widget-text-color);
   padding: 0 10px 0 42px;
-  min-height: 50px;
+  min-height: 58px;
   transition: all 0.3s ease;
   position: relative;
   left: -10px;
@@ -669,6 +669,7 @@
   width: 100%;
   font-size: 11px;
   line-height: 20px;
+  padding-left: 8px;
 }
 
 .cl-widget-ms-wrapper .cl-widget-ms-sum-best-wrapper .cl-widget-ms-sum-best-results-wrapper {
@@ -1384,7 +1385,7 @@
   border-radius: 0;
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
-  height: calc(100% - 208px);
+  height: calc(100% - 278px);
 }
 .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
   height: calc(100% - 191px);
@@ -3832,7 +3833,7 @@
     top: 220px;
   }
   .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
-    height: calc(100% - 218px);
+    height: calc(100% - 295px);
   }
   .cl-main-widget-wrapper .cl-main-widget-section-container.cl-main-active-embedded-description.cl-hidden-copyright .cl-main-section-image-banner-active .cl-main-widget-lb-details-description-container {
     height: calc(100% - 200px);
