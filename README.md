@@ -186,25 +186,6 @@ Style 2:
 ## Examples
 Running the project in dev mode will initialise with an example page.
 
-
-* [Live Light theme laoding examples](https://www.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/cl-style-1/basic-layout/index.html)
-
-
-<table style="border:none;">
-    <tr>
-        <td>
-            <img width="250" src="https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/3.png" />
-        </td>
-        <td>
-            <img width="214" src="https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/2.png" />
-        </td>
-        <td>
-            <img width="250" src="https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/1.png" />
-        </td>
-    </tr>
-</table>
-
-
 ## Adding widget to your website
 ```html
 <script type="text/javascript">
@@ -217,15 +198,15 @@ Running the project in dev mode will initialise with an example page.
     			language: "en",
     			uri: {
     				gatewayDomain: "https://gateway.ziqni.com",
-    				translationPath: "https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/build/i18n/translation_:language.json"
+    				translationPath: "https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/build/i18n/translation_:language.json"
     			},
     			resources: [
-    				"https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css"
+    				"https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css"
     			]
     		};
     		var a=d.createElement(s), m=d.getElementsByTagName(s)[0];
     		a.async=1;a.src=u;m.parentNode.insertBefore(a,m);
-    	})(window,document,'script','https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/build/javascript/gamification-ux-package.v3.js',"_CLLBV3Opt");
+    	})(window,document,'script','https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/build/javascript/gamification-ux-package.v3.js',"_CLLBV3Opt");
 </script>
 ```
 
@@ -330,7 +311,7 @@ Or you can overwrite this on a more global scope level where you initialize the 
 
 ### Localization - How do I translate the widget UI:
 To enable translation the following steps need to be made:
-1) Translate your UI elements to the appropriate language and save it in a ".json" format using the following naming pattern `translation_en.json` [JSON example](https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/i18n/translation_en.json)
+1) Translate your UI elements to the appropriate language and save it in a ".json" format using the following naming pattern `translation_en.json` [JSON example](https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/i18n/translation_en.json)
 2) The translations you define inside the file will be merged with the core translations on run time
 
 ```text
@@ -339,7 +320,7 @@ resource based on the language setting and the "translationPath"
 
 * If the resource path is used as "translation_:language.json" the widget script will try to replace ":language" with the 
 current language  setting and load the translation dynamically from an external source, example:
-https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/i18n/translation_:language.json
+https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/i18n/translation_:language.json
 
 * If translations are not required it is possible to disable them by changing "loadTranslations" setting to "false"
 ```
