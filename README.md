@@ -196,7 +196,7 @@ Running the project in dev mode will initialise with an example page.
     				translationPath: "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/i18n/translation_:language.json"
     			},
     			resources: [
-    				"https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css"
+    				"https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/build/css/theme/cl-style-1-default-theme.css"
     			]
     		};
     		var a=d.createElement(s), m=d.getElementsByTagName(s)[0];
