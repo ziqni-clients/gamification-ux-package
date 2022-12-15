@@ -193,6 +193,7 @@ Running the project in dev mode will initialise with an example page.
         </td>
     </tr>
 </table>
+
 ## Adding widget to your website
 ```html
 <script type="text/javascript">
