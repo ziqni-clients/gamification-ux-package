@@ -180,7 +180,19 @@ Style 2:
 
 ## Examples
 Running the project in dev mode will initialise with an example page.
-
+<table style="border:none;">
+    <tr>
+        <td>
+            <img width="250" src="https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/3.png" />
+        </td>
+        <td>
+            <img width="214" src="https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/2.png" />
+        </td>
+        <td>
+            <img width="250" src="https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/1.png" />
+        </td>
+    </tr>
+</table>
 ## Adding widget to your website
 ```html
 <script type="text/javascript">
