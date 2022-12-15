@@ -193,7 +193,7 @@ Running the project in dev mode will initialise with an example page.
     			language: "en",
     			uri: {
     				gatewayDomain: "https://gateway.ziqni.com",
-    				translationPath: "https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/build/i18n/translation_:language.json"
+    				translationPath: "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/i18n/translation_:language.json"
     			},
     			resources: [
     				"https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css"
@@ -306,7 +306,7 @@ Or you can overwrite this on a more global scope level where you initialize the 
 
 ### Localization - How do I translate the widget UI:
 To enable translation the following steps need to be made:
-1) Translate your UI elements to the appropriate language and save it in a ".json" format using the following naming pattern `translation_en.json` [JSON example](https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/i18n/translation_en.json)
+1) Translate your UI elements to the appropriate language and save it in a ".json" format using the following naming pattern `translation_en.json` [JSON example](https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/i18n/translation_en.json)
 2) The translations you define inside the file will be merged with the core translations on run time
 
 ```text
@@ -315,7 +315,7 @@ resource based on the language setting and the "translationPath"
 
 * If the resource path is used as "translation_:language.json" the widget script will try to replace ":language" with the 
 current language  setting and load the translation dynamically from an external source, example:
-https://s3.eu-west-1.amazonaws.com/demo.ziqni.com/_widgets/gamification-ux-package/i18n/translation_:language.json
+https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/i18n/translation_:language.json
 
 * If translations are not required it is possible to disable them by changing "loadTranslations" setting to "false"
 ```
