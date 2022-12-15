@@ -245,7 +245,7 @@ products: {
 
 ## FAQ
 ### How do I set the currency:
-The setting "currency" needs to be set to the appropriate ISO key used in [units of measure section](https://complabs.atlassian.net/wiki/spaces/CLRAV/pages/594935946/Units+of+Measure)
+The setting "currency" needs to be set to the appropriate ISO key used in units of measure section
 ```text
 {
   currency: "usd"
