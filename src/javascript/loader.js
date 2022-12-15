@@ -1,8 +1,4 @@
 /*
- COMPETITION LABS LTD v1.0.0
- (c) 2015-2020 Aleksandr Bernotas
- License: www.competitionlabs.com/terms-of-service
-
  Centralised loader script that is responsible for loading/handling all your product/environment specific scripts
  in one place. Allows a better control over your vast product range, centralising all your business related configurations
  in one place:
