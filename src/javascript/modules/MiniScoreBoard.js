@@ -410,7 +410,7 @@ export const MiniScoreBoard = function (options) {
       lbDateWrapper.appendChild(lbDate);
 
       query(lbResultsMemEntry, '.cl-widget-ms-first-to-mem-rank').innerHTML = '--';
-      query(lbResultsMemEntry, '.cl-widget-ms-first-to-mem-points').innerHTML = '--/' + strategy.recordTimeWhenSumReaches;
+      query(lbResultsMemEntry, '.cl-widget-ms-first-to-mem-points').innerHTML = '--/' + strategy.scoringStrategy.lastUpdateTimeStamp;
 
       img.src = '';
       img.alt = '';
@@ -483,7 +483,7 @@ export const MiniScoreBoard = function (options) {
 
     query(lbWrapper, '.cl-widget-ms-first-to-mem-label').innerHTML = selfMember ? _this.settings.lbWidget.settings.translation.leaderboard.you : '';
     query(lbWrapper, '.cl-widget-ms-first-to-mem-rank').innerHTML = "<span class='cl-mem-rank-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.rank + "</span><span class='cl-mem-rank'>" + lbEntry.rank + '</span>';
-    query(lbWrapper, '.cl-widget-ms-first-to-mem-points').innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>" + formattedPoints + '/' + strategy.recordTimeWhenSumReaches + '</span>';
+    query(lbWrapper, '.cl-widget-ms-first-to-mem-points').innerHTML = "<span class='cl-mem-points-label'>" + _this.settings.lbWidget.settings.translation.leaderboard.points + "</span><span class='cl-mem-points'>" + formattedPoints + '/' + strategy.scoringStrategy.lastUpdateTimeStamp + '</span>';
 
     return lbWrapper;
   };
