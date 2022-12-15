@@ -1,5 +1,5 @@
 {
-  "name": "@competitionlabs/gamification-ux-package_v3_npm",
+  "name": "@ziqni-tech/gamification-ux-package_npm",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "parcel-plugin-custom-dist-structure": "^1.1.14"
   },
   "dependencies": {
-    "@competitionlabs/gamification-ux-package": "^1.0.11",
+    "@ziqni-tech/gamification-ux-package": "^1.0.19",
     "node-forge": "^0.10.0"
   },
   "customDistStructure": {
