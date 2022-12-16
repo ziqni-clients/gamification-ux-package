@@ -68,13 +68,10 @@ import mapObject from './utils/mapObject';
       currency: '', // default currency setting
 
       // default script that will be loaded
-      defaultScript: 'https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/javascript/gamification-ux-package.v3-selfinit.js?v=' + new Date().getTime(),
+      defaultScript: 'https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/build/javascript/gamification-ux-package.v3-selfinit.js',
 
       // default stylesheet resources that will be loaded
-      defaultResources: [
-        'https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/css/fonts.css?t=' + new Date().getTime(),
-        'https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/css/style.css?t=' + new Date().getTime()
-      ],
+      defaultResources: [],
 
       // forces widget to load if no specific product defined
       loadWidgetIfNoProductsFound: true,

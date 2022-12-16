@@ -1,8 +1,7 @@
 import '@ziqni-tech/gamification-ux-package';
-import '@ziqni-tech/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css';
+import '@ziqni-tech/gamification-ux-package/build/css/theme/cl-style-1-default-theme.css';
 
 var widgetInstance = window._clLeaderBoardV3;
-
 
 widgetInstance.settings.enableNotifications = false; // requires a working/valid SSE channel
 widgetInstance.settings.memberId = "jon-doe-Asd3-_J_CgpY-bw2S2Sy";
@@ -13,22 +12,19 @@ widgetInstance.settings.gameId = "fruits";
 widgetInstance.settings.bindContainer = document.body;
 
 // lookup services override
-widgetInstance.settings.uri.members = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/member-data-sample.json";
-widgetInstance.settings.uri.competitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-widgetInstance.settings.uri.competitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample_:id.json";
-widgetInstance.settings.uri.memberCompetitions = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/competition-list-data-sample.json";
-widgetInstance.settings.uri.memberCompetitionById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/gamification-ux-package-examples/data/competition-data-sample_:competitionId.json";
-widgetInstance.settings.uri.contestLeaderboard = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/leaderboard-data.json";
-widgetInstance.settings.uri.achievements = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-data-sample.json";
-widgetInstance.settings.uri.achievement = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-data-sample.json";
-widgetInstance.settings.uri.achievementsProgression = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-perc-data-sample.json";
-widgetInstance.settings.uri.achievementsIssued = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/achievements-list-issued-data-sample.json";
-widgetInstance.settings.uri.messages = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-claimed-data-sample.json";
-widgetInstance.settings.uri.memberReward = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-reward-data-sample.json";
-widgetInstance.settings.uri.messageById = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/data/messages-data-sample.json";
-widgetInstance.settings.uri.assets = "https://s3.eu-west-1.amazonaws.com/static.competitionlabs.com/gamification-ux-package/examples/images/:attachmentId.png";
-// widgetInstance.settings.resources = [
-// 	("/build/css/theme/cl-style-1-light-theme.css?t=" + ( new Date().getTime() ))
-// ];
+widgetInstance.settings.uri.members = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/member-data-sample.json";
+widgetInstance.settings.uri.competitions = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/competition-list-data-sample.json";
+widgetInstance.settings.uri.competitionById = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/competition-data-sample_1.json";
+widgetInstance.settings.uri.memberCompetitions = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/competition-list-data-sample.json";
+widgetInstance.settings.uri.memberCompetitionById = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/competition-data-sample_1.json";
+widgetInstance.settings.uri.contestLeaderboard = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/leaderboard-data.json";
+widgetInstance.settings.uri.achievements = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/achievements-list-data-sample.json";
+widgetInstance.settings.uri.achievement = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/achievements-data-sample.json";
+widgetInstance.settings.uri.achievementsProgression = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/achievements-list-perc-data-sample.json";
+widgetInstance.settings.uri.achievementsIssued = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/achievements-list-issued-data-sample.json";
+widgetInstance.settings.uri.messages = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/messages-claimed-data-sample.json";
+widgetInstance.settings.uri.memberReward = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/messages-reward-data-sample.json";
+widgetInstance.settings.uri.messageById = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/messages-data-sample.json";
+widgetInstance.settings.uri.assets = "https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/ziqni_widget/json/daeC22EBrGt8uv3Bd5lJ.png";
 
 widgetInstance.init();
