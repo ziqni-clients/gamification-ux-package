@@ -104,11 +104,6 @@
 }
 
 .cl-widget-ms-wrapper {
-  .cl-widget-ms-default-wrapper {
-    .cl-widget-ms-default-date-label {
-      padding-left: 4px;
-    }
-  }
   .cl-widget-ms-information-top-wrapper {
     .cl-widget-ms-information-wrapper {
       padding: 0 10px 0 30px;
@@ -126,6 +121,26 @@
                 padding-bottom: 6px;
               }
               &.cl-widget-ms-first-to-mem-self {
+                background-color: rgba(0, 125, 251, .2);
+              }
+            }
+          }
+        }
+      }
+      .cl-widget-ms-default-wrapper {
+        .cl-widget-ms-default-date-wrapper {
+          padding: 2px 0 2px 12px;
+        }
+        .cl-widget-ms-default-results-wrapper {
+          .cl-widget-ms-default-results-list {
+            .cl-widget-ms-default-mem-entry {
+              float: left;
+              width: 100%;
+              padding: 3px 0 3px 10px;
+              &:last-of-type {
+                padding-bottom: 6px;
+              }
+              &.cl-widget-ms-default-mem-self {
                 background-color: rgba(0, 125, 251, .2);
               }
             }
