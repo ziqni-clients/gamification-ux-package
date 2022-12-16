@@ -1,16 +1,3 @@
-/*
- COMPETITION LABS LTD v1.0.0
- (c) 2015-2020 Aleksandr Bernotas
- License: www.competitionlabs.com/terms-of-service
-
- Centralised loader script that is responsible for loading/handling all your product/environment specific scripts
- in one place. Allows a better control over your vast product range, centralising all your business related configurations
- in one place:
- - load all your scripts/styles/configurations/presets from one script
- - control when and how the scripts get initialised
- - restrict loading per product
-*/
-
 import sizeof from './utils/sizeof';
 import mapObject from './utils/mapObject';
 
@@ -72,13 +59,10 @@ import mapObject from './utils/mapObject';
       currency: '', // default currency setting
 
       // default script that will be loaded
-      defaultScript: 'https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/javascript/gamification-ux-package.v3-selfinit.js?v=' + new Date().getTime(),
+      defaultScript: 'https://ziqni.cdn.ziqni.com/ziqni-tech/gamification-ux-package/_widgets/gamification-ux-package/build/javascript/gamification-ux-package.v3-selfinit.js',
 
       // default stylesheet resources that will be loaded
-      defaultResources: [
-        'https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/css/fonts.css?t=' + new Date().getTime(),
-        'https://s3.eu-west-1.amazonaws.com/demo.competitionlabs.com/_widgets/gamification-ux-package/css/style.css?t=' + new Date().getTime()
-      ],
+      defaultResources: [],
 
       // forces widget to load if no specific product defined
       loadWidgetIfNoProductsFound: true,
