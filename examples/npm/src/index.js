@@ -1,5 +1,5 @@
-import '@competitionlabs/gamification-ux-package';
-import '@competitionlabs/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css';
+import '@ziqni-tech/gamification-ux-package';
+import '@ziqni-tech/gamification-ux-package/build/css/theme/cl-style-1-light-theme.css';
 
 var widgetInstance = window._clLeaderBoardV3;
 
