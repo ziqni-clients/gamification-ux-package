@@ -1243,19 +1243,12 @@ export const LbWidget = function (options) {
 
     const awardRequest = AwardRequest.constructFromObject({
       awardFilter: {
-        // productIds: [],
-        // tags: [],
-        // startDate: null,
-        // endDate: null,
-        // ids: [],
-        // statusCode: 20,
         sortBy: [{
           queryField: 'created',
           order: 'Desc'
         }],
         skip: (pageNumber - 1) * 10,
         limit: 10
-        // constraints: []
       }
     });
 
@@ -1495,7 +1488,7 @@ export const LbWidget = function (options) {
 
     const optInRequest = ManageOptinRequest.constructFromObject({
       entityId: this.settings.competition.activeCompetition.id,
-      entityType: 'Achievement',
+      entityType: 'Competition',
       action: 'join'
     }, null);
 

@@ -1361,8 +1361,9 @@ export const MainWidget = function (options) {
       this.settings.lbWidget.settings.competition.activeCompetition.constraints &&
       this.settings.lbWidget.settings.competition.activeCompetition.constraints.includes('optinRequiredForEntrants')
     ) {
-      const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus();
-      console.warn('leaderboardOptInCheck optInStatus: ', optInStatus);
+      const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus(
+        this.settings.lbWidget.settings.competition.activeCompetition.id
+      );
       if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
       } else {
