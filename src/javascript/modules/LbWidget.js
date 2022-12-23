@@ -40,7 +40,9 @@ import {
   RewardsApiWs,
   LeaderboardApiWs,
   LeaderboardSubscriptionRequest,
-  MessagesApiWs
+  MessagesApiWs,
+  AwardsApiWs,
+  AwardRequest
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -200,6 +202,7 @@ export const LbWidget = function (options) {
       membersApiWsClient: null,
       optInApiWsClient: null,
       rewardsApiWsClient: null,
+      awardsApiWsClient: null,
       messagesApiWsClient: null
     },
     uri: {
@@ -1233,6 +1236,33 @@ export const LbWidget = function (options) {
     });
   };
 
+  this.checkForAvailableAwards = async function (pageNumber, callback) {
+    if (!this.settings.apiWs.awardsApiWsClient) {
+      this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
+    }
+
+    const awardRequest = AwardRequest.constructFromObject({
+      awardFilter: {
+        sortBy: [{
+          queryField: 'created',
+          order: 'Desc'
+        }],
+        skip: (pageNumber - 1) * 10,
+        limit: 10
+      }
+    });
+
+    console.warn('awardRequest:', awardRequest);
+
+    await this.settings.apiWs.awardsApiWsClient.getAwards(awardRequest, (json) => {
+      console.warn('getAwards json', json);
+    });
+
+    if (typeof callback === 'function') {
+      callback();
+    }
+  };
+
   this.checkForAvailableRewards = async function (pageNumber, callback) {
     this.settings.rewards.rewards = [];
     this.settings.rewards.availableRewards = [];
@@ -1458,7 +1488,7 @@ export const LbWidget = function (options) {
 
     const optInRequest = ManageOptinRequest.constructFromObject({
       entityId: this.settings.competition.activeCompetition.id,
-      entityType: 'Achievement',
+      entityType: 'Competition',
       action: 'join'
     }, null);
 
@@ -1609,6 +1639,7 @@ export const LbWidget = function (options) {
             callback();
           }
         }
+        _this.checkForAvailableAwards(1);
         _this.checkForAvailableRewards(1, function () {
           _this.updateRewardsNavigationCounts();
         });
