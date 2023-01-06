@@ -44,12 +44,12 @@
     "finished": "finished"
   },
   "rewards": {
-    "label": "Rewards",
+    "label": "Awards",
     "claim": "Claim Now",
     "claimed": "Claimed",
-    "availableRewards": "Available Rewards",
-    "rewards": "Claimed Rewards",
-    "expiredRewards": "Expired Rewards"
+    "availableRewards": "Available Awards",
+    "rewards": "Claimed Awards",
+    "expiredRewards": "Expired Awards"
   },
   "messages": {
     "label": "Messages"

@@ -42,7 +42,8 @@ import {
   LeaderboardSubscriptionRequest,
   MessagesApiWs,
   AwardsApiWs,
-  AwardRequest
+  AwardRequest,
+  ClaimAwardRequest
 } from '@ziqni-tech/member-api-client';
 
 const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
@@ -133,6 +134,12 @@ export const LbWidget = function (options) {
 
         return defaultRewardValue;
       }
+    },
+    awards: {
+      availableAwards: [],
+      claimedAwards: [],
+      rewards: [],
+      totalCount: 0
     },
     messages: {
       messages: []
@@ -877,11 +884,13 @@ export const LbWidget = function (options) {
   };
 
   this.updateRewardsNavigationCounts = function () {
-    var _this = this;
-
+    const _this = this;
     if (_this.settings.mainWidget.settings.navigation !== null) {
-      var menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.rewards.navigationClass + ' .cl-main-navigation-item-count');
-      menuItemCount.innerHTML = _this.settings.rewards.totalCount;
+      const menuItemCount = query(
+        _this.settings.mainWidget.settings.navigation,
+        '.' + _this.settings.navigation.rewards.navigationClass + ' .cl-main-navigation-item-count'
+      );
+      menuItemCount.innerHTML = _this.settings.awards.totalCount;
     }
   };
 
@@ -1072,6 +1081,19 @@ export const LbWidget = function (options) {
     // });
   };
 
+  this.getAward = function (awardId, callback) {
+    let awardData = null;
+    const awards = [...this.settings.awards.availableAwards, ...this.settings.awards.claimedAwards];
+    const idx = awards.findIndex(r => r.id === awardId);
+    if (idx !== -1) {
+      awardData = awards[idx];
+    }
+
+    if (typeof callback === 'function') {
+      callback(awardData);
+    }
+  };
+
   // var getRewardAjax = new cLabs.Ajax();
   this.getReward = function (rewardId, callback) {
     let rewardData = null;
@@ -1142,37 +1164,51 @@ export const LbWidget = function (options) {
     });
   };
 
-  var claimRewardAjax = new cLabs.Ajax();
-  this.claimReward = function (rewardId, callback) {
-    var _this = this;
+  // var claimRewardAjax = new cLabs.Ajax();
+  this.claimAward = async function (rewardId, callback) {
+    if (!this.settings.apiWs.awardsApiWsClient) {
+      this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
+    }
 
-    claimRewardAjax.abort().getData({
-      url: _this.settings.uri.gatewayDomain + _this.settings.uri.memberRewardClaim.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':awardId', rewardId),
-      headers: {
-        'X-API-KEY': _this.settings.apiKey
-      },
-      type: 'POST',
-      success: function (response, dataObj, xhr) {
-        var json = null;
-        if (xhr.status === 200) {
-          try {
-            json = JSON.parse(response);
-          } catch (e) {
-          }
-        }
+    const claimAwardRequest = ClaimAwardRequest.constructFromObject({
+      awardIds: [rewardId]
+    });
 
-        if (typeof callback === 'function') {
-          _this.settings.partialFunctions.claimRewardDataResponseParser(json, function (claimRewardData) {
-            callback(claimRewardData);
-          });
-        }
-      },
-      error: function () {
-        if (typeof callback === 'function') {
-          callback(null);
-        }
+    this.settings.apiWs.awardsApiWsClient.claimAwards(claimAwardRequest, (json) => {
+      if (typeof callback === 'function') {
+        callback(json);
       }
     });
+
+    // var _this = this;
+    //
+    // claimRewardAjax.abort().getData({
+    //   url: _this.settings.uri.gatewayDomain + _this.settings.uri.memberRewardClaim.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':awardId', rewardId),
+    //   headers: {
+    //     'X-API-KEY': _this.settings.apiKey
+    //   },
+    //   type: 'POST',
+    //   success: function (response, dataObj, xhr) {
+    //     var json = null;
+    //     if (xhr.status === 200) {
+    //       try {
+    //         json = JSON.parse(response);
+    //       } catch (e) {
+    //       }
+    //     }
+    //
+    //     if (typeof callback === 'function') {
+    //       _this.settings.partialFunctions.claimRewardDataResponseParser(json, function (claimRewardData) {
+    //         callback(claimRewardData);
+    //       });
+    //     }
+    //   },
+    //   error: function () {
+    //     if (typeof callback === 'function') {
+    //       callback(null);
+    //     }
+    //   }
+    // });
   };
 
   // var checkForMemberAchievementsAjax = new cLabs.Ajax();
@@ -1241,8 +1277,16 @@ export const LbWidget = function (options) {
       this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
     }
 
-    const awardRequest = AwardRequest.constructFromObject({
+    this.settings.awards.availableAwards = [];
+    this.settings.awards.claimedAwards = [];
+    this.settings.awards.rewards = [];
+
+    const availableAwardRequest = AwardRequest.constructFromObject({
       awardFilter: {
+        statusCode: {
+          moreThan: 14,
+          lessThan: 16
+        },
         sortBy: [{
           queryField: 'created',
           order: 'Desc'
@@ -1252,15 +1296,44 @@ export const LbWidget = function (options) {
       }
     });
 
-    console.warn('awardRequest:', awardRequest);
-
-    await this.settings.apiWs.awardsApiWsClient.getAwards(awardRequest, (json) => {
-      console.warn('getAwards json', json);
+    const claimedAwardRequest = AwardRequest.constructFromObject({
+      awardFilter: {
+        statusCode: {
+          moreThan: 34,
+          lessThan: 36
+        },
+        sortBy: [{
+          queryField: 'created',
+          order: 'Desc'
+        }],
+        skip: (pageNumber - 1) * 10,
+        limit: 10
+      }
     });
+
+    const availableAwardsData = await this.getAwards(availableAwardRequest);
+    const claimedAwardsData = await this.getAwards(claimedAwardRequest);
+
+    this.settings.awards.availableAwards = availableAwardsData.data;
+    this.settings.awards.claimedAwards = claimedAwardsData.data;
+    this.settings.awards.totalCount = (availableAwardsData.meta && availableAwardsData.meta.totalRecordsFound)
+      ? availableAwardsData.meta.totalRecordsFound
+      : 0;
 
     if (typeof callback === 'function') {
       callback();
     }
+  };
+
+  this.getAwards = async function (awardRequest) {
+    if (!this.settings.apiWs.awardsApiWsClient) {
+      this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
+    }
+    return new Promise((resolve, reject) => {
+      this.settings.apiWs.awardsApiWsClient.getAwards(awardRequest, (json) => {
+        resolve(json);
+      });
+    });
   };
 
   this.checkForAvailableRewards = async function (pageNumber, callback) {
@@ -1270,10 +1343,6 @@ export const LbWidget = function (options) {
     this.settings.rewards.totalCount = 0;
 
     if (this.settings.competition.activeContestId) {
-      if (!this.settings.apiWs.rewardsApiWsClient) {
-        this.settings.apiWs.rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
-      }
-
       const rewardRequest = {
         entityFilter: [{
           entityType: 'Contest',
@@ -1283,22 +1352,22 @@ export const LbWidget = function (options) {
         skip: (pageNumber - 1) * 10
       };
 
-      await this.settings.apiWs.rewardsApiWsClient.getRewards(rewardRequest, (json) => {
-        this.settings.rewards.rewards = json.data ?? [];
-        this.settings.rewards.availableRewards = json.data ?? [];
-        this.settings.rewards.expiredRewards = [];
-        this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
-        if (this.settings.competition.activeContest && json.data) {
-          this.settings.competition.activeContest.rewards = json.data;
-        }
-        if (typeof callback === 'function') {
-          callback(
-            this.settings.rewards.rewards,
-            this.settings.rewards.availableRewards,
-            this.settings.rewards.expiredRewards
-          );
-        }
-      });
+      const json = await this.getRewards(rewardRequest);
+
+      this.settings.rewards.rewards = json.data ?? [];
+      this.settings.rewards.availableRewards = json.data ?? [];
+      this.settings.rewards.expiredRewards = [];
+      this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+      if (this.settings.competition.activeContest && json.data) {
+        this.settings.competition.activeContest.rewards = json.data;
+      }
+      if (typeof callback === 'function') {
+        callback(
+          this.settings.rewards.rewards,
+          this.settings.rewards.availableRewards,
+          this.settings.rewards.expiredRewards
+        );
+      }
     } else if (typeof callback === 'function') {
       callback(
         this.settings.rewards.rewards,
@@ -1418,6 +1487,17 @@ export const LbWidget = function (options) {
     //     }
     //   }
     // });
+  };
+
+  this.getRewards = async function (rewardRequest) {
+    if (!this.settings.apiWs.rewardsApiWsClient) {
+      this.settings.apiWs.rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
+    }
+    return new Promise((resolve, reject) => {
+      this.settings.apiWs.rewardsApiWsClient.getRewards(rewardRequest, (json) => {
+        resolve(json);
+      });
+    });
   };
 
   // var checkForAvailableMessagesAjax = new cLabs.Ajax();
@@ -1639,10 +1719,10 @@ export const LbWidget = function (options) {
             callback();
           }
         }
-        _this.checkForAvailableAwards(1);
-        _this.checkForAvailableRewards(1, function () {
+        _this.checkForAvailableAwards(1, function () {
           _this.updateRewardsNavigationCounts();
         });
+        _this.checkForAvailableRewards(1);
       });
     });
 
@@ -1894,9 +1974,10 @@ export const LbWidget = function (options) {
 
           // load initial available reward data
           if (_this.settings.navigation.rewards.enable) {
-            _this.checkForAvailableRewards(1, function () {
+            _this.checkForAvailableAwards(1, function () {
               _this.updateRewardsNavigationCounts();
             });
+            _this.checkForAvailableRewards(1);
           }
 
           // load initial available messages data
@@ -2117,7 +2198,7 @@ export const LbWidget = function (options) {
         _this.settings.mainWidget.loadAchievements(el.dataset.page);
       }
       if (el.closest('.cl-main-widget-reward-list-body-res')) {
-        _this.settings.mainWidget.loadRewards(el.dataset.page);
+        _this.settings.mainWidget.loadAwards(el.dataset.page);
       }
 
       // load achievement details
@@ -2149,8 +2230,8 @@ export const LbWidget = function (options) {
 
       // load rewards details
     } else if (hasClass(el, 'cl-rew-list-item') || closest(el, '.cl-rew-list-item') !== null) {
-      var rewardId = (hasClass(el, 'cl-rew-list-item')) ? el.dataset.id : closest(el, '.cl-rew-list-item').dataset.id;
-      _this.getReward(rewardId, function (data) {
+      var awardId = (hasClass(el, 'cl-rew-list-item')) ? el.dataset.id : closest(el, '.cl-rew-list-item').dataset.id;
+      _this.getAward(awardId, function (data) {
         _this.settings.mainWidget.loadRewardDetails(data, function () {
         });
       });
@@ -2165,10 +2246,9 @@ export const LbWidget = function (options) {
 
       // claim reward
     } else if (hasClass(el, 'cl-main-widget-reward-claim-btn')) {
-      _this.claimReward(el.dataset.id, function (data) {
-        if (data.data.claimed) {
-          _this.settings.mainWidget.loadRewards(1);
-
+      _this.claimAward(el.dataset.id, function (data) {
+        if (data.data[0].claimed) {
+          // _this.settings.mainWidget.loadAwards(1);
           addClass(el, 'cl-claimed');
           el.innerHTML = _this.settings.translation.rewards.claimed;
         } else {
@@ -2413,16 +2493,21 @@ export const LbWidget = function (options) {
   };
 
   this.initApiClientStomp = async function () {
+    const _this = this;
     this.settings.authToken = null;
-
     await this.generateUserToken();
 
     if (this.settings.authToken) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
-        console.warn('sendSys headers:', headers);
-        console.warn('sendSys json:', json);
+        console.warn('Sys callback json:', json);
+        if (json.entityType === 'Message') {
+          this.getMessage(json.entityId);
+        }
+        if (json.entityType === 'Award') {
+          _this.settings.mainWidget.loadAwards(1);
+        }
       });
     }
   };
