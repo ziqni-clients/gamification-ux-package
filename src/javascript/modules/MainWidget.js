@@ -79,22 +79,26 @@ export const MainWidget = function (options) {
       }]
     },
     rewardsSection: {
-      accordionLayout: [{
-        label: 'Available Rewards',
-        type: 'availableRewards',
-        show: true,
-        showTopResults: 1
-      }, {
-        label: 'Claimed Rewards',
-        type: 'rewards',
-        show: false,
-        showTopResults: 1
-      }, {
-        label: 'Expired Rewards',
-        type: 'expiredRewards',
-        show: false,
-        showTopResults: 1
-      }]
+      accordionLayout: [
+        {
+          label: 'Available Awards',
+          type: 'availableAwards',
+          show: true,
+          showTopResults: 1
+        },
+        {
+          label: 'Claimed Awards',
+          type: 'claimedAwards',
+          show: false,
+          showTopResults: 1
+        }
+        // {
+        //   label: 'Expired Rewards',
+        //   type: 'expiredRewards',
+        //   show: false,
+        //   showTopResults: 1
+        // }
+      ]
     },
     active: false,
     navigationSwitchLastAtempt: new Date().getTime(),
@@ -1364,6 +1368,7 @@ export const MainWidget = function (options) {
       const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus(
         this.settings.lbWidget.settings.competition.activeCompetition.id
       );
+      console.warn('mainwidget optInStatus:', optInStatus);
       if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
       } else {
@@ -2070,12 +2075,12 @@ export const MainWidget = function (options) {
   };
 
   this.rewardItem = function (rew) {
-    var _this = this;
-    var listItem = document.createElement('div');
-    var detailsContainer = document.createElement('div');
-    var detailsWrapper = document.createElement('div');
-    var label = document.createElement('div');
-    var description = document.createElement('div');
+    const _this = this;
+    const listItem = document.createElement('div');
+    const detailsContainer = document.createElement('div');
+    const detailsWrapper = document.createElement('div');
+    const label = document.createElement('div');
+    const description = document.createElement('div');
 
     listItem.setAttribute('class', 'cl-rew-list-item cl-rew-' + rew.id);
     detailsContainer.setAttribute('class', 'cl-rew-list-details-cont');
@@ -2085,8 +2090,8 @@ export const MainWidget = function (options) {
 
     listItem.dataset.id = rew.id;
 
-    var labelText = stripHtml(rew.name);
-    var descriptionText = stripHtml(rew.description);
+    let labelText = stripHtml(rew.name);
+    let descriptionText = stripHtml(rew.description);
 
     if (typeof rew.prize !== 'undefined') {
       listItem.dataset.rewardId = rew.prize.id;
@@ -2162,7 +2167,7 @@ export const MainWidget = function (options) {
   this.rewardsListLayout = function (pageNumber, rewards, availableRewards, expiredRewards) {
     const _this = this;
     const rewardList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.rewards.containerClass + ' .cl-main-widget-reward-list-body-res');
-    const totalCount = _this.settings.lbWidget.settings.rewards.totalCount;
+    const totalCount = _this.settings.lbWidget.settings.awards.totalCount;
     const itemsPerPage = 10;
     let paginator = query(rewardList, '.paginator');
 
@@ -2181,7 +2186,7 @@ export const MainWidget = function (options) {
     }
 
     const accordionObj = _this.accordionStyle(_this.settings.rewardsSection.accordionLayout, function (accordionSection, listContainer, topEntryContainer, layout, paginator) {
-      const rewardData = _this.settings.lbWidget.settings.rewards[layout.type];
+      const rewardData = _this.settings.lbWidget.settings.awards[layout.type];
 
       if (typeof rewardData !== 'undefined') {
         if (rewardData.length === 0) {
@@ -2243,10 +2248,9 @@ export const MainWidget = function (options) {
     });
   };
 
-  this.loadRewards = function (pageNumber, callback) {
-    var _this = this;
-
-    _this.settings.lbWidget.checkForAvailableRewards(pageNumber, function (rewards, availableRewards, expiredRewards) {
+  this.loadAwards = function (pageNumber, callback) {
+    const _this = this;
+    _this.settings.lbWidget.checkForAvailableAwards(pageNumber, function (rewards, availableRewards, expiredRewards) {
       _this.settings.lbWidget.updateRewardsNavigationCounts();
       _this.rewardsListLayout(pageNumber, rewards, availableRewards, expiredRewards);
 
@@ -2336,7 +2340,7 @@ export const MainWidget = function (options) {
                 _this.settings.navigationSwitchInProgress = false;
               });
             } else if (hasClass(target, 'cl-main-widget-navigation-rewards-icon')) {
-              _this.loadRewards(1, function () {
+              _this.loadAwards(1, function () {
                 var rewardsContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.rewards.containerClass);
 
                 rewardsContainer.style.display = 'block';
