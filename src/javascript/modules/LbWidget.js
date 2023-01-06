@@ -142,7 +142,8 @@ export const LbWidget = function (options) {
       totalCount: 0
     },
     messages: {
-      messages: []
+      messages: [],
+      totalCount: 0
     },
     tournaments: {
       activeCompetitionId: null,
@@ -152,7 +153,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 3000,
+      refreshIntervalMillis: 5000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -899,7 +900,7 @@ export const LbWidget = function (options) {
 
     if (_this.settings.mainWidget.settings.navigation !== null) {
       const menuItemCount = query(_this.settings.mainWidget.settings.navigation, '.' + _this.settings.navigation.inbox.navigationClass + ' .cl-main-navigation-item-count');
-      menuItemCount.innerHTML = _this.settings.messages.messages.length;
+      menuItemCount.innerHTML = _this.settings.messages.totalCount;
     }
   };
 
@@ -1137,31 +1138,52 @@ export const LbWidget = function (options) {
     // });
   };
 
-  this.getMessage = async function (messageId, callback) {
+  this.getMessage = async function (messageId, callback, isSys = false) {
+    const _this = this;
     if (!this.settings.apiWs.messagesApiWsClient) {
       this.settings.apiWs.messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
     }
 
-    const messageRequest = {
-      messageFilter: {
-        ids: [messageId],
-        messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
-        skip: 0,
-        limit: 20
-      }
-    };
+    if (isSys) {
+      const messageRequest = {
+        messageFilter: {
+          ids: [messageId],
+          skip: 0,
+          limit: 20
+        }
+      };
+      await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
+        console.warn('getMessages sys json:', json);
+        if (json.data && json.data.length) {
+          if (json.data[0].messageType === 'InboxItem') {
+            _this.checkForAvailableMessages(function () {
+              _this.updateMessagesNavigationCounts();
+            });
+          }
+        }
+      });
+    } else {
+      const messageRequest = {
+        messageFilter: {
+          ids: [messageId],
+          messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
+          skip: 0,
+          limit: 20
+        }
+      };
 
-    await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
-      if (json.data.length) {
-        if (typeof callback === 'function') {
-          callback(json.data[0]);
+      await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
+        if (json.data.length) {
+          if (typeof callback === 'function') {
+            callback(json.data[0]);
+          }
+        } else {
+          if (typeof callback === 'function') {
+            callback(null);
+          }
         }
-      } else {
-        if (typeof callback === 'function') {
-          callback(null);
-        }
-      }
-    });
+      });
+    }
   };
 
   // var claimRewardAjax = new cLabs.Ajax();
@@ -1514,7 +1536,9 @@ export const LbWidget = function (options) {
     };
 
     await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
+      console.warn('getMessages json:', json);
       this.settings.messages.messages = json.data ?? [];
+      this.settings.messages.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
       if (typeof callback === 'function') {
         callback(this.settings.messages.messages);
       }
@@ -2503,7 +2527,7 @@ export const LbWidget = function (options) {
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
         console.warn('Sys callback json:', json);
         if (json.entityType === 'Message') {
-          this.getMessage(json.entityId);
+          this.getMessage(json.entityId, null, true);
         }
         if (json.entityType === 'Award') {
           _this.settings.mainWidget.loadAwards(1);

@@ -2265,6 +2265,7 @@ export const MainWidget = function (options) {
 
     _this.settings.lbWidget.checkForAvailableMessages(function (rewards, availableRewards, expiredRewards) {
       _this.messagesListLayout(rewards, availableRewards, expiredRewards);
+      _this.settings.lbWidget.updateMessagesNavigationCounts();
 
       if (typeof callback === 'function') {
         callback();
