@@ -55,6 +55,8 @@ const translation = require(`../../i18n/translation_${process.env.LANG}.json`);
  * @constructor
  */
 export const LbWidget = function (options) {
+  this.apiClientStomp = null;
+
   /**
    * LbWidget settings
    * @memberOf LbWidget
@@ -790,6 +792,7 @@ export const LbWidget = function (options) {
   };
 
   this.getLeaderboardData = async function (count, callback) {
+    const _this = this;
     if (this.settings.competition.activeContestId !== null) {
       if (!this.settings.apiWs.leaderboardApiWsClient) {
         this.settings.apiWs.leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
@@ -813,15 +816,28 @@ export const LbWidget = function (options) {
         }
       });
 
-      await this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(
+      // this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest)
+      //   .then(json => {
+      //     if (json.data && json.data.leaderboardEntries) {
+      //       this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
+      //     } else {
+      //       this.settings.leaderboard.leaderboardData = [];
+      //     }
+      //     callback(this.settings.leaderboard.leaderboardData);
+      //   })
+      //   .catch(error => {
+      //     _this.log('failed to getLeaderboardData ' + error);
+      //   });
+
+      this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(
         leaderboardSubscriptionRequest,
-        async (json) => {
+        (json) => {
           if (json.data && json.data.leaderboardEntries) {
-            this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
+            _this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
           } else {
-            this.settings.leaderboard.leaderboardData = [];
+            _this.settings.leaderboard.leaderboardData = [];
           }
-          callback(this.settings.leaderboard.leaderboardData);
+          callback(_this.settings.leaderboard.leaderboardData);
         }
       );
 
@@ -1153,7 +1169,6 @@ export const LbWidget = function (options) {
         }
       };
       await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
-        console.warn('getMessages sys json:', json);
         if (json.data && json.data.length) {
           if (json.data[0].messageType === 'InboxItem') {
             _this.checkForAvailableMessages(function () {
@@ -1351,6 +1366,7 @@ export const LbWidget = function (options) {
     if (!this.settings.apiWs.awardsApiWsClient) {
       this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
     }
+
     return new Promise((resolve, reject) => {
       this.settings.apiWs.awardsApiWsClient.getAwards(awardRequest, (json) => {
         resolve(json);
@@ -1536,7 +1552,6 @@ export const LbWidget = function (options) {
     };
 
     await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
-      console.warn('getMessages json:', json);
       this.settings.messages.messages = json.data ?? [];
       this.settings.messages.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
       if (typeof callback === 'function') {
@@ -2521,6 +2536,11 @@ export const LbWidget = function (options) {
     this.settings.authToken = null;
     await this.generateUserToken();
 
+    if (this.apiClientStomp) {
+      await this.apiClientStomp.disconnect();
+      this.apiClientStomp = null;
+    }
+
     if (this.settings.authToken) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
@@ -2531,6 +2551,21 @@ export const LbWidget = function (options) {
         }
         if (json.entityType === 'Award') {
           _this.settings.mainWidget.loadAwards(1);
+        }
+        if (json.entityType === 'Contest') {
+          _this.checkForAvailableCompetitions(async function () {
+            _this.updateLeaderboardNavigationCounts();
+          });
+        }
+        if (json.entityType === 'Competition') {
+          _this.checkForAvailableCompetitions(async function () {
+            _this.updateLeaderboardNavigationCounts();
+          });
+        }
+        if (json.entityType === 'Achievement') {
+          _this.checkForAvailableAchievements(1, function () {
+            _this.updateAchievementNavigationCounts();
+          });
         }
       });
     }
