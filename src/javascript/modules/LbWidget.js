@@ -440,9 +440,9 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    this.settings.tournaments.readyCompetitions = await this.getCompetitions(readyCompetitionRequest);
-    this.settings.tournaments.activeCompetitions = await this.getCompetitions(activeCompetitionRequest);
-    this.settings.tournaments.finishedCompetitions = await this.getCompetitions(finishedCompetitionRequest);
+    this.settings.tournaments.readyCompetitions = await this.getCompetitionsApi(readyCompetitionRequest);
+    this.settings.tournaments.activeCompetitions = await this.getCompetitionsApi(activeCompetitionRequest);
+    this.settings.tournaments.finishedCompetitions = await this.getCompetitionsApi(finishedCompetitionRequest);
 
     if (typeof callback === 'function') {
       callback();
@@ -502,7 +502,7 @@ export const LbWidget = function (options) {
     // });
   };
 
-  this.getCompetitions = async (competitionRequest) => {
+  this.getCompetitionsApi = async (competitionRequest) => {
     if (!this.settings.apiWs.competitionsApiWsClient) {
       this.settings.apiWs.competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
     }
@@ -921,7 +921,7 @@ export const LbWidget = function (options) {
   };
 
   // var checkAchievementsAjax = new cLabs.Ajax();
-  this.checkForAvailableAchievements = async function (pageNumber, callback) {
+  this.checkForAvailableAchievements = function (pageNumber, callback) {
     const _this = this;
 
     if (!this.settings.apiWs.achievementsApiWsClient) {
@@ -949,7 +949,7 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    await this.settings.apiWs.achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
+    this.settings.apiWs.achievementsApiWsClient.getAchievements(achievementRequest, async (json) => {
       _this.settings.achievements.list = json.data;
       _this.settings.achievements.totalCount = json.meta.totalRecordsFound || 0;
       const optInAchievements = json.data.filter(a => a.constraints && a.constraints.includes('optinRequiredForEntrants'));
@@ -1310,10 +1310,6 @@ export const LbWidget = function (options) {
   };
 
   this.checkForAvailableAwards = async function (pageNumber, callback) {
-    if (!this.settings.apiWs.awardsApiWsClient) {
-      this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
-    }
-
     this.settings.awards.availableAwards = [];
     this.settings.awards.claimedAwards = [];
     this.settings.awards.rewards = [];
@@ -1348,21 +1344,31 @@ export const LbWidget = function (options) {
       }
     });
 
-    const availableAwardsData = await this.getAwards(availableAwardRequest);
-    const claimedAwardsData = await this.getAwards(claimedAwardRequest);
+    this.getAwardsApi(claimedAwardRequest)
+      .then(json => {
+        this.settings.awards.claimedAwards = json.data;
+      })
+      .catch(error => {
+        this.log(error);
+      });
 
-    this.settings.awards.availableAwards = availableAwardsData.data;
-    this.settings.awards.claimedAwards = claimedAwardsData.data;
-    this.settings.awards.totalCount = (availableAwardsData.meta && availableAwardsData.meta.totalRecordsFound)
-      ? availableAwardsData.meta.totalRecordsFound
-      : 0;
+    this.getAwardsApi(availableAwardRequest)
+      .then(json => {
+        this.settings.awards.availableAwards = json.data;
+        this.settings.awards.totalCount = (json.meta && json.meta.totalRecordsFound)
+          ? json.meta.totalRecordsFound
+          : 0;
 
-    if (typeof callback === 'function') {
-      callback();
-    }
+        if (typeof callback === 'function') {
+          callback();
+        }
+      })
+      .catch(error => {
+        this.log(error);
+      });
   };
 
-  this.getAwards = async function (awardRequest) {
+  this.getAwardsApi = function (awardRequest) {
     if (!this.settings.apiWs.awardsApiWsClient) {
       this.settings.apiWs.awardsApiWsClient = new AwardsApiWs(this.apiClientStomp);
     }
@@ -1374,7 +1380,7 @@ export const LbWidget = function (options) {
     });
   };
 
-  this.checkForAvailableRewards = async function (pageNumber, callback) {
+  this.checkForAvailableRewards = function (pageNumber, callback) {
     this.settings.rewards.rewards = [];
     this.settings.rewards.availableRewards = [];
     this.settings.rewards.expiredRewards = [];
@@ -1390,22 +1396,41 @@ export const LbWidget = function (options) {
         skip: (pageNumber - 1) * 10
       };
 
-      const json = await this.getRewards(rewardRequest);
+      this.getRewardsApi(rewardRequest)
+        .then(json => {
+          this.settings.rewards.rewards = json.data ?? [];
+          this.settings.rewards.availableRewards = json.data ?? [];
+          this.settings.rewards.expiredRewards = [];
+          this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+          if (this.settings.competition.activeContest && json.data) {
+            this.settings.competition.activeContest.rewards = json.data;
+          }
+          if (typeof callback === 'function') {
+            callback(
+              this.settings.rewards.rewards,
+              this.settings.rewards.availableRewards,
+              this.settings.rewards.expiredRewards
+            );
+          }
+        })
+        .catch(error => this.log(error));
 
-      this.settings.rewards.rewards = json.data ?? [];
-      this.settings.rewards.availableRewards = json.data ?? [];
-      this.settings.rewards.expiredRewards = [];
-      this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
-      if (this.settings.competition.activeContest && json.data) {
-        this.settings.competition.activeContest.rewards = json.data;
-      }
-      if (typeof callback === 'function') {
-        callback(
-          this.settings.rewards.rewards,
-          this.settings.rewards.availableRewards,
-          this.settings.rewards.expiredRewards
-        );
-      }
+      // const json = await this.getRewardsApi(rewardRequest);
+      //
+      // this.settings.rewards.rewards = json.data ?? [];
+      // this.settings.rewards.availableRewards = json.data ?? [];
+      // this.settings.rewards.expiredRewards = [];
+      // this.settings.rewards.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+      // if (this.settings.competition.activeContest && json.data) {
+      //   this.settings.competition.activeContest.rewards = json.data;
+      // }
+      // if (typeof callback === 'function') {
+      //   callback(
+      //     this.settings.rewards.rewards,
+      //     this.settings.rewards.availableRewards,
+      //     this.settings.rewards.expiredRewards
+      //   );
+      // }
     } else if (typeof callback === 'function') {
       callback(
         this.settings.rewards.rewards,
@@ -1527,7 +1552,7 @@ export const LbWidget = function (options) {
     // });
   };
 
-  this.getRewards = async function (rewardRequest) {
+  this.getRewardsApi = async function (rewardRequest) {
     if (!this.settings.apiWs.rewardsApiWsClient) {
       this.settings.apiWs.rewardsApiWsClient = new RewardsApiWs(this.apiClientStomp);
     }
@@ -1538,11 +1563,7 @@ export const LbWidget = function (options) {
     });
   };
 
-  // var checkForAvailableMessagesAjax = new cLabs.Ajax();
   this.checkForAvailableMessages = async function (callback) {
-    if (!this.settings.apiWs.messagesApiWsClient) {
-      this.settings.apiWs.messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
-    }
     const messageRequest = {
       messageFilter: {
         messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
@@ -1551,53 +1572,36 @@ export const LbWidget = function (options) {
       }
     };
 
-    await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
-      this.settings.messages.messages = json.data ?? [];
-      this.settings.messages.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
-      if (typeof callback === 'function') {
-        callback(this.settings.messages.messages);
-      }
-    });
+    this.getMessagesApi(messageRequest)
+      .then(json => {
+        this.settings.messages.messages = json.data ?? [];
+        this.settings.messages.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+        if (typeof callback === 'function') {
+          callback(this.settings.messages.messages);
+        }
+      })
+      .catch(error => {
+        this.log(error);
+      });
 
-    // var _this = this;
-    // var url = _this.settings.uri.messages.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
-    // var date = new Date();
-    //
-    // date.setDate(date.getMonth() - 1);
-    // var createdDateFilter = date.getFullYear() + '-' + formatNumberLeadingZeros((date.getMonth() + 1), 2) + '-' + formatNumberLeadingZeros(date.getDate(), 2);
-    // var filters = [
-    //   '_sortByFields=created:desc',
-    //   '_hasNoValuesFor=prize',
-    //   '_limit=100',
-    //   'created>==' + createdDateFilter
-    // ];
-    //
-    // filters = _this.settings.partialFunctions.uri.availableMessagesListParameters(filters);
-    //
-    // checkForAvailableMessagesAjax.abort().getData({
-    //   type: 'GET',
-    //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-    //   headers: {
-    //     'X-API-KEY': _this.settings.apiKey
-    //   },
-    //   success: function (response, dataObj, xhr) {
-    //     if (xhr.status === 200) {
-    //       var jsonAvailableMessages = JSON.parse(response);
-    //
-    //       _this.settings.partialFunctions.availableMessagesDataResponseParser(jsonAvailableMessages.data, function (availableMessagesData) {
-    //         _this.settings.messages.messages = [];
-    //
-    //         mapObject(availableMessagesData, function (message) {
-    //           _this.settings.messages.messages.push(message);
-    //         });
-    //
-    //         if (typeof callback === 'function') callback(_this.settings.messages.messages);
-    //       });
-    //     } else {
-    //       _this.log('failed to checkForAvailableMessages ' + response);
-    //     }
+    // await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
+    //   this.settings.messages.messages = json.data ?? [];
+    //   this.settings.messages.totalCount = (json.meta && json.meta.totalRecordsFound) ? json.meta.totalRecordsFound : 0;
+    //   if (typeof callback === 'function') {
+    //     callback(this.settings.messages.messages);
     //   }
     // });
+  };
+
+  this.getMessagesApi = async function (messageRequest) {
+    if (!this.settings.apiWs.messagesApiWsClient) {
+      this.settings.apiWs.messagesApiWsClient = new MessagesApiWs(this.apiClientStomp);
+    }
+    return new Promise((resolve, reject) => {
+      this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
+        resolve(json);
+      });
+    });
   };
 
   this.optInMemberToActiveCompetition = async function (callback) {
@@ -1665,17 +1669,6 @@ export const LbWidget = function (options) {
       clearTimeout(_this.settings.leaderboard.refreshLbDataInterval);
     }
 
-    // if (
-    //   (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optinRequired === 'boolean' && !_this.settings.competition.activeCompetition.optinRequired) ||
-    //   (typeof _this.settings.competition.activeCompetition.optin === 'boolean' && _this.settings.competition.activeCompetition.optin)
-    // ) {
-    //   console.warn('leaderboardDataRefresh:');
-    //   var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
-    //   _this.getLeaderboardData(count, function (data) {
-    //     if (_this.settings.miniScoreBoard.settings.active) _this.settings.miniScoreBoard.loadScoreBoard();
-    //     if (_this.settings.mainWidget.settings.active) _this.settings.mainWidget.loadLeaderboard();
-    //   });
-    // }
     if (
       (
         _this.settings.competition.activeCompetition !== null &&
@@ -1685,6 +1678,7 @@ export const LbWidget = function (options) {
         )
       ) ||
       (
+        _this.settings.competition.activeCompetition !== null &&
         typeof _this.settings.competition.activeCompetition.optin === 'boolean' &&
         _this.settings.competition.activeCompetition.optin
       )
@@ -2545,7 +2539,13 @@ export const LbWidget = function (options) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
-        console.warn('Sys callback json:', json);
+        // console.warn('sendSys json:', json);
+        // console.warn('sendSys headers:', headers);
+        // console.warn('date:', new Date());
+        // if (headers.objectType === 'Leaderboard') {
+        //   this.settings.miniScoreBoard.loadScoreBoard();
+        //   this.settings.mainWidget.loadLeaderboard();
+        // }
         if (json.entityType === 'Message') {
           this.getMessage(json.entityId, null, true);
         }
@@ -2563,9 +2563,7 @@ export const LbWidget = function (options) {
           });
         }
         if (json.entityType === 'Achievement') {
-          _this.checkForAvailableAchievements(1, function () {
-            _this.updateAchievementNavigationCounts();
-          });
+          _this.settings.mainWidget.loadAchievements();
         }
       });
     }

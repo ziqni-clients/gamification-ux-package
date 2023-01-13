@@ -2218,7 +2218,7 @@ export const MainWidget = function (options) {
         }
       });
 
-      const availableRewards = query(rewardList, '.cl-accordion.availableRewards');
+      const availableRewards = query(rewardList, '.cl-accordion.availableAwards');
       if (availableRewards) {
         const availableRewardsList = query(availableRewards, '.cl-accordion-list');
         if (availableRewardsList) {
