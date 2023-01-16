@@ -155,7 +155,7 @@ export const LbWidget = function (options) {
     },
     leaderboard: {
       fullLeaderboardSize: 100,
-      refreshIntervalMillis: 5000,
+      refreshIntervalMillis: 1000000,
       refreshInterval: null,
       refreshLbDataInterval: null,
       leaderboardData: [],
@@ -440,6 +440,23 @@ export const LbWidget = function (options) {
       }
     }, null);
 
+    // this.getCompetitionsApi(readyCompetitionRequest)
+    //   .then(data => {
+    //     this.settings.tournaments.readyCompetitions = data;
+    //   })
+    //   .catch(error => this.log(error));
+    //
+    // this.getCompetitionsApi(activeCompetitionRequest)
+    //   .then(data => {
+    //     this.settings.tournaments.activeCompetitions = data;
+    //   })
+    //   .catch(error => this.log(error));
+    //
+    // this.getCompetitionsApi(finishedCompetitionRequest)
+    //   .then(data => {
+    //     this.settings.tournaments.finishedCompetitions = data;
+    //   })
+    //   .catch(error => this.log(error));
     this.settings.tournaments.readyCompetitions = await this.getCompetitionsApi(readyCompetitionRequest);
     this.settings.tournaments.activeCompetitions = await this.getCompetitionsApi(activeCompetitionRequest);
     this.settings.tournaments.finishedCompetitions = await this.getCompetitionsApi(finishedCompetitionRequest);
@@ -832,11 +849,13 @@ export const LbWidget = function (options) {
       this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(
         leaderboardSubscriptionRequest,
         (json) => {
+          console.warn('subscribeToLeaderboard json', json);
           if (json.data && json.data.leaderboardEntries) {
             _this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
-          } else {
-            _this.settings.leaderboard.leaderboardData = [];
           }
+          // } else {
+          //   _this.settings.leaderboard.leaderboardData = [];
+          // }
           callback(_this.settings.leaderboard.leaderboardData);
         }
       );
@@ -2539,13 +2558,13 @@ export const LbWidget = function (options) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
-        // console.warn('sendSys json:', json);
-        // console.warn('sendSys headers:', headers);
-        // console.warn('date:', new Date());
-        // if (headers.objectType === 'Leaderboard') {
-        //   this.settings.miniScoreBoard.loadScoreBoard();
-        //   this.settings.mainWidget.loadLeaderboard();
-        // }
+        console.warn('sendSys json:', json);
+        console.warn('sendSys headers:', headers);
+        if (headers.objectType === 'Leaderboard') {
+          this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
+          this.settings.miniScoreBoard.loadScoreBoard();
+          this.settings.mainWidget.loadLeaderboard();
+        }
         if (json.entityType === 'Message') {
           this.getMessage(json.entityId, null, true);
         }
