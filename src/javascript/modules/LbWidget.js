@@ -2558,8 +2558,8 @@ export const LbWidget = function (options) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
-        console.warn('sendSys json:', json);
-        console.warn('sendSys headers:', headers);
+        // console.warn('sendSys json:', json);
+        // console.warn('sendSys headers:', headers);
         if (headers.objectType === 'Leaderboard') {
           this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
           this.settings.miniScoreBoard.loadScoreBoard();
