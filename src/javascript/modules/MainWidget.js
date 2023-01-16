@@ -1984,6 +1984,10 @@ export const MainWidget = function (options) {
     const label = query(_this.settings.messages.detailsContainer, '.cl-main-widget-inbox-details-header-label');
     const body = query(_this.settings.messages.detailsContainer, '.cl-main-widget-inbox-details-body');
 
+    if (!data || !data.subject) {
+      return;
+    }
+
     label.innerHTML = data.subject;
     body.innerHTML = data.body;
 
