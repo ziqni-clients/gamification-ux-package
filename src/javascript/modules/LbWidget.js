@@ -717,12 +717,12 @@ export const LbWidget = function (options) {
   this.checkForAvailableAchievements = function (callback) {
     var _this = this;
     var url = _this.settings.uri.achievements.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId);
-    // var date = new Date();
-    // var createdDateFilter = date.toISOString();
+    var date = new Date();
+    var createdDateFilter = date.toISOString();
     var basicFilters = [
       '_limit=' + _this.settings.achievements.limit,
       '_include=rewards',
-      // 'scheduledEnd>==' + createdDateFilter,
+      'scheduledEnd>==' + createdDateFilter,
       ('_lang=' + _this.settings.language)
     ];
 
