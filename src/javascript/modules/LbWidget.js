@@ -748,7 +748,6 @@ export const LbWidget = function (options) {
   };
 
   this.getLeaderboardData = async function (count, callback) {
-    const _this = this;
     if (this.settings.competition.activeContestId !== null) {
       let ranksAboveToInclude = 0;
       let ranksBelowToInclude = 0;
@@ -771,9 +770,9 @@ export const LbWidget = function (options) {
       this.subscribeToLeaderboardApi(leaderboardSubscriptionRequest)
         .then(data => {
           if (data && data.leaderboardEntries) {
-            _this.settings.leaderboard.leaderboardData = data.leaderboardEntries;
+            this.settings.leaderboard.leaderboardData = data.leaderboardEntries;
           }
-          callback(_this.settings.leaderboard.leaderboardData);
+          callback(this.settings.leaderboard.leaderboardData);
         })
         .catch(error => {
           this.log(error);
