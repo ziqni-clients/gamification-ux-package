@@ -1075,7 +1075,7 @@ export const MainWidget = function (options) {
 
     if (typeof _this.settings.lbWidget.settings.competition.activeContest !== 'undefined' && _this.settings.lbWidget.settings.competition.activeContest !== null) {
       mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
-        if (reward.rewardRank.indexOf(rank) !== -1) {
+        if (rank !== 0 && reward.rewardRank.indexOf(rank) !== -1) {
           rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
         } else if (reward.rewardRank.indexOf('-') !== -1) {
           const rewardRankArr = reward.rewardRank.split(',');
@@ -1111,7 +1111,7 @@ export const MainWidget = function (options) {
 
     objectIterator(query(_this.settings.leaderboard.container, '.cl-lb-row'), function (obj) {
       var rank = parseInt(obj.dataset.rank);
-      if (cleanupRankCheck.indexOf(rank) === -1 && rank > _this.settings.leaderboard.defaultEmptyList) {
+      if (cleanupRankCheck.indexOf(rank) === -1 && (rank > _this.settings.leaderboard.defaultEmptyList || rank === 0)) {
         remove(obj);
       }
     });
@@ -1368,7 +1368,7 @@ export const MainWidget = function (options) {
       const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus(
         this.settings.lbWidget.settings.competition.activeCompetition.id
       );
-      console.warn('mainwidget optInStatus:', optInStatus);
+      // console.warn('mainwidget optInStatus:', optInStatus);
       if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
       } else {
@@ -1872,6 +1872,8 @@ export const MainWidget = function (options) {
     const optIn = query(_this.settings.achievement.detailsContainer, '.cl-main-widget-ach-details-optin-action');
 
     const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus(data.id);
+
+    console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
 
     if (optinRequiredForEntrants) {
       if (memberAchievementOptInStatus.length && memberAchievementOptInStatus[0].status === 'Entrant') {
