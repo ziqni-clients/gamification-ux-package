@@ -2454,28 +2454,28 @@ export const LbWidget = function (options) {
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
         // console.warn('sendSys json:', json);
         // console.warn('sendSys headers:', headers);
-        if (headers.objectType === 'Leaderboard') {
+        if (headers && headers.objectType === 'Leaderboard') {
           this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
           this.settings.miniScoreBoard.loadScoreBoard();
           this.settings.mainWidget.loadLeaderboard();
         }
-        if (json.entityType === 'Message') {
+        if (json && json.entityType === 'Message') {
           this.getMessage(json.entityId, null, true);
         }
-        if (json.entityType === 'Award') {
+        if (json && json.entityType === 'Award') {
           _this.settings.mainWidget.loadAwards(1);
         }
-        if (json.entityType === 'Contest') {
+        if (json && json.entityType === 'Contest') {
           _this.checkForAvailableCompetitions(async function () {
             _this.updateLeaderboardNavigationCounts();
           });
         }
-        if (json.entityType === 'Competition') {
+        if (json && json.entityType === 'Competition') {
           _this.checkForAvailableCompetitions(async function () {
             _this.updateLeaderboardNavigationCounts();
           });
         }
-        if (json.entityType === 'Achievement') {
+        if (json && json.entityType === 'Achievement') {
           _this.settings.mainWidget.loadAchievements();
         }
       });
