@@ -440,23 +440,6 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    // this.getCompetitionsApi(readyCompetitionRequest)
-    //   .then(data => {
-    //     this.settings.tournaments.readyCompetitions = data;
-    //   })
-    //   .catch(error => this.log(error));
-    //
-    // this.getCompetitionsApi(activeCompetitionRequest)
-    //   .then(data => {
-    //     this.settings.tournaments.activeCompetitions = data;
-    //   })
-    //   .catch(error => this.log(error));
-    //
-    // this.getCompetitionsApi(finishedCompetitionRequest)
-    //   .then(data => {
-    //     this.settings.tournaments.finishedCompetitions = data;
-    //   })
-    //   .catch(error => this.log(error));
     this.settings.tournaments.readyCompetitions = await this.getCompetitionsApi(readyCompetitionRequest);
     this.settings.tournaments.activeCompetitions = await this.getCompetitionsApi(activeCompetitionRequest);
     this.settings.tournaments.finishedCompetitions = await this.getCompetitionsApi(finishedCompetitionRequest);
@@ -464,59 +447,6 @@ export const LbWidget = function (options) {
     if (typeof callback === 'function') {
       callback();
     }
-
-    // var filters = [
-    //   'statusCode>==3',
-    //   'statusCode<==5',
-    //   '_sortByFields=options.scheduledDates.end:desc',
-    //   ('_lang=' + _this.settings.language),
-    //   '_limit=999'
-    // ];
-    // var ajaxInstanceToUse = (typeof ajaxInstance !== 'undefined' && ajaxInstance !== null) ? ajaxInstance : competitionCheckAjax;
-    //
-    // if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-    //   filters.push('_uomKey=' + _this.settings.currency);
-    // }
-    //
-    // if (_this.settings.gameId.length > 0 && _this.settings.enforceGameLookup) {
-    //   filters.push('options.products.productRefId=' + _this.settings.gameId);
-    // }
-    //
-    // if (_this.settings.groups.length > 0 && _this.settings.memberId.length === 0) {
-    //   filters.push('options.limitEntrantsTo=' + _this.settings.groups);
-    // }
-    //
-    // filters = _this.settings.partialFunctions.uri.availableCompetitionsListParameters(filters);
-    //
-    // ajaxInstanceToUse.abort().getData({
-    //   type: 'GET',
-    //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-    //   headers: {
-    //     'X-API-KEY': _this.settings.apiKey
-    //   },
-    //   success: function (response, dataObj, xhr) {
-    //     if (xhr.status === 200) {
-    //       var json = JSON.parse(response);
-    //
-    //       _this.settings.partialFunctions.competitionDataAvailableResponseParser(json.data, function (compData) {
-    //         _this.settings.tournaments.readyCompetitions = [];
-    //         _this.settings.tournaments.activeCompetitions = [];
-    //
-    //         mapObject(compData, function (comp) {
-    //           if (comp.statusCode === 3) {
-    //             _this.settings.tournaments.readyCompetitions.push(comp);
-    //           } else if (comp.statusCode === 5) {
-    //             _this.settings.tournaments.activeCompetitions.push(comp);
-    //           }
-    //         });
-    //
-    //         _this.checkForFinishedCompetitions(callback, ajaxInstance);
-    //       });
-    //     } else {
-    //       _this.log('failed to checkForActiveCompetitions ' + response);
-    //     }
-    //   }
-    // });
   };
 
   this.getCompetitionsApi = async (competitionRequest) => {
@@ -706,6 +636,15 @@ export const LbWidget = function (options) {
   };
 
   this.setActiveCompetition = async function (json, callback) {
+    if (this.settings.competition.activeContest) {
+      const leaderboardUnsubscribeRequest = LeaderboardSubscriptionRequest.constructFromObject({
+        entityId: this.settings.competition.activeContestId,
+        action: 'Unsubscribe',
+        leaderboardFilter: {}
+      });
+      await this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest);
+      this.settings.leaderboard.leaderboardData = [];
+    }
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
     this.settings.competition.activeContestId = null;
@@ -811,10 +750,6 @@ export const LbWidget = function (options) {
   this.getLeaderboardData = async function (count, callback) {
     const _this = this;
     if (this.settings.competition.activeContestId !== null) {
-      if (!this.settings.apiWs.leaderboardApiWsClient) {
-        this.settings.apiWs.leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
-      }
-
       let ranksAboveToInclude = 0;
       let ranksBelowToInclude = 0;
 
@@ -833,72 +768,32 @@ export const LbWidget = function (options) {
         }
       });
 
-      // this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest)
-      //   .then(json => {
-      //     if (json.data && json.data.leaderboardEntries) {
-      //       this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
-      //     } else {
-      //       this.settings.leaderboard.leaderboardData = [];
-      //     }
-      //     callback(this.settings.leaderboard.leaderboardData);
-      //   })
-      //   .catch(error => {
-      //     _this.log('failed to getLeaderboardData ' + error);
-      //   });
-
-      this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(
-        leaderboardSubscriptionRequest,
-        (json) => {
-          console.warn('subscribeToLeaderboard json', json);
-          if (json.data && json.data.leaderboardEntries) {
-            _this.settings.leaderboard.leaderboardData = json.data.leaderboardEntries;
+      this.subscribeToLeaderboardApi(leaderboardSubscriptionRequest)
+        .then(data => {
+          if (data && data.leaderboardEntries) {
+            _this.settings.leaderboard.leaderboardData = data.leaderboardEntries;
           }
-          // } else {
-          //   _this.settings.leaderboard.leaderboardData = [];
-          // }
           callback(_this.settings.leaderboard.leaderboardData);
-        }
-      );
-
-      // var _this = this;
-      // var url = _this.settings.uri.contestLeaderboard.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeContestId);
-      // var filters = [
-      //   '_limit=' + count
-      // ];
-      //
-      // if (_this.settings.leaderboard.miniScoreBoard.enableRankings) {
-      //   filters.push('rankings=' + _this.settings.leaderboard.miniScoreBoard.rankingsCount);
-      // }
-      //
-      // if (typeof _this.settings.memberId === 'string' && _this.settings.memberId.length > 0) {
-      //   filters.push('memberId=' + _this.settings.memberId);
-      // }
-      //
-      // filters = _this.settings.partialFunctions.uri.leaderboardParameters(filters);
-      //
-      // _this.settings.globalAjax.abort().getData({
-      //   type: 'GET',
-      //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-      //   headers: {
-      //     'X-API-KEY': _this.settings.apiKey
-      //   },
-      //   success: function (response, dataObj, xhr) {
-      //     if (xhr.status === 200) {
-      //       var json = JSON.parse(response);
-      //       _this.settings.partialFunctions.leaderboardDataResponseParser(json.data, function (lbData) {
-      //         _this.settings.leaderboard.leaderboardData = lbData;
-      //
-      //         callback(lbData);
-      //       });
-      //     } else {
-      //       _this.log('failed to getLeaderboardData ' + response);
-      //     }
-      //   }
-      // });
+        })
+        .catch(error => {
+          this.log(error);
+        });
     } else {
       this.settings.leaderboard.leaderboardData = [];
       callback();
     }
+  };
+
+  this.subscribeToLeaderboardApi = function (leaderboardSubscriptionRequest) {
+    if (!this.settings.apiWs.leaderboardApiWsClient) {
+      this.settings.apiWs.leaderboardApiWsClient = new LeaderboardApiWs(this.apiClientStomp);
+    }
+
+    return new Promise((resolve, reject) => {
+      this.settings.apiWs.leaderboardApiWsClient.subscribeToLeaderboard(leaderboardSubscriptionRequest, (json) => {
+        resolve(json.data);
+      });
+    });
   };
 
   this.updateLeaderboardNavigationCounts = function () {
@@ -2192,7 +2087,7 @@ export const LbWidget = function (options) {
       }, null);
 
       await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
-        console.warn('manageOptin data:', json.data);
+        console.warn('manageOptin json:', json);
       });
 
       // Achievement list leave action
