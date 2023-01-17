@@ -1185,7 +1185,7 @@ export const MainWidget = function (options) {
     _this.populateLeaderboardResultsWithDefaultEntries();
 
     mapObject(_this.settings.lbWidget.settings.leaderboard.leaderboardData, function (lb) {
-      if (lb.rank <= _this.settings.leaderboard.topResultSize) {
+      if (lb.rank > 0 && lb.rank <= _this.settings.leaderboard.topResultSize) {
         topResults.push(lb);
       } else {
         remainingResults.push(lb);

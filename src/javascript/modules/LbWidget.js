@@ -643,6 +643,7 @@ export const LbWidget = function (options) {
         leaderboardFilter: {}
       });
       await this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest);
+      this.settings.leaderboard.leaderboardData = [];
     }
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
