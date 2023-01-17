@@ -1873,7 +1873,7 @@ export const MainWidget = function (options) {
 
     const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus(data.id);
 
-    console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
+    // console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
 
     if (optinRequiredForEntrants) {
       if (memberAchievementOptInStatus.length && memberAchievementOptInStatus[0].status === 'Entrant') {
