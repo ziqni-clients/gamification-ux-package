@@ -596,43 +596,6 @@ export const LbWidget = function (options) {
         callback(compData);
       }
     });
-    // var _this = this;
-    // var url = (_this.settings.memberId.length === 0) ? (
-    //   _this.settings.uri.competitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.competition.activeCompetitionId)
-    // ) : (
-    //   _this.settings.uri.memberCompetitionById.replace(':space', _this.settings.spaceName).replace(':id', _this.settings.memberId).replace(':competitionId', _this.settings.competition.activeCompetitionId)
-    // );
-    // var filters = [
-    //   ('_include=strategy' + (_this.settings.competition.includeMetadata ? ',metadata' : '')),
-    //   ('_lang=' + _this.settings.language)
-    // ];
-    //
-    // if (typeof _this.settings.currency === 'string' && _this.settings.currency.length > 0) {
-    //   filters.push('_uomKey=' + _this.settings.currency);
-    // }
-    //
-    // filters = _this.settings.partialFunctions.uri.competitionByIdParameters(filters);
-    //
-    // _this.settings.globalAjax.abort().getData({
-    //   type: 'GET',
-    //   url: _this.settings.uri.gatewayDomain + url + ((filters.length > 0) ? '?' + filters.join('&') : ''),
-    //   headers: {
-    //     'X-API-KEY': _this.settings.apiKey
-    //   },
-    //   success: function (response, dataObj, xhr) {
-    //     if (xhr.status === 200) {
-    //       var json = JSON.parse(response);
-    //
-    //       _this.settings.partialFunctions.activeCompetitionDataResponseParser(json, function (compData) {
-    //         if (typeof callback === 'function') {
-    //           callback(compData);
-    //         }
-    //       });
-    //     } else {
-    //       _this.log('failed to loadActiveCompetition ' + response);
-    //     }
-    //   }
-    // });
   };
 
   this.setActiveCompetition = async function (json, callback) {
@@ -642,7 +605,7 @@ export const LbWidget = function (options) {
         action: 'Unsubscribe',
         leaderboardFilter: {}
       });
-      await this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest);
+      this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest).then(() => {});
       this.settings.leaderboard.leaderboardData = [];
     }
     this.settings.competition.activeCompetition = json[0];
@@ -688,52 +651,6 @@ export const LbWidget = function (options) {
     }
 
     this.settings.mainWidget.leaderboardDetailsUpdate();
-
-    // if (isLeaderboardUpdate) {
-    //   this.settings.mainWidget.leaderboardDetailsUpdate();
-    // }
-
-    // if (json.data && json.data.contests && typeof json.data.contests !== 'undefined' && json.data.contests.length > 0) {
-    //   _this.settings.partialFunctions.activeContestDataResponseParser(json.data.contests, function (contests) {
-    //     mapObject(contests, function (contest) {
-    //       if (contest.statusCode < 7 && _this.settings.competition.activeContest === null) {
-    //         _this.settings.competition.activeContest = contest;
-    //         _this.settings.competition.activeContestId = contest.id;
-    //
-    //         if (typeof _this.settings.competition.activeContest.rewards === 'undefined') {
-    //           _this.settings.competition.activeContest.rewards = [];
-    //         }
-    //
-    //         var rewards = [];
-    //         mapObject(_this.settings.competition.activeContest.rewards, function (reward) {
-    //           if (typeof reward.rewardRank === 'string') {
-    //             var rankParts = reward.rewardRank.split(',');
-    //             var rewardRank = [];
-    //
-    //             mapObject(rankParts, function (part) {
-    //               if (stringContains(part, '-')) {
-    //                 var rankRange = part.split('-');
-    //                 var rageStart = parseInt(rankRange[0]);
-    //                 var rangeEnd = parseInt(rankRange[1]);
-    //                 for (var i = rageStart; i <= rangeEnd; i++) {
-    //                   rewardRank.push(i);
-    //                 }
-    //               } else {
-    //                 rewardRank.push(parseInt(part));
-    //               }
-    //             });
-    //
-    //             reward.rewardRank = rewardRank;
-    //           }
-    //
-    //           rewards.push(reward);
-    //         });
-    //
-    //         _this.settings.competition.activeContest.rewards = rewards;
-    //       }
-    //     });
-    //   });
-    // }
   };
 
   this.getContests = async (contestRequest) => {
@@ -767,16 +684,23 @@ export const LbWidget = function (options) {
         }
       });
 
-      this.subscribeToLeaderboardApi(leaderboardSubscriptionRequest)
-        .then(data => {
-          if (data && data.leaderboardEntries) {
-            this.settings.leaderboard.leaderboardData = data.leaderboardEntries;
-          }
-          callback(this.settings.leaderboard.leaderboardData);
-        })
-        .catch(error => {
-          this.log(error);
-        });
+      const readyIdx = this.settings.tournaments.readyCompetitions.findIndex(r => r.id === this.settings.competition.activeCompetition.id);
+
+      if (readyIdx !== -1) {
+        this.settings.leaderboard.leaderboardData = [];
+        callback();
+      } else {
+        this.subscribeToLeaderboardApi(leaderboardSubscriptionRequest)
+          .then(data => {
+            if (data && data.leaderboardEntries) {
+              this.settings.leaderboard.leaderboardData = data.leaderboardEntries;
+            }
+            callback(this.settings.leaderboard.leaderboardData);
+          })
+          .catch(error => {
+            this.log(error);
+          });
+      }
     } else {
       this.settings.leaderboard.leaderboardData = [];
       callback();
@@ -2452,12 +2376,12 @@ export const LbWidget = function (options) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
-        // console.warn('sendSys json:', json);
-        // console.warn('sendSys headers:', headers);
         if (headers && headers.objectType === 'Leaderboard') {
-          this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
-          this.settings.miniScoreBoard.loadScoreBoard();
-          this.settings.mainWidget.loadLeaderboard();
+          if (json.id && json.id === this.settings.competition.activeContestId) {
+            this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
+            this.settings.miniScoreBoard.loadScoreBoard();
+            this.settings.mainWidget.loadLeaderboard();
+          }
         }
         if (json && json.entityType === 'Message') {
           this.getMessage(json.entityId, null, true);
