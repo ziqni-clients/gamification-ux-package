@@ -1243,11 +1243,7 @@ export const LbWidget = function (options) {
             this.settings.competition.activeContest.rewards = json.data;
           }
           if (typeof callback === 'function') {
-            callback(
-              this.settings.rewards.rewards,
-              this.settings.rewards.availableRewards,
-              this.settings.rewards.expiredRewards
-            );
+            callback();
           }
         })
         .catch(error => this.log(error));
@@ -1592,7 +1588,11 @@ export const LbWidget = function (options) {
         _this.checkForAvailableAwards(1, function () {
           _this.updateRewardsNavigationCounts();
         });
-        _this.checkForAvailableRewards(1);
+        _this.checkForAvailableRewards(1, function () {
+          if (_this.settings.mainWidget.settings.active) {
+            _this.settings.mainWidget.updateLeaderboard();
+          }
+        });
       });
     });
 
@@ -2158,6 +2158,7 @@ export const LbWidget = function (options) {
       var preLoader = _this.settings.mainWidget.preloader();
 
       preLoader.show(function () {
+        _this.settings.mainWidget.populateLeaderboardResultsWithDefaultEntries(true);
         _this.settings.mainWidget.settings.active = true;
         _this.settings.tournaments.activeCompetitionId = tournamentId;
         _this.activeDataRefresh(function () {

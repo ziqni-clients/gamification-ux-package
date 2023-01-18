@@ -954,7 +954,7 @@ export const MainWidget = function (options) {
     }
   };
 
-  this.populateLeaderboardResultsWithDefaultEntries = function () {
+  this.populateLeaderboardResultsWithDefaultEntries = function (clearPrize = false) {
     var _this = this;
     var topResults = [];
     var remainingResults = [];
@@ -983,11 +983,11 @@ export const MainWidget = function (options) {
       });
     }
 
-    _this.updateLeaderboardTopResults(topResults);
-    _this.updateLeaderboardResults(remainingResults);
+    _this.updateLeaderboardTopResults(topResults, clearPrize);
+    _this.updateLeaderboardResults(remainingResults, clearPrize);
   };
 
-  this.updateLeaderboardTopResults = function (topResults) {
+  this.updateLeaderboardTopResults = function (topResults, clearPrize = false) {
     var _this = this;
     var rankCheck = [];
     var cleanupRankCheck = [];
@@ -1025,7 +1025,7 @@ export const MainWidget = function (options) {
 
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : memberLbName;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
-      var reward = _this.getReward(lb.rank);
+      var reward = clearPrize ? '' : _this.getReward(lb.rank);
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
       var growthIcon = "<span class='cl-growth-icon cl-growth-" + growthType + "'></span>";
@@ -1096,7 +1096,7 @@ export const MainWidget = function (options) {
     return rewardResponse.join(', ');
   };
 
-  this.updateLeaderboardResults = function (remainingResults) {
+  this.updateLeaderboardResults = function (remainingResults, clearPrize = false) {
     var _this = this;
     var rankCheck = [];
     var cleanupRankCheck = [];
@@ -1133,7 +1133,7 @@ export const MainWidget = function (options) {
       const memberFound = lb.members && lb.members.findIndex(m => m.memberRefId === _this.settings.lbWidget.settings.memberRefId) !== -1;
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : memberLbName;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
-      var reward = _this.getReward(lb.rank);
+      var reward = clearPrize ? '' : _this.getReward(lb.rank);
       var change = (typeof lb.change === 'undefined') ? 0 : lb.change;
       var growthType = (change < 0) ? 'down' : (change > 0 ? 'up' : 'same');
       var growthIcon = "<span class='cl-growth-icon cl-growth-" + growthType + "'></span>";
@@ -1873,7 +1873,7 @@ export const MainWidget = function (options) {
 
     const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus(data.id);
 
-    // console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
+    console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
 
     if (optinRequiredForEntrants) {
       if (memberAchievementOptInStatus.length && memberAchievementOptInStatus[0].status === 'Entrant') {
