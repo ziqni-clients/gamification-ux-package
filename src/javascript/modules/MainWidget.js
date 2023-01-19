@@ -971,7 +971,13 @@ export const MainWidget = function (options) {
       });
     }
 
-    for (let s = _this.settings.leaderboard.topResultSize; s < _this.settings.leaderboard.defaultEmptyList; s++) {
+    const emptyListLength = (
+      _this.settings.lbWidget.settings.leaderboard.fullLeaderboardSize < _this.settings.leaderboard.defaultEmptyList
+    )
+      ? _this.settings.lbWidget.settings.leaderboard.fullLeaderboardSize + 1
+      : _this.settings.leaderboard.defaultEmptyList;
+
+    for (let s = _this.settings.leaderboard.topResultSize; s < emptyListLength; s++) {
       const rank = s + 1;
 
       remainingResults.push({
@@ -1368,7 +1374,7 @@ export const MainWidget = function (options) {
       const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus(
         this.settings.lbWidget.settings.competition.activeCompetition.id
       );
-      // console.warn('mainwidget optInStatus:', optInStatus);
+      console.warn('mainwidget optInStatus:', optInStatus);
       if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
       } else {
