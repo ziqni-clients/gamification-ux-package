@@ -1998,6 +1998,7 @@ export const LbWidget = function (options) {
 
       // Achievement list opt-in action
     } else if (hasClass(el, 'cl-ach-list-enter')) {
+      addClass(el, 'checking');
       const activeAchievementId = el.dataset.id;
       if (!this.settings.apiWs.optInApiWsClient) {
         this.settings.apiWs.optInApiWsClient = new OptInApiWs(this.apiClientStomp);
@@ -2011,6 +2012,9 @@ export const LbWidget = function (options) {
 
       await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
         console.warn('manageOptin json:', json);
+        setTimeout(function () {
+          _this.settings.mainWidget.loadAchievements();
+        }, 2000);
       });
 
       // Achievement list leave action
@@ -2287,12 +2291,13 @@ export const LbWidget = function (options) {
           lt: 40
         },
         skip: 0,
-        limit: 1
+        limit: achievementIds.length
       }
     }, null);
 
     return new Promise((resolve, reject) => {
       this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
+        // console.warn('json.data:', json.data);
         resolve(json.data);
       });
     });
