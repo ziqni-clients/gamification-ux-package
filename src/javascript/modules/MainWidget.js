@@ -1374,7 +1374,7 @@ export const MainWidget = function (options) {
       const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus(
         this.settings.lbWidget.settings.competition.activeCompetition.id
       );
-      console.warn('mainwidget optInStatus:', optInStatus);
+      // console.warn('mainWidget CompetitionOptInStatus optInStatus:', optInStatus);
       if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
       } else {
