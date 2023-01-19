@@ -693,7 +693,7 @@ export const LbWidget = function (options) {
         this.subscribeToLeaderboardApi(leaderboardSubscriptionRequest)
           .then(data => {
             if (data && data.leaderboardEntries) {
-              this.settings.leaderboard.leaderboardData = data.leaderboardEntries;
+              this.settings.leaderboard.leaderboardData = data.leaderboardEntries ?? [];
             }
             callback(this.settings.leaderboard.leaderboardData);
           })
@@ -2380,7 +2380,7 @@ export const LbWidget = function (options) {
         // console.warn('sendSys json:', json);
         if (headers && headers.objectType === 'Leaderboard') {
           if (json.id && json.id === this.settings.competition.activeContestId) {
-            this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
+            this.settings.leaderboard.leaderboardData = json.leaderboardEntries ?? [];
             this.settings.miniScoreBoard.loadScoreBoard();
             this.settings.mainWidget.loadLeaderboard();
           }
