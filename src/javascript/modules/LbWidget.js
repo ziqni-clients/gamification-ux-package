@@ -2377,6 +2377,7 @@ export const LbWidget = function (options) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
+        // console.warn('sendSys json:', json);
         if (headers && headers.objectType === 'Leaderboard') {
           if (json.id && json.id === this.settings.competition.activeContestId) {
             this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
