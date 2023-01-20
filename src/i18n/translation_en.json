@@ -13,11 +13,13 @@
     "enter": "Enter Achievement",
     "leave": "Leave Achievement",
     "listEnterBtn": "Enter",
-    "listLeaveBtn": "Leave"
+    "listLeaveBtn": "Leave",
+    "listProgressionBtn": "In Progress"
   },
   "tournaments": {
     "label": "Tournaments",
     "enter": "Enter Tournament",
+    "processing": "In Progress",
     "readyCompetitions": "Upcoming Tournaments",
     "activeCompetitions": "Active Tournaments",
     "finishedCompetitions": "Finished Tournaments",

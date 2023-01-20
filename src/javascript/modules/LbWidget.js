@@ -657,8 +657,10 @@ export const LbWidget = function (options) {
     if (!this.settings.apiWs.contestsApiWsClient) {
       this.settings.apiWs.contestsApiWsClient = new ContestsApiWs(this.apiClientStomp);
     }
+    console.warn('contestRequest:', contestRequest);
     return new Promise((resolve, reject) => {
       this.settings.apiWs.contestsApiWsClient.getContests(contestRequest, (json) => {
+        console.warn('contestResponse:', json);
         resolve(json.data);
       });
     });
@@ -1956,21 +1958,21 @@ export const LbWidget = function (options) {
     } else if (hasClass(el, 'cl-main-widget-lb-optin-action') && !hasClass(el, 'checking')) {
       addClass(el, 'checking');
 
-      // const preLoader = _this.settings.mainWidget.preloader();
-      // preLoader.show(async function () {
-      //   await _this.optInMemberToActiveCompetition(function () {
-      //     setTimeout(function () {
-      //       preLoader.hide();
-      //       _this.settings.mainWidget.loadLeaderboard();
-      //     }, 2000);
-      //   });
-      // });
-
-      await _this.optInMemberToActiveCompetition(function () {
-        setTimeout(function () {
-          _this.settings.mainWidget.loadLeaderboard();
-        }, 2000);
+      const preLoader = _this.settings.mainWidget.preloader();
+      preLoader.show(async function () {
+        await _this.optInMemberToActiveCompetition(function () {
+          setTimeout(function () {
+            preLoader.hide();
+            _this.settings.mainWidget.loadLeaderboard();
+          }, 2000);
+        });
       });
+
+      // await _this.optInMemberToActiveCompetition(function () {
+      //   setTimeout(function () {
+      //     _this.settings.mainWidget.loadLeaderboard();
+      //   }, 2000);
+      // });
 
       // Achievement details opt-in action
     } else if (hasClass(el, 'cl-main-widget-ach-details-optin-action')) {
@@ -1993,11 +1995,23 @@ export const LbWidget = function (options) {
           }, null);
         }
 
-        await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
-          _this.settings.mainWidget.hideAchievementDetails(
-            _this.checkForAvailableAchievements(1)
-          );
+        const preLoader = _this.settings.mainWidget.preloader();
+        preLoader.show(async function () {
+          await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+            setTimeout(function () {
+              preLoader.hide();
+              _this.settings.mainWidget.hideAchievementDetails(
+                _this.checkForAvailableAchievements(1)
+              );
+            }, 2000);
+          });
         });
+
+        // await this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+        //   _this.settings.mainWidget.hideAchievementDetails(
+        //     _this.checkForAvailableAchievements(1)
+        //   );
+        // });
       }
 
       // Achievement list opt-in action
@@ -2014,25 +2028,26 @@ export const LbWidget = function (options) {
         action: 'join'
       }, null);
 
-      // const preLoader = _this.settings.mainWidget.preloader();
-      // preLoader.show(async function () {
-      //   await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
-      //     console.warn('manageOptin join:', json);
-      //     console.warn(new Date());
-      //     setTimeout(function () {
-      //       _this.settings.mainWidget.loadAchievements(1, function () {
-      //         preLoader.hide();
-      //       });
-      //     }, 10000);
-      //   });
-      // });
+      console.warn('optInRequest:', optInRequest);
 
-      await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
-        // console.warn('manageOptin join:', json);
-        setTimeout(function () {
-          _this.settings.mainWidget.loadAchievements(1);
-        }, 2000);
+      const preLoader = _this.settings.mainWidget.preloader();
+      preLoader.show(async function () {
+        await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+          console.warn('manageOptin response:', json);
+          setTimeout(function () {
+            _this.settings.mainWidget.loadAchievements(1, function () {
+              preLoader.hide();
+            });
+          }, 2000);
+        });
       });
+
+      // await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+      //   console.warn('manageOptin response:', json);
+      //   setTimeout(function () {
+      //     _this.settings.mainWidget.loadAchievements(1);
+      //   }, 2000);
+      // });
 
       // Achievement list leave action
     } else if (hasClass(el, 'cl-ach-list-leave')) {
@@ -2047,25 +2062,24 @@ export const LbWidget = function (options) {
         action: 'leave'
       }, null);
 
-      // const preLoader = _this.settings.mainWidget.preloader();
-      // preLoader.show(async function () {
-      //   await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
-      //     console.warn('manageOptin leave:', json);
-      //     console.warn(new Date());
-      //     setTimeout(function () {
-      //       _this.settings.mainWidget.loadAchievements(1, function () {
-      //         preLoader.hide();
-      //       });
-      //     }, 10000);
-      //   });
-      // });
-
-      await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
-        // console.warn('manageOptin leave:', json);
-        setTimeout(function () {
-          _this.settings.mainWidget.loadAchievements(1);
-        }, 2000);
+      const preLoader = _this.settings.mainWidget.preloader();
+      preLoader.show(async function () {
+        await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+          // console.warn('manageOptin leave:', json);
+          setTimeout(function () {
+            _this.settings.mainWidget.loadAchievements(1, function () {
+              preLoader.hide();
+            });
+          }, 2000);
+        });
       });
+
+      // await _this.settings.apiWs.optInApiWsClient.manageOptin(optInRequest, (json) => {
+      //   // console.warn('manageOptin leave:', json);
+      //   setTimeout(function () {
+      //     _this.settings.mainWidget.loadAchievements(1);
+      //   }, 2000);
+      // });
 
       // close mini scoreboard info area
     } else if (hasClass(el, 'cl-widget-ms-information-close') && !hasClass(el, 'checking')) {
@@ -2328,9 +2342,11 @@ export const LbWidget = function (options) {
       }
     }, null);
 
+    console.warn('optInStatesRequest:', optInStatesRequest);
+
     return new Promise((resolve, reject) => {
       this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
-        // console.warn('optInStates data:', json.data);
+        console.warn('optInStates response:', json.data);
         resolve(json.data);
       });
     });
