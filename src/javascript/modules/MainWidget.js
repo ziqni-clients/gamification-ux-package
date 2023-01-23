@@ -1081,7 +1081,7 @@ export const MainWidget = function (options) {
 
     if (typeof _this.settings.lbWidget.settings.competition.activeContest !== 'undefined' && _this.settings.lbWidget.settings.competition.activeContest !== null) {
       mapObject(_this.settings.lbWidget.settings.competition.activeContest.rewards, function (reward) {
-        if (reward.rewardRank.indexOf('-') !== -1) {
+        if (reward.rewardRank.indexOf('-') !== -1 || reward.rewardRank.indexOf(',') !== -1) {
           const rewardRankArr = reward.rewardRank.split(',');
           rewardRankArr.forEach(r => {
             const idx = r.indexOf('-');
@@ -1091,9 +1091,11 @@ export const MainWidget = function (options) {
               if (rank >= start && rank <= end) {
                 rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
               }
+            } else if (parseInt(r) === rank) {
+              rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
             }
           });
-        } else if (rank !== 0 && reward.rewardRank.indexOf(rank) !== -1) {
+        } else if (rank !== 0 && parseInt(reward.rewardRank) === rank) {
           rewardResponse.push(_this.settings.lbWidget.settings.partialFunctions.rewardFormatter(reward));
         }
 
