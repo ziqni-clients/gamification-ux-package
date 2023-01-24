@@ -153,12 +153,12 @@ export const Notifications = function (options) {
     var _this = this;
     var label = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-label');
     var description = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-description');
-    var descriptionText = stripHtml(data.data.description);
+    var descriptionText = stripHtml(data.description);
 
-    label.innerHTML = (data.data.name.length > 23) ? data.data.name.substr(0, 23) + '...' : data.data.name;
+    label.innerHTML = (data.name.length > 23) ? data.name.substr(0, 23) + '...' : data.name;
     description.innerHTML = (descriptionText.length > 60) ? descriptionText.substr(0, 60) + '...' : descriptionText;
 
-    _this.settings.detailsContainer.dataset.id = data.data.id;
+    _this.settings.detailsContainer.dataset.id = data.id;
 
     _this.settings.container.style.display = 'block';
     setTimeout(function () {
@@ -166,7 +166,7 @@ export const Notifications = function (options) {
     }, 200);
 
     if (_this.settings.canvasInstance !== null) {
-      _this.handleCanvasAnimations(data.data);
+      _this.handleCanvasAnimations(data);
     }
 
     _this.autoNotificationHide();
@@ -229,19 +229,19 @@ export const Notifications = function (options) {
     var _this = this;
 
     if (_this.settings.container === null) {
-      _this.startSSE();
+      // _this.startSSE();
       _this.settings.container = _this.settings.lbWidget.settings.bindContainer.appendChild(_this.layoutWrapper());
       _this.settings.detailsContainer = query(_this.settings.container, '.cl-widget-notif-information-details-wrapper');
     } else {
       // terminate SSE
-      _this.settings.sseInstance.closeChanel();
+      // _this.settings.sseInstance.closeChanel();
 
       // update the member
-      _this.settings.sseInstance.settings.sseUrl = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSE.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId);
-      _this.settings.sseInstance.settings.heartbeat = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSEHeartbeat.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId);
+      // _this.settings.sseInstance.settings.sseUrl = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSE.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId);
+      // _this.settings.sseInstance.settings.heartbeat = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSEHeartbeat.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId);
 
       // re-instantiate SSE
-      _this.settings.sseInstance.openChanel();
+      // _this.settings.sseInstance.openChanel();
     }
 
     _this.eventStreamCheck();
