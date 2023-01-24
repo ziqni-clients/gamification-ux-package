@@ -71,7 +71,7 @@ export const LbWidget = function (options) {
     notifications: null,
     miniScoreBoard: null,
     canvasAnimation: null,
-    enableNotifications: true,
+    enableNotifications: false,
     mainWidget: null,
     globalAjax: new cLabs.Ajax(),
     checkAjax: new cLabs.Ajax(),
