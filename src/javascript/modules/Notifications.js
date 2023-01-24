@@ -169,7 +169,7 @@ export const Notifications = function (options) {
       _this.handleCanvasAnimations(data);
     }
 
-    // _this.autoNotificationHide();
+    _this.autoNotificationHide();
   };
 
   this.handleCanvasAnimations = function (data) {
