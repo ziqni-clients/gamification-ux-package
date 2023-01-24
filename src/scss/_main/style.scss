@@ -3492,11 +3492,11 @@
  * ******************************************
  */
 .cl-widget-notif-wrapper {
-  z-index: 1001;
+  z-index: 1002;
   display: none;
   max-width: 280px;
-  left: 5px;
-  top: 5px;
+  left: 15px;
+  top: 15px;
 }
 
 .cl-widget-notif-wrapper .cl-widget-notif-icon-wrapper {
@@ -3554,7 +3554,7 @@
   border-radius: 10px 5px 5px 10px;
   color: var(--light-font-color);
   padding: 0 10px 0 42px;
-  height: 63px;
+  min-height: 63px;
   transition: all 0.3s ease;
   position: relative;
   left: -10px;
@@ -3578,13 +3578,13 @@
   height: 30px;
   border-radius: 100%;
   border: 2px solid var(--primary-color);
-  border-left: 2px solid transparent;
-  border-bottom: 2px solid transparent;
+  // border-left: 2px solid transparent;
+  // border-bottom: 2px solid transparent;
 }
 
 .cl-widget-notif-wrapper .cl-widget-notif-information-close {
   float: left;
-  background: #767676;
+  background: #FFFFFF;
   width: 16px;
   height: 16px;
   color: #262626;

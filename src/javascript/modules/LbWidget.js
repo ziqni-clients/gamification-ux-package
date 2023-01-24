@@ -71,7 +71,7 @@ export const LbWidget = function (options) {
     notifications: null,
     miniScoreBoard: null,
     canvasAnimation: null,
-    enableNotifications: false,
+    enableNotifications: true,
     mainWidget: null,
     globalAjax: new cLabs.Ajax(),
     checkAjax: new cLabs.Ajax(),
@@ -141,7 +141,8 @@ export const LbWidget = function (options) {
       availableAwards: [],
       claimedAwards: [],
       rewards: [],
-      totalCount: 0
+      totalCount: 0,
+      intervalId: null
     },
     messages: {
       messages: [],
@@ -1215,6 +1216,38 @@ export const LbWidget = function (options) {
         resolve(json);
       });
     });
+  };
+
+  this.animateAwardsIcon = function () {
+    const _this = this;
+    const awardsIcon = query(
+      this.settings.mainWidget.settings.container,
+      '.' + this.settings.navigation.rewards.navigationClass
+    );
+
+    if (awardsIcon && !_this.settings.awards.intervalId) {
+      let x = 0;
+      _this.settings.awards.intervalId = setInterval(function () {
+        if (hasClass(awardsIcon, 'cl-active-nav')) {
+          if (hasClass(awardsIcon, 'decrease')) {
+            removeClass(awardsIcon, 'decrease');
+          } else {
+            addClass(awardsIcon, 'decrease');
+          }
+        } else {
+          if (hasClass(awardsIcon, 'grow')) {
+            removeClass(awardsIcon, 'grow');
+          } else {
+            addClass(awardsIcon, 'grow');
+          }
+        }
+
+        if (++x === 8) {
+          clearInterval(_this.settings.awards.intervalId);
+          _this.settings.awards.intervalId = null;
+        }
+      }, 300);
+    }
   };
 
   this.checkForAvailableRewards = function (pageNumber, callback) {
@@ -2415,7 +2448,6 @@ export const LbWidget = function (options) {
       this.apiClientStomp = ApiClientStomp.instance;
       await this.apiClientStomp.connect({ token: this.settings.authToken });
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
-        // console.warn('sendSys json:', json);
         if (headers && headers.objectType === 'Leaderboard') {
           if (json.id && json.id === this.settings.competition.activeContestId) {
             this.settings.leaderboard.leaderboardData = json.leaderboardEntries ?? [];
@@ -2427,7 +2459,17 @@ export const LbWidget = function (options) {
           this.getMessage(json.entityId, null, true);
         }
         if (json && json.entityType === 'Award') {
-          _this.settings.mainWidget.loadAwards(1);
+          // console.warn('AwardSysCallback json:', json);
+          _this.settings.mainWidget.loadAwards(1, function () {
+            _this.animateAwardsIcon();
+            // if (_this.settings.enableNotifications) {
+            //   _this.settings.notifications.showAchievementNotification({
+            //     name: 'Mike',
+            //     description: 'description',
+            //     id: 333
+            //   });
+            // }
+          });
         }
         if (json && json.entityType === 'Contest') {
           _this.checkForAvailableCompetitions(async function () {

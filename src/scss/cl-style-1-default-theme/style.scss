@@ -48,9 +48,22 @@
   .cl-main-widget-navigation-container {
     .cl-main-widget-navigation-items {
       .cl-main-widget-navigation-item {
+        transition: transform 0.3s, opacity  0.3s;
         opacity: 0.8;
         &.cl-active-nav {
           opacity: 1;
+        }
+        &.grow {
+          opacity: 1;
+          //width: 92px;
+          //height: 92px;
+          transform: scale(1.1, 1.1);
+        }
+        &.decrease {
+          opacity: 0.8;
+          //width: 73px;
+          //height: 73px;
+          transform: scale(0.9, 0.9);
         }
         &:hover {
           opacity: 0.9;
@@ -148,5 +161,12 @@
         }
       }
     }
+  }
+}
+
+.cl-widget-notif-wrapper {
+  .cl-widget-notif-information-wrapper {
+    background-color: rgba(0, 125, 251, .95);
+    box-shadow: #333 1px 1px 3px;
   }
 }
