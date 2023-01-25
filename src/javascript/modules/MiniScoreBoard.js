@@ -663,6 +663,7 @@ export const MiniScoreBoard = function (options) {
         optInDateAction.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.processing;
         addClass(optInDateAction, 'checking');
       } else {
+        removeClass(optInDateAction, 'checking');
         optInDateAction.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
       }
 
@@ -682,12 +683,13 @@ export const MiniScoreBoard = function (options) {
       if (!hasClass(wrapperDomObj, 'cl-show')) {
         addClass(wrapperDomObj, 'cl-show');
       }
+      const optinActionBtn = query(_this.settings.container, '.cl-widget-ms-optin-action');
       if (isProcessing) {
-        const optinActionBtn = query(_this.settings.container, '.cl-widget-ms-optin-action');
         optinActionBtn.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.processing;
         addClass(optinActionBtn, 'checking');
       } else {
-        query(_this.settings.container, '.cl-widget-ms-optin-action').innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+        optinActionBtn.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+        removeClass(optinActionBtn, 'checking');
       }
       query(_this.settings.container, '.cl-widget-ms-optin-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-optin-date').innerHTML = date;

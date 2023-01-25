@@ -1402,6 +1402,7 @@ export const MainWidget = function (options) {
       } else {
         optIn.innerHTML = this.settings.lbWidget.settings.translation.tournaments.enter;
         optIn.parentNode.style.display = 'block';
+        removeClass(optIn, 'checking');
       }
     } else {
       optIn.parentNode.style.display = 'none';
