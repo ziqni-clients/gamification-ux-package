@@ -606,7 +606,7 @@ export const MiniScoreBoard = function (options) {
     }
   };
 
-  this.layoutRequiresOptIn = function () {
+  this.layoutRequiresOptIn = function (isProcessing = false) {
     var _this = this;
     var startDate = _this.settings.lbWidget.settings.competition.activeContest.scheduledStart;
     if (typeof _this.settings.lbWidget.settings.competition.activeContest.actualStart !== 'undefined') {
@@ -623,8 +623,8 @@ export const MiniScoreBoard = function (options) {
     } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 20) {
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.starting;
       date = '';
-    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 2) {
-      diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEnd).diff(moment());
+    } else if (_this.settings.lbWidget.settings.competition.activeContest.statusCode === 25) {
+      diff = moment(_this.settings.lbWidget.settings.competition.activeContest.scheduledEndDate).diff(moment());
       label = _this.settings.lbWidget.settings.translation.miniLeaderboard.started;
       date = _this.settings.lbWidget.formatDateTime(moment.duration(diff));
 
@@ -659,7 +659,12 @@ export const MiniScoreBoard = function (options) {
 
       optInDateLabel.innerHTML = label;
       optInDate.innerHTML = date;
-      optInDateAction.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+      if (isProcessing) {
+        optInDateAction.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.processing;
+        addClass(optInDateAction, 'checking');
+      } else {
+        optInDateAction.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+      }
 
       optInDateWrapper.appendChild(optInDateLabel);
       optInDateWrapper.appendChild(optInDate);
@@ -677,7 +682,13 @@ export const MiniScoreBoard = function (options) {
       if (!hasClass(wrapperDomObj, 'cl-show')) {
         addClass(wrapperDomObj, 'cl-show');
       }
-      query(_this.settings.container, '.cl-widget-ms-optin-action').innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+      if (isProcessing) {
+        const optinActionBtn = query(_this.settings.container, '.cl-widget-ms-optin-action');
+        optinActionBtn.innerHTML = _this.settings.lbWidget.settings.translation.tournaments.processing;
+        addClass(optinActionBtn, 'checking');
+      } else {
+        query(_this.settings.container, '.cl-widget-ms-optin-action').innerHTML = _this.settings.lbWidget.settings.translation.tournaments.enter;
+      }
       query(_this.settings.container, '.cl-widget-ms-optin-date-label').innerHTML = label;
       query(_this.settings.container, '.cl-widget-ms-optin-date').innerHTML = date;
     }
@@ -768,9 +779,11 @@ export const MiniScoreBoard = function (options) {
         const optInStatus = await this.settings.lbWidget.getCompetitionOptInStatus(
           _this.settings.lbWidget.settings.competition.activeCompetition.id
         );
-        console.warn('miniscoreboard optInStatus:', optInStatus);
+        // console.warn('miniscoreboard optInStatus:', optInStatus);
         if (optInStatus.length && optInStatus[0].status === 'Entrant') {
           _this.layoutDefaultOrEmpty();
+        } else if (optInStatus[0].status === 'Entering' || optInStatus[0].status === 'Processing') {
+          _this.layoutRequiresOptIn(true);
         } else {
           _this.layoutRequiresOptIn();
         }

@@ -215,6 +215,14 @@
   font-weight: 400;
   transition: all 0.3s ease;
   border: var(--lb3-miniscoreboard-opt-btn-border);
+  &.checking {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
 }
 
 .cl-widget-ms-wrapper .cl-widget-ms-optin-wrapper .cl-widget-ms-optin-action:hover {
@@ -2275,6 +2283,14 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
   text-decoration: none;
   border: var(--lb3-tournament-lb-opt-in-border);
+  &.checking {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
 }
 
 .cl-main-widget-wrapper .cl-main-widget-lb-optin-action:hover {
@@ -2694,6 +2710,26 @@
 }
 
 .cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-leave:hover {
+  background: var(--lb3-achievements-btn-hover-color);
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-in-progress {
+  text-align: center;
+  color: var(--light-font-color);
+  line-height: 25px;
+  background: var(--lb3-achievements-btn-hover-color);
+  text-decoration: none;
+  border-radius: var(--lb3-achievements-btn-border-radius);
+  box-shadow: var(--lb3-achievements-btn-box-shadow);
+  text-transform: uppercase;
+  padding: 4px 25px;
+  margin-left: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: var(--lb3-achievements-btn-border);
+}
+
+.cl-main-widget-wrapper .cl-main-widget-section-container .cl-main-widget-section-ach .cl-ach-list-in-progress:hover {
   background: var(--lb3-achievements-btn-hover-color);
 }
 

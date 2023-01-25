@@ -1395,6 +1395,10 @@ export const MainWidget = function (options) {
       // console.warn('mainWidget CompetitionOptInStatus optInStatus:', optInStatus);
       if (optInStatus.length && optInStatus[0].status === 'Entrant') {
         optIn.parentNode.style.display = 'none';
+      } else if (optInStatus.length && (optInStatus[0].status === 'Entering' || optInStatus[0].status === 'Processing')) {
+        optIn.innerHTML = this.settings.lbWidget.settings.translation.tournaments.processing;
+        addClass(optIn, 'checking');
+        optIn.parentNode.style.display = 'block';
       } else {
         optIn.innerHTML = this.settings.lbWidget.settings.translation.tournaments.enter;
         optIn.parentNode.style.display = 'block';
@@ -1771,6 +1775,7 @@ export const MainWidget = function (options) {
     var moreButton = document.createElement('a');
     var enterButton = document.createElement('a');
     var leaveButton = document.createElement('a');
+    var progressionButton = document.createElement('a');
     var cpomntainsImage = (typeof ach.icon !== 'undefined' && ach.icon.length > 0);
 
     listItem.setAttribute('class', 'cl-ach-list-item cl-ach-' + ach.id + (cpomntainsImage ? ' cl-ach-with-image' : ''));
@@ -1784,6 +1789,7 @@ export const MainWidget = function (options) {
     moreButton.setAttribute('class', 'cl-ach-list-more');
     enterButton.setAttribute('class', 'cl-ach-list-enter');
     leaveButton.setAttribute('class', 'cl-ach-list-leave');
+    progressionButton.setAttribute('class', 'cl-ach-list-in-progress');
 
     moreButton.dataset.id = ach.id;
     moreButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.more;
@@ -1796,6 +1802,10 @@ export const MainWidget = function (options) {
     leaveButton.dataset.id = ach.id;
     leaveButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.listLeaveBtn;
     leaveButton.href = 'javascript:void(0);';
+
+    progressionButton.dataset.id = ach.id;
+    progressionButton.innerHTML = _this.settings.lbWidget.settings.translation.achievements.listProgressionBtn;
+    progressionButton.href = 'javascript:void(0);';
 
     listItem.dataset.id = ach.id;
 
@@ -1825,6 +1835,8 @@ export const MainWidget = function (options) {
     if (Array.isArray(ach.constraints) && ach.constraints.includes('optinRequiredForEntrants')) {
       if (ach.optInStatus && ach.optInStatus === 'Entrant') {
         progressionWrapper.appendChild(leaveButton);
+      } else if (ach.optInStatus && (ach.optInStatus === 'Entering' || ach.optInStatus === 'Processing')) {
+        progressionWrapper.appendChild(progressionButton);
       } else {
         progressionWrapper.appendChild(enterButton);
       }
@@ -1897,11 +1909,19 @@ export const MainWidget = function (options) {
 
     const memberAchievementOptInStatus = await _this.settings.lbWidget.getMemberAchievementOptInStatus(data.id);
 
-    console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
+    // console.warn('memberAchievementOptInStatus:', memberAchievementOptInStatus);
 
     if (optinRequiredForEntrants) {
       if (memberAchievementOptInStatus.length && memberAchievementOptInStatus[0].status === 'Entrant') {
         optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.leave;
+        removeClass(optIn, 'cl-disabled');
+        addClass(optIn, 'leave-achievement');
+        optIn.parentNode.style.display = 'block';
+      } else if (
+        memberAchievementOptInStatus.length &&
+        (memberAchievementOptInStatus[0].status === 'Entering' || memberAchievementOptInStatus[0].status === 'Processing')
+      ) {
+        optIn.innerHTML = _this.settings.lbWidget.settings.translation.achievements.listProgressionBtn;
         removeClass(optIn, 'cl-disabled');
         addClass(optIn, 'leave-achievement');
         optIn.parentNode.style.display = 'block';
