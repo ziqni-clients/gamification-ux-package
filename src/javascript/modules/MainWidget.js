@@ -2356,6 +2356,7 @@ export const MainWidget = function (options) {
 
           changeContainerInterval = setTimeout(function () {
             if (hasClass(target, 'cl-main-widget-navigation-lb-icon')) {
+              _this.settings.lbWidget.checkForAvailableRewards(1);
               _this.loadLeaderboard(function () {
                 var lbContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.tournaments.containerClass);
 
