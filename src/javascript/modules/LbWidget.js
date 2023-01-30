@@ -420,11 +420,8 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    // console.warn('activeCompetitionRequest:', activeCompetitionRequest);
-
     this.settings.tournaments.readyCompetitions = await this.getCompetitionsApi(readyCompetitionRequest);
     this.settings.tournaments.activeCompetitions = await this.getCompetitionsApi(activeCompetitionRequest);
-    // console.warn('activeCompetitionResponse:', this.settings.tournaments.activeCompetitions);
     this.settings.tournaments.finishedCompetitions = await this.getCompetitionsApi(finishedCompetitionRequest);
 
     if (typeof callback === 'function') {
@@ -786,6 +783,15 @@ export const LbWidget = function (options) {
       };
       await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
         if (json.data && json.data.length) {
+          if (json.data[0].messageType === 'Notification') {
+            if (_this.settings.enableNotifications) {
+              _this.settings.notifications.showAchievementNotification({
+                name: json.data[0].subject,
+                description: json.data[0].subject,
+                id: json.data[0].body
+              });
+            }
+          }
           if (json.data[0].messageType === 'InboxItem') {
             _this.checkForAvailableMessages(function () {
               _this.updateMessagesNavigationCounts();
