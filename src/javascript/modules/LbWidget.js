@@ -785,10 +785,10 @@ export const LbWidget = function (options) {
         if (json.data && json.data.length) {
           if (json.data[0].messageType === 'Notification') {
             if (_this.settings.enableNotifications) {
-              _this.settings.notifications.showAchievementNotification({
-                name: json.data[0].subject,
-                description: json.data[0].subject,
-                id: json.data[0].body
+              _this.settings.notifications.addEvent({
+                subject: json.data[0].subject,
+                body: json.data[0].body,
+                id: json.data[0].id
               });
             }
           }
@@ -2006,13 +2006,6 @@ export const LbWidget = function (options) {
           // console.warn('AwardSysCallback json:', json);
           _this.settings.mainWidget.loadAwards(1, function () {
             _this.animateAwardsIcon();
-            // if (_this.settings.enableNotifications) {
-            //   _this.settings.notifications.showAchievementNotification({
-            //     name: 'Mike',
-            //     description: 'description',
-            //     id: 333
-            //   });
-            // }
           });
         }
         if (json && json.entityType === 'Contest') {

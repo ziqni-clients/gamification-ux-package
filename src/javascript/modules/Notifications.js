@@ -1,4 +1,3 @@
-import { Messaging } from './Messaging';
 import mapObject from '../utils/mapObject';
 import removeClass from '../utils/removeClass';
 import query from '../utils/query';
@@ -31,7 +30,7 @@ export const Notifications = function (options) {
     displayInProgress: false,
     dataExtractionForCanvas: function (data, callback) {
       if (typeof data.metadata !== 'undefined' && data.metadata.length > 0 && typeof callback === 'function') {
-        var found = false;
+        let found = false;
         mapObject(data.metadata, function (meta) {
           if (meta.key === 'webAsset' && !found) {
             const responseObj = {
@@ -55,17 +54,16 @@ export const Notifications = function (options) {
   }
 
   this.layoutWrapper = function () {
-    var wrapper = document.createElement('div');
-    var iconWrapper = document.createElement('div');
-    var icon = document.createElement('div');
-
-    var informationWrapper = document.createElement('div');
-    var informationTopWrapper = document.createElement('div');
-    var informationDetailsContainer = document.createElement('div');
-    var informationDetailsLabel = document.createElement('div');
-    var informationDetailsDescription = document.createElement('div');
-    var informationWrapperClose = document.createElement('div');
-    var informationClose = document.createElement('a');
+    const wrapper = document.createElement('div');
+    const iconWrapper = document.createElement('div');
+    const icon = document.createElement('div');
+    const informationWrapper = document.createElement('div');
+    const informationTopWrapper = document.createElement('div');
+    const informationDetailsContainer = document.createElement('div');
+    const informationDetailsLabel = document.createElement('div');
+    const informationDetailsDescription = document.createElement('div');
+    const informationWrapperClose = document.createElement('div');
+    const informationClose = document.createElement('a');
 
     wrapper.setAttribute('class', 'cl-widget-notif-wrapper');
     iconWrapper.setAttribute('class', 'cl-widget-notif-icon-wrapper');
@@ -95,36 +93,8 @@ export const Notifications = function (options) {
     return wrapper;
   };
 
-  var processed = {};
-  this.startSSE = function () {
-    var _this = this;
-
-    _this.settings.sseInstance = new Messaging({
-      sseUrl: _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSE.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId),
-      heartbeat: _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSEHeartbeat.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId),
-      ajax: {
-        url: null,
-        apiKey: {
-          'X-API-KEY': _this.settings.lbWidget.settings.apiKey
-        }
-      },
-      callback: function (data) {
-        var dataKey = JSON.stringify(data);
-        var currentTime = new Date().getTime();
-
-        if (typeof processed[dataKey] === 'undefined' || (typeof processed[dataKey] !== 'undefined' && (processed[dataKey] + 10000) < currentTime)) {
-          processed[JSON.stringify(data)] = currentTime;
-          _this.settings.eventStream.push(data);
-        }
-      },
-      onStartupError: function (settings) {
-      },
-      debug: true
-    });
-  };
-
   this.autoNotificationHide = function () {
-    var _this = this;
+    const _this = this;
 
     if (_this.settings.autoNotificationHideInterval) {
       clearTimeout(_this.settings.autoNotificationHideInterval);
@@ -136,26 +106,26 @@ export const Notifications = function (options) {
   };
 
   this.hideNotification = function () {
-    var _this = this;
+    const _this = this;
 
     if (_this.settings.autoNotificationHideInterval) {
       clearTimeout(_this.settings.autoNotificationHideInterval);
     }
 
-    _this.settings.displayInProgress = false;
     removeClass(query(_this.settings.container, '.cl-widget-notif-information-wrapper'), 'cl-show');
     setTimeout(function () {
       _this.settings.container.style.display = 'none';
+      _this.settings.displayInProgress = false;
     }, 200);
   };
 
-  this.showAchievementNotification = function (data) {
-    var _this = this;
-    var label = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-label');
-    var description = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-description');
-    var descriptionText = stripHtml(data.description);
+  this.showNotification = function (data) {
+    const _this = this;
+    const label = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-label');
+    const description = query(_this.settings.detailsContainer, '.cl-widget-notif-information-details-description');
+    const descriptionText = stripHtml(data.body);
 
-    label.innerHTML = (data.name.length > 23) ? data.name.substr(0, 23) + '...' : data.name;
+    label.innerHTML = (data.subject.length > 23) ? data.subject.substr(0, 23) + '...' : data.subject;
     description.innerHTML = (descriptionText.length > 60) ? descriptionText.substr(0, 60) + '...' : descriptionText;
 
     _this.settings.detailsContainer.dataset.id = data.id;
@@ -183,41 +153,30 @@ export const Notifications = function (options) {
     });
   };
 
+  this.addEvent = function (data) {
+    this.settings.eventStream.push(data);
+  };
+
   this.eventStreamCheck = function () {
-    var _this = this;
+    const _this = this;
 
     if (_this.settings.checkInterval) {
       clearTimeout(_this.settings.checkInterval);
     }
 
     if (_this.settings.eventStream.length > 0 && !_this.settings.displayInProgress) {
-      var data = _this.settings.eventStream[0];
-      var index = _this.settings.eventStream.indexOf(data);
+      _this.settings.displayInProgress = true;
 
-      if (typeof data.achievementId !== 'undefined') {
-        _this.settings.displayInProgress = true;
-        _this.settings.lbWidget.getAchievement(data.achievementId, function (data) {
-          _this.showAchievementNotification(data);
+      const data = _this.settings.eventStream[0];
+      const index = _this.settings.eventStream.indexOf(data);
 
-          _this.settings.checkInterval = setTimeout(function () {
-            _this.eventStreamCheck();
-          }, _this.settings.onDisplayCheckTimeout);
-        });
+      _this.showNotification(data);
 
-        _this.settings.eventStream.splice(index, 1);
-      } else if (typeof data.notificationId !== 'undefined') {
-        _this.settings.checkInterval = setTimeout(function () {
-          _this.eventStreamCheck();
-        }, _this.settings.checkTimeout);
-      } else {
-        _this.settings.checkInterval = setTimeout(function () {
-          _this.eventStreamCheck();
-        }, _this.settings.checkTimeout);
-      }
+      _this.settings.checkInterval = setTimeout(function () {
+        _this.eventStreamCheck();
+      }, _this.settings.onDisplayCheckTimeout);
 
-      if (index > -1) {
-        _this.settings.eventStream.splice(index, 1);
-      }
+      _this.settings.eventStream.splice(index, 1);
     } else {
       _this.settings.checkInterval = setTimeout(function () {
         _this.eventStreamCheck();
@@ -226,22 +185,11 @@ export const Notifications = function (options) {
   };
 
   this.init = function () {
-    var _this = this;
+    const _this = this;
 
     if (_this.settings.container === null) {
-      // _this.startSSE();
       _this.settings.container = _this.settings.lbWidget.settings.bindContainer.appendChild(_this.layoutWrapper());
       _this.settings.detailsContainer = query(_this.settings.container, '.cl-widget-notif-information-details-wrapper');
-    } else {
-      // terminate SSE
-      // _this.settings.sseInstance.closeChanel();
-
-      // update the member
-      // _this.settings.sseInstance.settings.sseUrl = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSE.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId);
-      // _this.settings.sseInstance.settings.heartbeat = _this.settings.lbWidget.settings.uri.gatewayDomain + _this.settings.lbWidget.settings.uri.memberSSEHeartbeat.replace(':space', _this.settings.lbWidget.settings.spaceName).replace(':id', _this.settings.lbWidget.settings.memberId);
-
-      // re-instantiate SSE
-      // _this.settings.sseInstance.openChanel();
     }
 
     _this.eventStreamCheck();
