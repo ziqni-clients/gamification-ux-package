@@ -430,6 +430,9 @@ export const LbWidget = function (options) {
   };
 
   this.getCompetitionsApi = async (competitionRequest) => {
+    if (!this.apiClientStomp) {
+      await this.initApiClientStomp();
+    }
     if (!this.settings.apiWs.competitionsApiWsClient) {
       this.settings.apiWs.competitionsApiWsClient = new CompetitionsApiWs(this.apiClientStomp);
     }
@@ -514,15 +517,7 @@ export const LbWidget = function (options) {
   };
 
   this.setActiveCompetition = async function (json, callback) {
-    if (this.settings.competition.activeContest) {
-      const leaderboardUnsubscribeRequest = LeaderboardSubscriptionRequest.constructFromObject({
-        entityId: this.settings.competition.activeContestId,
-        action: 'Unsubscribe',
-        leaderboardFilter: {}
-      });
-      this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest).then(() => {});
-      this.settings.leaderboard.leaderboardData = [];
-    }
+    const _this = this;
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
     this.settings.competition.activeContestId = null;
@@ -561,11 +556,31 @@ export const LbWidget = function (options) {
       });
     }
 
-    if (typeof callback === 'function') {
-      callback();
+    if (this.settings.competition.activeContest) {
+      const leaderboardUnsubscribeRequest = LeaderboardSubscriptionRequest.constructFromObject({
+        entityId: this.settings.competition.activeContestId,
+        action: 'Unsubscribe',
+        leaderboardFilter: {}
+      });
+      this.settings.leaderboard.leaderboardData = [];
+      this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest).then((json) => {
+        if (json.leaderboardEntries && json.leaderboardEntries.length) {
+          _this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
+          this.settings.partialFunctions.leaderboardDataResponseParser(json.leaderboardEntries, function (lbData) {
+            _this.settings.leaderboard.leaderboardData = lbData;
+          });
+        }
+        if (typeof callback === 'function') {
+          callback();
+        }
+        this.settings.mainWidget.leaderboardDetailsUpdate();
+      });
+    } else {
+      if (typeof callback === 'function') {
+        callback();
+      }
+      this.settings.mainWidget.leaderboardDetailsUpdate();
     }
-
-    this.settings.mainWidget.leaderboardDetailsUpdate();
   };
 
   this.getContests = async (contestRequest) => {
@@ -582,6 +597,7 @@ export const LbWidget = function (options) {
   };
 
   this.getLeaderboardData = async function (count, callback) {
+    const _this = this;
     if (this.settings.competition.activeContestId !== null) {
       let ranksAboveToInclude = 0;
       let ranksBelowToInclude = 0;
@@ -609,10 +625,15 @@ export const LbWidget = function (options) {
       } else {
         this.subscribeToLeaderboardApi(leaderboardSubscriptionRequest)
           .then(data => {
+            let leaderboardEntries = [];
             if (data && data.leaderboardEntries) {
-              this.settings.leaderboard.leaderboardData = data.leaderboardEntries ?? [];
+              leaderboardEntries = data.leaderboardEntries;
             }
-            callback(this.settings.leaderboard.leaderboardData);
+            _this.settings.leaderboard.leaderboardData = leaderboardEntries;
+            this.settings.partialFunctions.leaderboardDataResponseParser(leaderboardEntries, function (lbData) {
+              _this.settings.leaderboard.leaderboardData = lbData;
+            });
+            callback(_this.settings.leaderboard.leaderboardData);
           })
           .catch(error => {
             this.log(error);
@@ -1994,7 +2015,11 @@ export const LbWidget = function (options) {
       this.apiClientStomp.sendSys('', {}, (json, headers) => {
         if (headers && headers.objectType === 'Leaderboard') {
           if (json.id && json.id === this.settings.competition.activeContestId) {
-            this.settings.leaderboard.leaderboardData = json.leaderboardEntries ?? [];
+            const leaderboardEntries = json.leaderboardEntries ?? [];
+            this.settings.leaderboard.leaderboardData = leaderboardEntries;
+            this.settings.partialFunctions.leaderboardDataResponseParser(leaderboardEntries, function (lbData) {
+              _this.settings.leaderboard.leaderboardData = lbData;
+            });
             this.settings.miniScoreBoard.loadScoreBoard();
             this.settings.mainWidget.loadLeaderboard();
           }
