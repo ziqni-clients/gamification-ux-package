@@ -41,6 +41,7 @@ import {
   LeaderboardApiWs,
   LeaderboardSubscriptionRequest,
   MessagesApiWs,
+  MessageRequest,
   AwardsApiWs,
   AwardRequest,
   ClaimAwardRequest
@@ -349,9 +350,9 @@ export const LbWidget = function (options) {
       /**
        * for IE 11 comment out the lines above and use this code with the jsSHA library inside utils
        * import jsSHA from '../utils/jsSHA';
-      var shaObj = new jsSHA(str, 'TEXT');
-      var hash = shaObj.getHash('SHA-512', 'HEX', 1);
-      */
+       var shaObj = new jsSHA(str, 'TEXT');
+       var hash = shaObj.getHash('SHA-512', 'HEX', 1);
+       */
 
       var data = new Identicon(hash, {
         background: [255, 255, 255, 255], // rgba white
@@ -799,7 +800,7 @@ export const LbWidget = function (options) {
         messageFilter: {
           ids: [messageId],
           skip: 0,
-          limit: 20
+          limit: 15
         }
       };
       await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
@@ -814,21 +815,21 @@ export const LbWidget = function (options) {
             }
           }
           if (json.data[0].messageType === 'InboxItem') {
-            _this.checkForAvailableMessages(function () {
+            _this.checkForAvailableMessages(1, function () {
               _this.updateMessagesNavigationCounts();
             });
           }
         }
       });
     } else {
-      const messageRequest = {
+      const messageRequest = MessageRequest.constructFromObject({
         messageFilter: {
           ids: [messageId],
           messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
           skip: 0,
-          limit: 20
+          limit: 15
         }
-      };
+      });
 
       await this.settings.apiWs.messagesApiWsClient.getMessages(messageRequest, (json) => {
         if (json.data.length) {
@@ -1075,14 +1076,14 @@ export const LbWidget = function (options) {
     });
   };
 
-  this.checkForAvailableMessages = async function (callback) {
-    const messageRequest = {
+  this.checkForAvailableMessages = async function (pageNumber, callback) {
+    const messageRequest = MessageRequest.constructFromObject({
       messageFilter: {
         messageType: 'InboxItem', // NotificationInboxItem Achievement Ticket Reward Text Notification InboxItem
-        skip: 0,
-        limit: 20
+        skip: (pageNumber - 1) * 15,
+        limit: 15
       }
-    };
+    });
 
     this.getMessagesApi(messageRequest)
       .then(json => {
@@ -1486,7 +1487,7 @@ export const LbWidget = function (options) {
 
           // load initial available messages data
           if (_this.settings.navigation.inbox.enable) {
-            _this.checkForAvailableMessages(function () {
+            _this.checkForAvailableMessages(1, function () {
               _this.updateMessagesNavigationCounts();
             });
           }
@@ -1702,6 +1703,9 @@ export const LbWidget = function (options) {
       if (el.closest('.cl-main-widget-reward-list-body-res')) {
         _this.settings.mainWidget.loadAwards(el.dataset.page);
       }
+      if (el.closest('.cl-main-widget-inbox-list-body-res')) {
+        _this.settings.mainWidget.loadMessages(el.dataset.page);
+      }
 
       // load achievement details
     } else if (hasClass(el, 'cl-ach-list-more')) {
@@ -1875,7 +1879,6 @@ export const LbWidget = function (options) {
 
     return new Promise((resolve, reject) => {
       this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
-        // console.warn('getCompetitionOptInStatus response:', json);
         resolve(json.data);
       });
     });
@@ -1924,11 +1927,8 @@ export const LbWidget = function (options) {
       }
     }, null);
 
-    // console.warn('optInStatesRequest:', optInStatesRequest);
-
     return new Promise((resolve, reject) => {
       this.settings.apiWs.optInApiWsClient.optInStates(optInStatesRequest, (json) => {
-        // console.warn('optInStates json:', json);
         resolve(json.data);
       });
     });

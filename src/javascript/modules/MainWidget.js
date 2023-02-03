@@ -2287,9 +2287,25 @@ export const MainWidget = function (options) {
     // });
   };
 
-  this.messagesListLayout = function (rewards, availableRewards, expiredRewards) {
-    var _this = this;
-    var messageList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.inbox.containerClass + ' .cl-main-widget-inbox-list-body-res');
+  this.messagesListLayout = function (pageNumber) {
+    const _this = this;
+    const messageList = query(_this.settings.section, '.' + _this.settings.lbWidget.settings.navigation.inbox.containerClass + ' .cl-main-widget-inbox-list-body-res');
+    const totalCount = _this.settings.lbWidget.settings.messages.totalCount;
+    const itemsPerPage = 15;
+    let paginator = query(messageList, '.paginator');
+
+    if (!paginator && totalCount > itemsPerPage) {
+      const pagesCount = Math.ceil(totalCount / itemsPerPage);
+      paginator = document.createElement('div');
+      paginator.setAttribute('class', 'paginator');
+
+      let page = '';
+
+      for (let i = 0; i < pagesCount; i++) {
+        page += '<span class="paginator-item" data-page=' + (i + 1) + '\>' + (i + 1) + '</span>';
+      }
+      paginator.innerHTML = page;
+    }
 
     messageList.innerHTML = '';
 
@@ -2297,6 +2313,18 @@ export const MainWidget = function (options) {
       var listItem = _this.messageItem(inboxItem);
       messageList.appendChild(listItem);
     });
+
+    if (paginator) {
+      const paginatorItems = query(paginator, '.paginator-item');
+      paginatorItems.forEach(item => {
+        removeClass(item, 'active');
+        if (Number(item.dataset.page) === Number(pageNumber)) {
+          addClass(item, 'active');
+        }
+      });
+
+      messageList.appendChild(paginator);
+    }
   };
 
   this.loadAwards = function (pageNumber, callback) {
@@ -2311,11 +2339,11 @@ export const MainWidget = function (options) {
     });
   };
 
-  this.loadMessages = function (callback) {
+  this.loadMessages = function (pageNumber, callback) {
     var _this = this;
 
-    _this.settings.lbWidget.checkForAvailableMessages(function (rewards, availableRewards, expiredRewards) {
-      _this.messagesListLayout(rewards, availableRewards, expiredRewards);
+    _this.settings.lbWidget.checkForAvailableMessages(pageNumber, function () {
+      _this.messagesListLayout(pageNumber);
       _this.settings.lbWidget.updateMessagesNavigationCounts();
 
       if (typeof callback === 'function') {
@@ -2410,7 +2438,7 @@ export const MainWidget = function (options) {
                 _this.settings.navigationSwitchInProgress = false;
               });
             } else if (hasClass(target, 'cl-main-widget-navigation-inbox-icon')) {
-              _this.loadMessages(function () {
+              _this.loadMessages(1, function () {
                 var inboxContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.inbox.containerClass);
 
                 inboxContainer.style.display = 'block';
