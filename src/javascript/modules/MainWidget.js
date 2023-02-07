@@ -2422,7 +2422,7 @@ export const MainWidget = function (options) {
               });
             } else if (hasClass(target, 'cl-main-widget-navigation-rewards-icon')) {
               _this.loadAwards(1, function () {
-                var rewardsContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.rewards.containerClass);
+                const rewardsContainer = query(_this.settings.container, '.cl-main-widget-section-container .' + _this.settings.lbWidget.settings.navigation.rewards.containerClass);
 
                 rewardsContainer.style.display = 'block';
                 changeInterval = setTimeout(function () {
