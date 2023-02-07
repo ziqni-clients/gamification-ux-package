@@ -1752,15 +1752,23 @@ export const LbWidget = function (options) {
 
       // claim reward
     } else if (hasClass(el, 'cl-main-widget-reward-claim-btn')) {
-      _this.claimAward(el.dataset.id, function (data) {
-        if (data.data[0].claimed) {
-          // _this.settings.mainWidget.loadAwards(1);
-          addClass(el, 'cl-claimed');
-          el.innerHTML = _this.settings.translation.rewards.claimed;
-        } else {
-          removeClass(el, 'cl-claimed');
-          el.innerHTML = _this.settings.translation.rewards.claim;
-        }
+      const preLoader = _this.settings.mainWidget.preloader();
+      preLoader.show(async function () {
+        _this.claimAward(el.dataset.id, function (data) {
+          if (data.data[0].claimed) {
+            addClass(el, 'cl-claimed');
+            el.innerHTML = _this.settings.translation.rewards.claimed;
+          } else {
+            removeClass(el, 'cl-claimed');
+            el.innerHTML = _this.settings.translation.rewards.claim;
+          }
+          setTimeout(function () {
+            _this.settings.mainWidget.loadAwards(1, function () {
+              preLoader.hide();
+              _this.settings.mainWidget.hideRewardDetails();
+            });
+          }, 2000);
+        });
       });
 
       // load achievement details window from notification window
