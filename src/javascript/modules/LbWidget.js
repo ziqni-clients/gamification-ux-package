@@ -944,6 +944,10 @@ export const LbWidget = function (options) {
     this.getAwardsApi(claimedAwardRequest)
       .then(json => {
         this.settings.awards.claimedAwards = json.data;
+
+        if (typeof callback === 'function') {
+          callback();
+        }
       })
       .catch(error => {
         this.log(error);
