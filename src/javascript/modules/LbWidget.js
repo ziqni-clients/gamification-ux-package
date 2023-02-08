@@ -484,18 +484,23 @@ export const LbWidget = function (options) {
     if (activeCompetitionId === null) { // no active or ready competitions found
       _this.deactivateCompetitionsAndLeaderboards();
     } else {
-      if (_this.settings.competition.activeCompetitionId !== activeCompetitionId && activeCompetitionId !== null) {
+      if (_this.settings.competition.activeCompetitionId !== activeCompetitionId) {
+        if (_this.settings.competition.activeContestId) {
+          const leaderboardUnsubscribeRequest = LeaderboardSubscriptionRequest.constructFromObject({
+            entityId: _this.settings.competition.activeContestId,
+            action: 'Unsubscribe',
+            leaderboardFilter: {}
+          });
+          this.settings.leaderboard.leaderboardData = [];
+          this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest).then((json) => {});
+        }
         _this.settings.competition.activeCompetition = activeCompetition;
         _this.settings.competition.activeCompetitionId = activeCompetitionId;
       }
 
-      if (activeCompetitionId !== null) {
-        _this.loadActiveCompetition(async function (json) {
-          await _this.setActiveCompetition(json, callback);
-        });
-      } else if (typeof callback === 'function') {
-        callback();
-      }
+      _this.loadActiveCompetition(async function (json) {
+        await _this.setActiveCompetition(json, callback);
+      });
     }
   };
 
@@ -518,7 +523,6 @@ export const LbWidget = function (options) {
   };
 
   this.setActiveCompetition = async function (json, callback) {
-    const _this = this;
     this.settings.competition.activeCompetition = json[0];
     this.settings.competition.activeContest = null;
     this.settings.competition.activeContestId = null;
@@ -557,31 +561,10 @@ export const LbWidget = function (options) {
       });
     }
 
-    if (this.settings.competition.activeContest) {
-      const leaderboardUnsubscribeRequest = LeaderboardSubscriptionRequest.constructFromObject({
-        entityId: this.settings.competition.activeContestId,
-        action: 'Unsubscribe',
-        leaderboardFilter: {}
-      });
-      this.settings.leaderboard.leaderboardData = [];
-      this.subscribeToLeaderboardApi(leaderboardUnsubscribeRequest).then((json) => {
-        if (json.leaderboardEntries && json.leaderboardEntries.length) {
-          _this.settings.leaderboard.leaderboardData = json.leaderboardEntries;
-          this.settings.partialFunctions.leaderboardDataResponseParser(json.leaderboardEntries, function (lbData) {
-            _this.settings.leaderboard.leaderboardData = lbData;
-          });
-        }
-        if (typeof callback === 'function') {
-          callback();
-        }
-        this.settings.mainWidget.leaderboardDetailsUpdate();
-      });
-    } else {
-      if (typeof callback === 'function') {
-        callback();
-      }
-      this.settings.mainWidget.leaderboardDetailsUpdate();
+    if (typeof callback === 'function') {
+      callback();
     }
+    this.settings.mainWidget.leaderboardDetailsUpdate();
   };
 
   this.getContests = async (contestRequest) => {
@@ -1192,8 +1175,6 @@ export const LbWidget = function (options) {
     _this.checkForAvailableCompetitions(async function () {
       _this.updateLeaderboardNavigationCounts();
       await _this.prepareActiveCompetition(function () {
-        var count = (_this.settings.miniScoreBoard.settings.active) ? 0 : _this.settings.leaderboard.fullLeaderboardSize;
-
         // clear to not clash with LB refresh that could happen at same time
         if (_this.settings.leaderboard.refreshInterval) {
           clearTimeout(_this.settings.leaderboard.refreshInterval);
@@ -1204,25 +1185,17 @@ export const LbWidget = function (options) {
             (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optinRequired === 'boolean' && !_this.settings.competition.activeCompetition.optinRequired) ||
             (_this.settings.competition.activeCompetition !== null && typeof _this.settings.competition.activeCompetition.optin === 'boolean' && _this.settings.competition.activeCompetition.optin)
           ) {
-            _this.getLeaderboardData(count, function (data) {
-              if (_this.settings.miniScoreBoard.settings.active) _this.settings.miniScoreBoard.loadScoreBoard();
-              if (_this.settings.mainWidget.settings.active) _this.settings.mainWidget.loadLeaderboard();
+            _this.leaderboardDataRefresh();
 
-              // re-start leaderboard refresh
-              _this.leaderboardDataRefresh();
-
-              if (typeof callback === 'function') {
-                callback();
-              }
-            });
+            if (typeof callback === 'function') {
+              callback();
+            }
           } else {
             if (_this.settings.miniScoreBoard.settings.active) {
               _this.settings.miniScoreBoard.loadScoreBoard();
             }
             if (_this.settings.mainWidget.settings.active) {
-              _this.getLeaderboardData(count, function (data) {
-                _this.settings.mainWidget.loadLeaderboard();
-              });
+              _this.settings.mainWidget.loadLeaderboard();
             }
 
             // restart leaderboard refresh
@@ -1305,7 +1278,7 @@ export const LbWidget = function (options) {
   this.restartActivity = function (callback) {
     var _this = this;
 
-    _this.activeDataRefresh();
+    // _this.activeDataRefresh();
     _this.settings.miniScoreBoard.updateScoreBoard();
 
     if (typeof callback === 'function') {
