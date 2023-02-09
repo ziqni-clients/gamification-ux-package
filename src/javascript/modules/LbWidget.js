@@ -1516,7 +1516,6 @@ export const LbWidget = function (options) {
     }
   };
 
-  var loadCompetitionListAjax = new cLabs.Ajax();
   this.eventHandlers = async function (el) {
     var _this = this;
 
@@ -1771,7 +1770,7 @@ export const LbWidget = function (options) {
       }
       _this.settings.mainWidget.loadCompetitionList(function () {
         _this.activeDataRefresh();
-      }, loadCompetitionListAjax);
+      });
 
       // load competition
     } else if (hasClass(el, 'cl-tour-list-item') || closest(el, '.cl-tour-list-item') !== null) {
