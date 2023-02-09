@@ -1689,7 +1689,7 @@ export const MainWidget = function (options) {
     }, 50);
   };
 
-  this.loadCompetitionList = function (callback, ajaxInstance) {
+  this.loadCompetitionList = function (callback) {
     const _this = this;
     const listResContainer = query(_this.settings.tournamentListContainer, '.cl-main-widget-tournaments-list-body-res');
     const listIcon = query(_this.settings.container, '.cl-main-widget-lb-header-list-icon');
@@ -1697,40 +1697,38 @@ export const MainWidget = function (options) {
 
     preLoader.show(function () {
       listIcon.style.opacity = '0';
-      _this.settings.lbWidget.checkForAvailableCompetitions(function () {
-        var accordionObj = _this.accordionStyle(_this.settings.tournamentsSection.accordionLayout, function (accordionSection, listContainer, topEntryContainer, layout) {
-          var tournamentData = _this.settings.lbWidget.settings.tournaments[layout.type];
+      const accordionObj = _this.accordionStyle(_this.settings.tournamentsSection.accordionLayout, function (accordionSection, listContainer, topEntryContainer, layout) {
+        const tournamentData = _this.settings.lbWidget.settings.tournaments[layout.type];
 
-          if (typeof tournamentData !== 'undefined') {
-            if (tournamentData.length === 0) {
-              accordionSection.style.display = 'none';
-            }
-            mapObject(tournamentData, function (tournament, key, count) {
-              if ((count + 1) <= layout.showTopResults && query(topEntryContainer, '.cl-tournament-' + tournament.id) === null) {
-                var topEntryContaineRlistItem = _this.tournamentItem(tournament);
-                topEntryContainer.appendChild(topEntryContaineRlistItem);
-              }
-
-              if (query(listContainer, '.cl-tournament-' + tournament.id) === null) {
-                var listItem = _this.tournamentItem(tournament);
-                listContainer.appendChild(listItem);
-              }
-            });
+        if (typeof tournamentData !== 'undefined') {
+          if (tournamentData.length === 0) {
+            accordionSection.style.display = 'none';
           }
-        });
+          mapObject(tournamentData, function (tournament, key, count) {
+            if ((count + 1) <= layout.showTopResults && query(topEntryContainer, '.cl-tournament-' + tournament.id) === null) {
+              const topEntryContaineRlistItem = _this.tournamentItem(tournament);
+              topEntryContainer.appendChild(topEntryContaineRlistItem);
+            }
 
-        listResContainer.innerHTML = '';
-        listResContainer.appendChild(accordionObj);
+            if (query(listContainer, '.cl-tournament-' + tournament.id) === null) {
+              const listItem = _this.tournamentItem(tournament);
+              listContainer.appendChild(listItem);
+            }
+          });
+        }
+      });
 
-        _this.settings.tournamentListContainer.style.display = 'block';
-        setTimeout(function () {
-          addClass(_this.settings.tournamentListContainer, 'cl-show');
+      listResContainer.innerHTML = '';
+      listResContainer.appendChild(accordionObj);
 
-          if (typeof callback === 'function') callback();
+      _this.settings.tournamentListContainer.style.display = 'block';
+      setTimeout(function () {
+        addClass(_this.settings.tournamentListContainer, 'cl-show');
 
-          preLoader.hide();
-        }, 50);
-      }, ajaxInstance);
+        if (typeof callback === 'function') callback();
+
+        preLoader.hide();
+      }, 50);
     });
   };
 
