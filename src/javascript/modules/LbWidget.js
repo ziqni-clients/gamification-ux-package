@@ -139,6 +139,7 @@ export const LbWidget = function (options) {
     navigation: { // primary navigation items, if all are disabled init will fail, if only 1 is enabled items will be hidden
       tournaments: {
         enable: true,
+        showFinishedTournaments: true,
         navigationClass: 'cl-main-widget-navigation-lb',
         navigationClassIcon: 'cl-main-widget-navigation-lb-icon',
         containerClass: 'cl-main-widget-lb',
@@ -396,7 +397,13 @@ export const LbWidget = function (options) {
               }
             });
 
-            _this.checkForFinishedCompetitions(callback, ajaxInstance);
+            if (_this.settings.navigation.tournaments.showFinishedTournaments) {
+              _this.checkForFinishedCompetitions(callback, ajaxInstance);
+            } else {
+              if (typeof callback === 'function') {
+                callback();
+              }
+            }
           });
         } else {
           _this.log('failed to checkForActiveCompetitions ' + response);
