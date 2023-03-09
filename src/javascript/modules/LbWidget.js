@@ -154,6 +154,7 @@ export const LbWidget = function (options) {
       },
       rewards: {
         enable: true,
+        filterClaimed: false,
         navigationClass: 'cl-main-widget-navigation-rewards',
         navigationClassIcon: 'cl-main-widget-navigation-rewards-icon',
         containerClass: 'cl-main-widget-section-reward',
@@ -1072,6 +1073,15 @@ export const LbWidget = function (options) {
         if (xhr.status === 200) {
           var jsonClaimedPrizes = JSON.parse(response);
 
+          if (_this.settings.navigation.rewards.filterClaimed) {
+            jsonClaimedPrizes.data = jsonClaimedPrizes.data.filter(p => {
+              if (p.subject.includes('[Claimed]')) {
+                return false;
+              }
+              return p;
+            });
+          }
+
           _this.settings.rewards.rewards = [];
           _this.settings.rewards.availableRewards = [];
           _this.settings.rewards.expiredRewards = [];
@@ -1129,6 +1139,15 @@ export const LbWidget = function (options) {
                       success: function (response, dataObj, xhr) {
                         if (xhr.status === 200) {
                           var jsonExpiredRewards = JSON.parse(response);
+
+                          if (_this.settings.navigation.rewards.filterClaimed) {
+                            jsonExpiredRewards.data = jsonExpiredRewards.data.filter(p => {
+                              if (p.subject.includes('[Claimed]')) {
+                                return false;
+                              }
+                              return p;
+                            });
+                          }
 
                           _this.settings.partialFunctions.expiredRewardsDataResponseParser(jsonExpiredRewards.data, function (expiredRewardsData) {
                             mapObject(expiredRewardsData, function (message) {
