@@ -140,6 +140,7 @@ export const LbWidget = function (options) {
       tournaments: {
         enable: true,
         showFinishedTournaments: true,
+        useLbMemberId: true,
         navigationClass: 'cl-main-widget-navigation-lb',
         navigationClassIcon: 'cl-main-widget-navigation-lb-icon',
         containerClass: 'cl-main-widget-lb',

@@ -995,7 +995,12 @@ export const MainWidget = function (options) {
     mapObject(topResults, function (lb) {
       var count = 0;
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
-      var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      var memberFound;
+      if (_this.settings.lbWidget.settings.navigation.tournaments.useLbMemberId) {
+        memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      } else {
+        memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      }
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : lb.name;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
@@ -1080,7 +1085,12 @@ export const MainWidget = function (options) {
     mapObject(remainingResults, function (lb) {
       var count = 0;
       var icon = _this.settings.lbWidget.populateIdenticonBase64Image(lb.memberId);
-      var memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      var memberFound;
+      if (_this.settings.lbWidget.settings.navigation.tournaments.useLbMemberId) {
+        memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberId || _this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      } else {
+        memberFound = (_this.settings.lbWidget.settings.memberId === lb.memberRefId);
+      }
       var memberName = (memberFound) ? _this.settings.lbWidget.settings.translation.leaderboard.you : lb.name;
       var memberNameLength = _this.settings.lbWidget.settings.memberNameLength;
       var reward = _this.getReward(lb.rank);
