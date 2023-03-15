@@ -1,0 +1,57 @@
+{
+    "time": {
+        "days": "дни",
+        "hours": "часа",
+        "minutesShortHand": "мин",
+        "minutes": "минути",
+        "seconds": "секунди"
+    },
+    "achievements": {
+        "label": "постижения",
+        "more": "още",
+        "complete": "приключен 100%"
+    },
+    "tournaments": {
+        "label": "турнира",
+        "enter": "Влез в турнира",
+        "readyCompetitions": "Próximos torneos",
+        "activeCompetitions": "Активни турнири",
+        "finishedCompetitions": "Приключили турнири",
+        "finishing": "Приключващи",
+        "finished": "Приключени",
+        "registered": "Регистрирани",
+        "noAvailableCompetitions": "Няма достъпно състезание"
+    },
+    "leaderboard": {
+		"label": "класация",
+        "rank": "ранг",
+        "name": "име",
+        "points": "точки",
+        "prize": "награда",
+        "you": "Ти"
+    },
+    "miniLeaderboard": {
+        "highScore": "Най-висок резултат",
+        "lastScore": "Последен резултат",
+        "rank": "Ранг",
+        "startsIn": "Започващи след",
+        "started": "започнали",
+        "starting": "Започващи",
+        "finishing": "приключващи",
+        "finished": "приключили"
+    },
+    "rewards": {
+        "label": "Награди",
+        "claim": "Заяви сега",
+        "claimed": "Заявена",
+        "availableRewards": "Налични награди",
+        "rewards": "Награди",
+        "expiredRewards": "Изтекли награди"
+    },
+    "messages": {
+        "label": "Съобщения"
+    },
+    "global": {
+        "copy": "С помощта на Ziqni"
+    }
+}
