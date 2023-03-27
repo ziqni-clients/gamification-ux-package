@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Ingen tillgänglig tävling"
     },
     "leaderboard": {
-		"label": "rankningslista",
         "rank": "rangordna",
         "name": "namn",
         "points": "poäng",
