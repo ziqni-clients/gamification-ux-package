@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Μη διαθέσιμος διαγωνισμός"
     },
     "leaderboard": {
-		"label": "πίνακας βαθμολογίας",
         "rank": "θέση",
         "name": "όνομα",
         "points": "βαθμοί",
