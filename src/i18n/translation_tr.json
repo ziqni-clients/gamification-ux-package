@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Mevcut yarışma yok"
     },
     "leaderboard": {
-		"label": "en iyiler",
         "rank": "sıralama",
         "name": "adı",
         "points": "puan",
