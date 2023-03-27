@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "هیچ   رقابتی موجود نیست"
     },
     "leaderboard": {
-		"label": "جدول افراد برتر",
         "rank": "رتبه",
         "name": "نام",
         "points": "امتیاز",
