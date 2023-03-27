@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Nincs elérhető verseny"
     },
     "leaderboard": {
-		"label": "ranglista",
         "rank": "rangsor",
         "name": "név",
         "points": "pont",
