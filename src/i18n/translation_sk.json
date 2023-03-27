@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Súťaž nie je k dispozícii"
     },
     "leaderboard": {
-		"label": "rebríček",
         "rank": "úroveň",
         "name": "meno",
         "points": "body",
