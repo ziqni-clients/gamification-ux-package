@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Nema dostupnih takmičenja"
     },
     "leaderboard": {
-		"label": "tabela vođstva",
         "rank": "rang",
         "name": "ime",
         "points": "poeni",
