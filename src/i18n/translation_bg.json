@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Няма достъпно състезание"
     },
     "leaderboard": {
-		"label": "класация",
         "rank": "ранг",
         "name": "име",
         "points": "точки",
