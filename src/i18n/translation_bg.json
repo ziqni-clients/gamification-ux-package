@@ -12,9 +12,8 @@
         "complete": "приключен 100%"
     },
     "tournaments": {
-        "label": "турнира",
         "enter": "Влез в турнира",
-        "readyCompetitions": "Próximos torneos",
+        "readyCompetitions": "Предстоящи турнири",
         "activeCompetitions": "Активни турнири",
         "finishedCompetitions": "Приключили турнири",
         "finishing": "Приключващи",
@@ -45,7 +44,7 @@
         "claim": "Заяви сега",
         "claimed": "Заявена",
         "availableRewards": "Налични награди",
-        "rewards": "Награди",
+        "rewards": "Заявени награди",
         "expiredRewards": "Изтекли награди"
     },
     "messages": {
