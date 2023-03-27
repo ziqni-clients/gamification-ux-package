@@ -12,6 +12,7 @@
         "complete": "приключен 100%"
     },
     "tournaments": {
+        "label": "Турнира",
         "enter": "Влез в турнира",
         "readyCompetitions": "Предстоящи турнири",
         "activeCompetitions": "Активни турнири",
