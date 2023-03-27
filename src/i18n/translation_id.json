@@ -22,7 +22,6 @@
         "noAvailableCompetitions": "Tidak ada kompetisi"
     },
     "leaderboard": {
-		"label": "papan peringkat",
         "rank": "peringkat",
         "name": "nama",
         "points": "poin",
