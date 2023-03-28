@@ -12,6 +12,7 @@
         "complete": "100% کامل"
     },
     "tournaments": {
+		"label":"مسابقات",
         "enter": "ورود به مسابقه",
         "readyCompetitions": "مسابقات پیش رو",
         "activeCompetitions": "مسابقات فعال",
