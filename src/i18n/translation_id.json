@@ -12,6 +12,7 @@
         "complete": "selesaikan 100%"
     },
     "tournaments": {
+		"label":"turnamen",
         "enter": "Masuki turnamen",
         "readyCompetitions": "Turnamen Mendatang",
         "activeCompetitions": "Turnamen Aktif",

@@ -12,6 +12,7 @@
         "complete": "100% kész"
     },
     "tournaments": {
+		"label":"bajnokságok",
         "enter": "Belépés a bajnokságba",
         "readyCompetitions": "Közelgő bajnokságok",
         "activeCompetitions": "Aktív bajnokságok",

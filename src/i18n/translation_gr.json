@@ -12,6 +12,7 @@
         "complete": "ολοκλήρωση 100%"
     },
     "tournaments": {
+		"label":"τουρνουά",
         "enter": "Είσοδος σε τουρνουά",
         "readyCompetitions": "Επερχόμενα Τουρνουά",
         "activeCompetitions": "Ενεργά Τουρνουά",

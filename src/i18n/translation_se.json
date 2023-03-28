@@ -12,6 +12,7 @@
         "complete": "komplett 100 %"
     },
     "tournaments": {
+		"label":"turneringar",
         "enter": "Delta i turneringen",
         "readyCompetitions": "Kommande turneringar",
         "activeCompetitions": "Aktiva turneringar",

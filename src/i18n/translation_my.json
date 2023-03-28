@@ -12,6 +12,7 @@
         "complete": "lengkap 100%"
     },
     "tournaments": {
+		"label":"pertandingan",
         "enter": "pertandingan",
         "readyCompetitions": "Pertandingan Akan Datang",
         "activeCompetitions": "Pertandingan Aktif",

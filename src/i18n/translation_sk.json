@@ -12,6 +12,7 @@
         "complete": "100% dokončené"
     },
     "tournaments": {
+		"label":"turnaje",
         "enter": "Vstúpiť do turnaja",
         "readyCompetitions": "Nadchádzajúce turnaje",
         "activeCompetitions": "Aktívne turnaje",

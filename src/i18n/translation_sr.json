@@ -12,6 +12,7 @@
         "complete": "završeno 100%"
     },
     "tournaments": {
+		"label":"turniri",
         "enter": "Uđite u turnir",
         "readyCompetitions": "Predstojeći turniri",
         "activeCompetitions": "Aktivni turniri",

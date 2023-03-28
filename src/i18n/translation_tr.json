@@ -12,6 +12,7 @@
         "complete": "%100 tamamla"
     },
     "tournaments": {
+		"label":"turnuvalar",
         "enter": "Turnuvaya gir",
         "readyCompetitions": "Yaklaşan Turnuvalar",
         "activeCompetitions": "Aktif Turnuvalar",
