@@ -1,5 +1,10 @@
 # Gamification UX package
 
+# DEPRECATED DO NOT USE
+# DEPRECATED DO NOT USE
+# DEPRECATED DO NOT USE
+
+
 HTML/CSS and Vanilla JavaScript Ziqni Leaderboard / Achievements / Inbox-Messaging widget
 
 
